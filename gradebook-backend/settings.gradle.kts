@@ -1,0 +1,1 @@
+rootProject.name = "gradebook-backend"
