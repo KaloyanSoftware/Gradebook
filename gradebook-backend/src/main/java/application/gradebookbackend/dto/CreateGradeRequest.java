@@ -1,4 +1,4 @@
-package application.gradebookbackend.controller.request;
+package application.gradebookbackend.dto;
 
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -11,12 +11,9 @@ import java.util.UUID;
 
 public record CreateGradeRequest(
         @NotNull UUID studentId,
-        @PastOrPresent LocalDate date,
-        String subject,
-        @NotNull
-        @DecimalMin(value = "2.0")
-        @DecimalMax(value = "6.0")
-        BigDecimal value,
+        @NotNull @PastOrPresent LocalDate date,
+        @NotNull String subject,
+        @NotNull @DecimalMin("2.0") @DecimalMax("6.0") BigDecimal value,
         String comment
 ) {
 }

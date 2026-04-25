@@ -4,6 +4,7 @@ import application.gradebookbackend.domain.AppUser;
 import application.gradebookbackend.domain.Grade;
 import application.gradebookbackend.domain.Student;
 import application.gradebookbackend.domain.Subject;
+import application.gradebookbackend.exception.ResourceNotFoundException;
 import application.gradebookbackend.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class GradeService {
         Grade grade = new Grade();
 
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new IllegalArgumentException("Student not found with id: " + studentId));
+                .orElseThrow(() -> new ResourceNotFoundException("Student", studentId));
 
         grade.setDate(date);
         grade.setSubject(subject);

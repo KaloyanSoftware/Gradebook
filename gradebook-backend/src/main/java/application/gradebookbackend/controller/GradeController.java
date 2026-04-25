@@ -1,15 +1,15 @@
 package application.gradebookbackend.controller;
 
-import application.gradebookbackend.controller.request.CreateGradeRequest;
 import application.gradebookbackend.domain.Subject;
+import application.gradebookbackend.dto.CreateGradeRequest;
+import application.gradebookbackend.dto.GradeResponse;
 import application.gradebookbackend.service.GradeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1.0/grades")
+@RequestMapping("/admin/grades")
 public class GradeController {
 
     private final GradeService gradeService;
@@ -18,18 +18,18 @@ public class GradeController {
         this.gradeService = gradeService;
     }
 
+    // TODO: pass authenticated admin user as createdBy once JWT is wired up
     @PostMapping
-    public ResponseEntity<Void> createGrade(@Valid @RequestBody CreateGradeRequest createGradeRequest) {
-        // TODO: Retrieve AppUser from security context
-        gradeService.createGrade(
-                createGradeRequest.studentId(),
-                createGradeRequest.date(),
-                Subject.valueOf(createGradeRequest.subject()),
-                createGradeRequest.value(),
-                createGradeRequest.comment(),
-                null  // createdBy - retrieve from security context
+    @ResponseStatus(HttpStatus.CREATED)
+    public GradeResponse createGrade(@Valid @RequestBody CreateGradeRequest request) {
+        var grade = gradeService.createGrade(
+                request.studentId(),
+                request.date(),
+                Subject.valueOf(request.subject()),
+                request.value(),
+                request.comment(),
+                null
         );
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return GradeResponse.from(grade);
     }
 }

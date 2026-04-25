@@ -1,0 +1,55 @@
+### Create grade (happy path)
+POST http://localhost:8080/admin/grades
+Content-Type: application/json
+
+{
+  "studentId": "00000000-0000-0000-0000-000000000000",
+  "date": "2026-04-25",
+  "subject": "BULGARIAN",
+  "value": 5.50,
+  "comment": "Отличен отговор на въпросите за разказа."
+}
+
+### Create grade without comment (happy path)
+POST http://localhost:8080/admin/grades
+Content-Type: application/json
+
+{
+  "studentId": "00000000-0000-0000-0000-000000000000",
+  "date": "2026-04-25",
+  "subject": "LITERATURE",
+  "value": 4.00
+}
+
+### Create grade — student not found (expect 404)
+POST http://localhost:8080/admin/grades
+Content-Type: application/json
+
+{
+  "studentId": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+  "date": "2026-04-25",
+  "subject": "BULGARIAN",
+  "value": 5.00
+}
+
+### Create grade — invalid value out of range (expect 400)
+POST http://localhost:8080/admin/grades
+Content-Type: application/json
+
+{
+  "studentId": "00000000-0000-0000-0000-000000000000",
+  "date": "2026-04-25",
+  "subject": "BULGARIAN",
+  "value": 7.00
+}
+
+### Create grade — future date (expect 400)
+POST http://localhost:8080/admin/grades
+Content-Type: application/json
+
+{
+  "studentId": "00000000-0000-0000-0000-000000000000",
+  "date": "2099-01-01",
+  "subject": "LITERATURE",
+  "value": 5.00
+}
