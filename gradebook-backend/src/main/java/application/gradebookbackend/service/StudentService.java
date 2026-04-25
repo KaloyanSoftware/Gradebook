@@ -12,6 +12,7 @@ import application.gradebookbackend.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -62,5 +63,14 @@ public class StudentService {
         enrollmentRepository.save(enrollment);
 
         return StudentResponse.from(savedStudent);
+    }
+
+    public List<StudentResponse> listStudentsByParent(UUID parentId) {
+        parentRepository.findById(parentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Parent", parentId));
+
+        return enrollmentRepository.findByParentId(parentId).stream()
+                .map(enrollment -> StudentResponse.from(enrollment.getStudent()))
+                .toList();
     }
 }

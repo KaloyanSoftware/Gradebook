@@ -19,8 +19,8 @@ const mainNav = [
 ]
 
 const userNav = [
-  { label: 'Добавяне на родител', icon: <PersonAddIcon fontSize="small" />, to: '/admin/parents/new' },
-  { label: 'Добавяне на ученик', icon: <SchoolIcon fontSize="small" />, to: null },
+  { label: 'Родители', icon: <SchoolIcon fontSize="small" />, to: '/admin/parents' },
+  { label: 'Нов родител', icon: <PersonAddIcon fontSize="small" />, to: '/admin/parents/new' },
 ]
 
 const gradesNav = [

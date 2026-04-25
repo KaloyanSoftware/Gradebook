@@ -11,6 +11,7 @@ import application.gradebookbackend.repository.ParentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -42,8 +43,14 @@ public class ParentService {
 
         Parent parent = new Parent();
         parent.setUser(savedUser);
-        parentRepository.save(parent);
+        Parent savedParent = parentRepository.save(parent);
 
-        return ParentResponse.from(savedUser);
+        return ParentResponse.from(savedParent);
+    }
+
+    public List<ParentResponse> listParents() {
+        return parentRepository.findAll().stream()
+                .map(ParentResponse::from)
+                .toList();
     }
 }
