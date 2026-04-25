@@ -1,0 +1,59 @@
+### Create student (happy path)
+POST http://localhost:8080/admin/students
+Content-Type: application/json
+
+{
+  "parentId": "00000000-0000-0000-0000-000000000000",
+  "firstName": "Иван",
+  "lastName": "Петров",
+  "email": "ivan.petrov@example.com",
+  "password": "secret123"
+}
+
+### Create second student for the same parent (happy path)
+POST http://localhost:8080/admin/students
+Content-Type: application/json
+
+{
+  "parentId": "00000000-0000-0000-0000-000000000000",
+  "firstName": "Мария",
+  "lastName": "Петрова",
+  "email": "maria.petrova@example.com",
+  "password": "secret123"
+}
+
+### Create student — parent not found (expect 404)
+POST http://localhost:8080/admin/students
+Content-Type: application/json
+
+{
+  "parentId": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+  "firstName": "Иван",
+  "lastName": "Петров",
+  "email": "ivan.petrov@example.com",
+  "password": "secret123"
+}
+
+### Create student — duplicate email (expect 409)
+POST http://localhost:8080/admin/students
+Content-Type: application/json
+
+{
+  "parentId": "00000000-0000-0000-0000-000000000000",
+  "firstName": "Иван",
+  "lastName": "Петров",
+  "email": "ivan.petrov@example.com",
+  "password": "secret123"
+}
+
+### Create student — invalid input (expect 400)
+POST http://localhost:8080/admin/students
+Content-Type: application/json
+
+{
+  "parentId": "00000000-0000-0000-0000-000000000000",
+  "firstName": "",
+  "lastName": "Петров",
+  "email": "not-an-email",
+  "password": "short"
+}
