@@ -29,7 +29,7 @@ export function LoginPage() {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
       <Paper elevation={3} sx={{ p: 4, width: 360 }}>
-        <Typography variant="h5" fontWeight={600} mb={3}>
+        <Typography variant="h5" sx={{ fontWeight: 600, mb: 3 }}>
           Sign in
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
