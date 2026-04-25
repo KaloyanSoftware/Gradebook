@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { AdminLayout } from '@/layout/AdminLayout/AdminLayout'
 import { AdminDashboardPage } from '@/pages/AdminDashboardPage/AdminDashboardPage'
 import { CreateParentPage } from '@/features/parents/pages/CreateParentPage/CreateParentPage'
+import { AddGradePage } from '@/features/grades/pages/AddGradePage/AddGradePage'
 
 export const AppRoutes = () => (
   <Routes>
@@ -10,6 +11,7 @@ export const AppRoutes = () => (
       <Route index element={<Navigate to="dashboard" replace />} />
       <Route path="dashboard" element={<AdminDashboardPage />} />
       <Route path="parents/new" element={<CreateParentPage />} />
+      <Route path="grades/new" element={<AddGradePage />} />
     </Route>
   </Routes>
 )

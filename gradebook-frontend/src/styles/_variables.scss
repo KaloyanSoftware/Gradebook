@@ -39,3 +39,17 @@ $radius-lg:                 12px;
 // --- Shadows ---
 $shadow-card:               0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.12);
 $shadow-sidebar:            2px 0 8px rgba(0, 0, 0, 0.15);
+
+// ================================================================
+// GRADE FORM ACCENT PALETTE — warm/nature tones for the grade modal
+// Change these independently of the main admin palette
+// ================================================================
+$color-grade-accent:          #7a9e7e;   // sage green — focus rings, submit button
+$color-grade-accent-dark:     #6a8e6e;   // darker sage — submit hover
+$color-grade-accent-disabled: #b8d4ba;   // muted sage — submit disabled
+$color-grade-warm:            #c17b5c;   // terracotta — modal top border, error states
+$color-grade-surface:         #faf8f4;   // warm white — modal background
+$color-grade-border:          #ddd6cb;   // warm gray — input borders, cancel button
+$color-grade-label:           #4a5e4c;   // dark sage — form labels
+$color-grade-text:            #2c3e30;   // deep green — modal titles, input text
+$color-grade-overlay:         rgba(44, 62, 48, 0.5); // dark overlay behind modal

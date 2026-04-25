@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material'
 import DashboardIcon from '@mui/icons-material/Dashboard'
+import GradeIcon from '@mui/icons-material/Grade'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import SchoolIcon from '@mui/icons-material/School'
 import LinkIcon from '@mui/icons-material/Link'
@@ -20,6 +21,10 @@ const mainNav = [
 const userNav = [
   { label: 'Добавяне на родител', icon: <PersonAddIcon fontSize="small" />, to: '/admin/parents/new' },
   { label: 'Добавяне на ученик', icon: <SchoolIcon fontSize="small" />, to: null },
+]
+
+const gradesNav = [
+  { label: 'Добавяне на оценка', icon: <GradeIcon fontSize="small" />, to: '/admin/grades/new' },
 ]
 
 const managementNav = [
@@ -74,6 +79,24 @@ export const Sidebar = () => {
               </ListItemButton>
             ),
           )}
+        </List>
+
+        <Divider className={styles.divider} />
+
+        <Typography className={styles.sectionLabel}>ОЦЕНКИ</Typography>
+        <List dense disablePadding>
+          {gradesNav.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) => isActive ? styles.activeLink : styles.link}
+            >
+              <ListItemButton className={styles.navItem}>
+                <ListItemIcon className={styles.icon}>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.label} />
+              </ListItemButton>
+            </NavLink>
+          ))}
         </List>
 
         <Divider className={styles.divider} />
