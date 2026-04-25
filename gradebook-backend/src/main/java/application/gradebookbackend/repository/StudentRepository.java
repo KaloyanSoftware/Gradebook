@@ -1,13 +1,10 @@
 package application.gradebookbackend.repository;
 
-import application.gradebookbackend.domain.AppUser;
+import application.gradebookbackend.domain.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import java.util.UUID;
 
 @Repository
-public interface AppUserRepository extends JpaRepository<AppUser, UUID> {
-    boolean existsByEmail(String email);
+public interface StudentRepository extends JpaRepository<Student, UUID> {
 }
-
