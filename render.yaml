@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: gradebook-backend
+    env: docker
+    dockerfilePath: ./gradebook-backend/Dockerfile
+    dockerContext: ./gradebook-backend
+    plan: free
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DATABASE_URL
+        sync: false   # set manually in Render dashboard
+      - key: SUPABASE_JWT_ISSUER_URI
+        sync: false   # set manually in Render dashboard
