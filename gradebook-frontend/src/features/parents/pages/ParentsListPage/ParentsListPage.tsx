@@ -1,16 +1,16 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Button, CircularProgress, Typography } from '@mui/material'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import SchoolIcon from '@mui/icons-material/School'
 import { useParents } from '../../hooks/useParents'
+import { CreateParentModal } from '../../components/CreateParentModal/CreateParentModal'
 import { AddStudentModal } from '../../components/AddStudentModal/AddStudentModal'
 import type { ParentResponse } from '../../types/parent.types'
 import styles from './ParentsListPage.module.scss'
 
 export const ParentsListPage = () => {
-  const navigate = useNavigate()
   const { data: parents, isLoading } = useParents()
+  const [createParentOpen, setCreateParentOpen] = useState(false)
   const [selectedParent, setSelectedParent] = useState<ParentResponse | null>(null)
 
   const initials = (firstName: string, lastName: string) =>
@@ -23,7 +23,7 @@ export const ParentsListPage = () => {
         <Button
           variant="contained"
           startIcon={<PersonAddIcon />}
-          onClick={() => navigate('/admin/parents/new')}
+          onClick={() => setCreateParentOpen(true)}
         >
           Нов родител
         </Button>
@@ -60,6 +60,11 @@ export const ParentsListPage = () => {
           ))}
         </div>
       )}
+
+      <CreateParentModal
+        open={createParentOpen}
+        onClose={() => setCreateParentOpen(false)}
+      />
 
       {selectedParent && (
         <AddStudentModal

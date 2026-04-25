@@ -1,0 +1,20 @@
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.errorMessage {
+  color: $color-error;
+  font-size: 13px;
+  padding: 10px 14px;
+  background: rgba(220, 38, 38, 0.06);
+  border-radius: $radius-sm;
+  border-left: 3px solid $color-error;
+}
