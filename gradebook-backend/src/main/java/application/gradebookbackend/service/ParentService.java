@@ -30,9 +30,10 @@ public class ParentService {
             throw new DuplicateEmailException(request.getEmail());
         }
 
+        // TODO: call Supabase Admin API here to create the auth user with request.getEmail()
+        //   and request.getPassword(). On success, use the returned UID as externalUid below.
         AppUser user = new AppUser();
-        // Temporary placeholder — will be replaced with the Supabase user ID once auth is integrated
-        user.setExternalUid(UUID.randomUUID().toString());
+        user.setExternalUid(UUID.randomUUID().toString()); // placeholder until Supabase is integrated
         user.setEmail(request.getEmail());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
