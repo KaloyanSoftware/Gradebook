@@ -1,62 +1,62 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { supabase } from '../lib/supabaseClient';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Alert, Box, Button, Paper, TextField, Typography } from '@mui/material'
+import { supabase } from '../lib/supabaseClient'
 
 export function LoginPage() {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
+    e.preventDefault()
+    setError(null)
+    setLoading(true)
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) {
-      setError(error.message);
+      setError(error.message)
     } else {
-      navigate('/dashboard');
+      navigate('/admin')
     }
 
-    setLoading(false);
+    setLoading(false)
   }
 
   return (
-    <div>
-      <h1>Sign in</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+      <Paper elevation={3} sx={{ p: 4, width: 360 }}>
+        <Typography variant="h5" fontWeight={600} mb={3}>
+          Sign in
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <TextField
+            label="Email"
             type="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
             required
-            autoComplete="email"
+            fullWidth
+            size="small"
           />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
+          <TextField
+            label="Password"
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
             required
-            autoComplete="current-password"
+            fullWidth
+            size="small"
           />
-        </div>
-        {error && <p role="alert">{error}</p>}
-        <button type="submit" disabled={loading}>
-          {loading ? 'Signing in…' : 'Sign in'}
-        </button>
-      </form>
-      <Link to="/forgot-password">Forgot password?</Link>
-    </div>
-  );
+          {error && <Alert severity="error">{error}</Alert>}
+          <Button type="submit" variant="contained" disabled={loading} fullWidth>
+            {loading ? 'Signing in…' : 'Sign in'}
+          </Button>
+        </Box>
+      </Paper>
+    </Box>
+  )
 }

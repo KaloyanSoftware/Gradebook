@@ -1,0 +1,30 @@
+.page {
+  padding: 32px;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card {
+  background-color: $color-surface;
+  border-radius: $radius-lg;
+  padding: 32px;
+  box-shadow: $shadow-card;
+}
+
+.selectors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}

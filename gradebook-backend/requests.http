@@ -1,0 +1,26 @@
+### Gradebook Backend - Grade Endpoints
+
+### Variables
+@baseUrl = http://localhost:8080
+@contentType = application/json
+
+### Test Students (from seed data)
+@student1 = 650e8400-e29b-41d4-a716-446655440010
+@student2 = 650e8400-e29b-41d4-a716-446655440011
+@student3 = 650e8400-e29b-41d4-a716-446655440012
+@student4 = 650e8400-e29b-41d4-a716-446655440013
+@student5 = 650e8400-e29b-41d4-a716-446655440014
+
+### Create Grade - Happy Path (Math - All Fields)
+POST {{baseUrl}}/api/v1.0/grades
+Content-Type: {{contentType}}
+
+{
+  "studentId": "{{student1}}",
+  "date": "2026-04-25",
+  "subject": "BULGARIAN",
+  "value": 1,
+  "comment": "Excellent performance in the exam"
+}
+
+

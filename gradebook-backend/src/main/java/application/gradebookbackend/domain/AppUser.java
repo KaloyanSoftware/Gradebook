@@ -36,6 +36,7 @@ public class AppUser {
         this.createdAt = LocalDateTime.now();
     }
 
+<<<<<<< HEAD
 
     public String getLastName() {
         return lastName;
@@ -63,5 +64,32 @@ public class AppUser {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+=======
+    public UUID getId() { return id; }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getExternalUid() { return externalUid; }
+    public void setExternalUid(String externalUid) { this.externalUid = externalUid; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+>>>>>>> c1b0eb09383a08c06db1739347f70a75b7736a3d
     }
 }

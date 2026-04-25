@@ -22,4 +22,13 @@ public class Parent {
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notification> notifications = new ArrayList<>();
+
+    public UUID getId() { return id; }
+
+    public AppUser getUser() { return user; }
+    public void setUser(AppUser user) { this.user = user; }
+
+    public List<Enrollment> getEnrollments() { return enrollments; }
+
+    public List<Notification> getNotifications() { return notifications; }
 }
