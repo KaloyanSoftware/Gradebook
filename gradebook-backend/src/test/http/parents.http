@@ -1,0 +1,29 @@
+### Create parent account (happy path)
+POST http://localhost:8080/admin/parents
+Content-Type: application/json
+
+{
+  "firstName": "Maria",
+  "lastName": "Ivanova",
+  "email": "maria.ivanova@example.com"
+}
+
+### Create parent account (duplicate email — expect 409)
+POST http://localhost:8080/admin/parents
+Content-Type: application/json
+
+{
+  "firstName": "Maria",
+  "lastName": "Ivanova",
+  "email": "maria.ivanova@example.com"
+}
+
+### Create parent account (missing fields — expect 400)
+POST http://localhost:8080/admin/parents
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "lastName": "Ivanova",
+  "email": "not-a-valid-email"
+}
