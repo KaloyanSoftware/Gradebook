@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:17.6-alpine
+    container_name: gradebook-postgres
+    env_file:
+      - .env
+    ports:
+      - "2525:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - gradebook-network
+volumes:
+  postgres_data:
+
+networks:
+  gradebook-network:
