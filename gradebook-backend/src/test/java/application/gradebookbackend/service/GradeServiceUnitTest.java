@@ -38,7 +38,7 @@ class GradeServiceUnitTest {
         UUID studentId = UUID.randomUUID();
         UUID createdById = UUID.randomUUID();
         LocalDate gradeDate = LocalDate.of(2026, 4, 25);
-        Subject subject = Subject.MATH;
+        Subject subject = Subject.BULGARIAN;
         BigDecimal value = new BigDecimal("4.5");
         String comment = "Good performance";
 
@@ -53,12 +53,12 @@ class GradeServiceUnitTest {
 
         // Assert
         assertNotNull(createdGrade);
-        assertEquals(studentId, createdGrade.getStudentId());
         assertEquals(gradeDate, createdGrade.getDate());
         assertEquals(subject, createdGrade.getSubject());
         assertEquals(value, createdGrade.getValue());
         assertEquals(comment, createdGrade.getComment());
         assertEquals(createdBy, createdGrade.getCreatedBy());
+        assertTrue(student.getGrades().contains(createdGrade));
     }
 
     @Test
@@ -66,7 +66,7 @@ class GradeServiceUnitTest {
         // Arrange
         UUID studentId = UUID.randomUUID();
         LocalDate gradeDate = LocalDate.of(2026, 4, 25);
-        Subject subject = Subject.MATH;
+        Subject subject = Subject.BULGARIAN;
         BigDecimal value = new BigDecimal("4.5");
         AppUser createdBy = createTestAppUser(UUID.randomUUID());
 
@@ -86,7 +86,7 @@ class GradeServiceUnitTest {
         // Arrange
         UUID studentId = UUID.randomUUID();
         LocalDate gradeDate = LocalDate.of(2026, 4, 25);
-        Subject subject = Subject.ENGLISH;
+        Subject subject = Subject.LITERATURE;
         BigDecimal value = new BigDecimal("3.75");
         Student student = createTestStudent(studentId);
         AppUser createdBy = createTestAppUser(UUID.randomUUID());
@@ -107,7 +107,7 @@ class GradeServiceUnitTest {
         // Arrange
         UUID studentId = UUID.randomUUID();
         LocalDate gradeDate = LocalDate.of(2026, 4, 25);
-        Subject subject = Subject.SCIENCE;
+        Subject subject = Subject.BULGARIAN;
         BigDecimal value = new BigDecimal("5");
         Student student = createTestStudent(studentId);
         AppUser createdBy = createTestAppUser(UUID.randomUUID());
@@ -133,7 +133,7 @@ class GradeServiceUnitTest {
         UUID studentId = UUID.randomUUID();
         UUID createdById = UUID.randomUUID();
         LocalDate gradeDate = LocalDate.of(2026, 3, 15);
-        Subject subject = Subject.HISTORY;
+        Subject subject = Subject.LITERATURE;
         BigDecimal value = new BigDecimal("4.0");
         String comment = "Excellent work on the essay";
 
@@ -147,12 +147,12 @@ class GradeServiceUnitTest {
         Grade createdGrade = gradeService.createGrade(studentId, gradeDate, subject, value, comment, createdBy);
 
         // Assert
-        assertEquals(studentId, createdGrade.getStudentId());
         assertEquals(gradeDate, createdGrade.getDate());
         assertEquals(subject, createdGrade.getSubject());
         assertEquals(value, createdGrade.getValue());
         assertEquals(comment, createdGrade.getComment());
         assertEquals(createdBy, createdGrade.getCreatedBy());
+        assertTrue(student.getGrades().contains(createdGrade));
     }
 
     @Test
@@ -160,7 +160,7 @@ class GradeServiceUnitTest {
         // Arrange
         UUID studentId = UUID.randomUUID();
         LocalDate gradeDate = LocalDate.of(2026, 4, 25);
-        Subject subject = Subject.PE;
+        Subject subject = Subject.BULGARIAN;
         BigDecimal value = new BigDecimal("3.5");
         Student student = createTestStudent(studentId);
         AppUser createdBy = createTestAppUser(UUID.randomUUID());
@@ -180,7 +180,7 @@ class GradeServiceUnitTest {
         // Arrange
         UUID studentId = UUID.randomUUID();
         LocalDate gradeDate = LocalDate.of(2026, 4, 25);
-        Subject subject = Subject.MATH;
+        Subject subject = Subject.BULGARIAN;
         BigDecimal value = new BigDecimal("4.5");
         Student student = createTestStudent(studentId);
         AppUser createdBy = createTestAppUser(UUID.randomUUID());
@@ -206,8 +206,8 @@ class GradeServiceUnitTest {
         when(studentRepository.save(student)).thenReturn(student);
 
         // Act
-        Grade grade1 = gradeService.createGrade(studentId, LocalDate.of(2026, 1, 15), Subject.MATH, new BigDecimal("4.5"), null, createdBy);
-        Grade grade2 = gradeService.createGrade(studentId, LocalDate.of(2026, 2, 20), Subject.ENGLISH, new BigDecimal("3.75"), null, createdBy);
+        Grade grade1 = gradeService.createGrade(studentId, LocalDate.of(2026, 1, 15), Subject.BULGARIAN, new BigDecimal("4.5"), null, createdBy);
+        Grade grade2 = gradeService.createGrade(studentId, LocalDate.of(2026, 2, 20), Subject.LITERATURE, new BigDecimal("3.75"), null, createdBy);
 
         // Assert
         assertEquals(2, student.getGrades().size());
