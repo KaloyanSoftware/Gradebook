@@ -35,4 +35,33 @@ public class AppUser {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
+
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getExternalUid() {
+        return externalUid;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }
