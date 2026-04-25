@@ -6,10 +6,12 @@ import application.gradebookbackend.dto.GradeResponse;
 import application.gradebookbackend.service.GradeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/grades")
+@PreAuthorize("hasRole('ADMIN')")
 public class GradeController {
 
     private final GradeService gradeService;
@@ -22,6 +24,7 @@ public class GradeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public GradeResponse createGrade(@Valid @RequestBody CreateGradeRequest request) {
+
         var grade = gradeService.createGrade(
                 request.studentId(),
                 request.date(),
