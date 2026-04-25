@@ -14,9 +14,6 @@ public class Grade {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "student_id", nullable = false)
-    private UUID studentId;
-
     @ManyToOne
     @JoinColumn(name = "created_by")
     private AppUser createdBy;
@@ -56,14 +53,6 @@ public class Grade {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public UUID getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(UUID studentId) {
-        this.studentId = studentId;
     }
 
     public AppUser getCreatedBy() {

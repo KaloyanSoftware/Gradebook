@@ -36,7 +36,6 @@ public class AppUser {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
     public UUID getId() {
         return id;
     }

@@ -27,7 +27,6 @@ public class GradeService {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("Student not found with id: " + studentId));
 
-        grade.setStudentId(studentId);
         grade.setDate(date);
         grade.setSubject(subject);
         grade.setValue(value);

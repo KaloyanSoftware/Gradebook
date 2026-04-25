@@ -9,7 +9,6 @@ import java.util.UUID;
 
 public record GradeResponse(
         UUID id,
-        UUID studentId,
         String subject,
         LocalDate date,
         BigDecimal value,
@@ -19,7 +18,7 @@ public record GradeResponse(
 ) {
 
     public static GradeResponse from(final Grade grade){
-        return new GradeResponse(grade.getId(), grade.getStudentId(), grade.getSubject().name(),
+        return new GradeResponse(grade.getId(), grade.getSubject().name(),
                 grade.getDate(), grade.getValue(), grade.getComment(), grade.getCreatedAt(), grade.getUpdatedAt());
     }
 }

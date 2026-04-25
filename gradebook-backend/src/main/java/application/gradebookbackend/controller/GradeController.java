@@ -1,8 +1,6 @@
 package application.gradebookbackend.controller;
 
 import application.gradebookbackend.controller.request.CreateGradeRequest;
-import application.gradebookbackend.controller.response.GradeResponse;
-import application.gradebookbackend.domain.Grade;
 import application.gradebookbackend.domain.Subject;
 import application.gradebookbackend.service.GradeService;
 import org.springframework.http.HttpStatus;
@@ -20,9 +18,9 @@ public class GradeController {
     }
 
     @PostMapping
-    public ResponseEntity<GradeResponse> createGrade(@RequestBody CreateGradeRequest createGradeRequest) {
+    public ResponseEntity<Void> createGrade(@RequestBody CreateGradeRequest createGradeRequest) {
         // TODO: Retrieve AppUser from security context
-        Grade grade = gradeService.createGrade(
+        gradeService.createGrade(
                 createGradeRequest.studentId(),
                 createGradeRequest.date(),
                 Subject.valueOf(createGradeRequest.subject()),
@@ -31,6 +29,6 @@ public class GradeController {
                 null  // createdBy - retrieve from security context
         );
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(GradeResponse.from(grade));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
