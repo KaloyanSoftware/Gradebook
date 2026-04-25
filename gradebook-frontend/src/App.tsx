@@ -1,19 +1,23 @@
-import { BrowserRouter, Route, Routes } from "react-router";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import { AppRoutes } from './router'
+import muiTheme from './theme/muiTheme'
 
-const queryClient = new QueryClient();
-
+const queryClient = new QueryClient()
 
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
-                <Routes>
-
-                </Routes>
-            </BrowserRouter>
+            <ThemeProvider theme={muiTheme}>
+                <CssBaseline />
+                <BrowserRouter>
+                    <AppRoutes />
+                </BrowserRouter>
+            </ThemeProvider>
         </QueryClientProvider>
-    );
+    )
 }
 
-export default App;
+export default App
