@@ -5,6 +5,7 @@ import application.gradebookbackend.domain.Grade;
 import application.gradebookbackend.domain.Student;
 import application.gradebookbackend.domain.Subject;
 import application.gradebookbackend.exception.ResourceNotFoundException;
+import application.gradebookbackend.repository.AppUserRepository;
 import application.gradebookbackend.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -17,17 +18,21 @@ import java.util.UUID;
 public class GradeService {
 
     private final StudentRepository studentRepository;
+    private final AppUserRepository appUserRepository;
 
-    public GradeService(final StudentRepository studentRepository) {
+    public GradeService(StudentRepository studentRepository, AppUserRepository appUserRepository) {
         this.studentRepository = studentRepository;
+        this.appUserRepository = appUserRepository;
     }
 
-    public Grade createGrade(UUID studentId, LocalDate date, Subject subject, BigDecimal value, String comment, AppUser createdBy) {
-        Grade grade = new Grade();
-
+    public Grade createGrade(UUID studentId, LocalDate date, Subject subject, BigDecimal value, String comment, String externalUid) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Student", studentId));
 
+        AppUser createdBy = appUserRepository.findByExternalUid(externalUid)
+                .orElseThrow(() -> new ResourceNotFoundException("AppUser", externalUid));
+
+        Grade grade = new Grade();
         grade.setDate(date);
         grade.setSubject(subject);
         grade.setValue(value);
@@ -35,7 +40,6 @@ public class GradeService {
         grade.setCreatedBy(createdBy);
 
         student.addGrade(grade);
-
         studentRepository.save(student);
 
         return grade;
