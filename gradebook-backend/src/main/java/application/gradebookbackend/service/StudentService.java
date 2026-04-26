@@ -3,6 +3,7 @@ package application.gradebookbackend.service;
 import application.gradebookbackend.domain.*;
 import application.gradebookbackend.dto.CreateStudentRequest;
 import application.gradebookbackend.dto.StudentResponse;
+import application.gradebookbackend.dto.StudentRosterResponse;
 import application.gradebookbackend.exception.DuplicateEmailException;
 import application.gradebookbackend.exception.ResourceNotFoundException;
 import application.gradebookbackend.repository.AppUserRepository;
@@ -63,6 +64,17 @@ public class StudentService {
         enrollmentRepository.save(enrollment);
 
         return StudentResponse.from(savedStudent);
+    }
+
+    public List<StudentRosterResponse> listStudents() {
+        return studentRepository.findAll().stream()
+                .map(student -> {
+                    List<String> parentNames = enrollmentRepository.findByStudentId(student.getId()).stream()
+                            .map(e -> e.getParent().getUser().getFirstName() + " " + e.getParent().getUser().getLastName())
+                            .toList();
+                    return StudentRosterResponse.from(student, parentNames);
+                })
+                .toList();
     }
 
     public List<StudentResponse> listStudentsByParent(UUID parentId) {

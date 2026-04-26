@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface EnrollmentRepository extends JpaRepository<Enrollment, UUID> {
 
     List<Enrollment> findByParentId(UUID parentId);
+
+    List<Enrollment> findByStudentId(UUID studentId);
 }
