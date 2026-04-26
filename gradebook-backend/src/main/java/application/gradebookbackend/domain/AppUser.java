@@ -37,10 +37,7 @@ public class AppUser {
     }
 
     public UUID getId() { return id; }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
+    public void setId(UUID id) { this.id = id; }
 
     public String getExternalUid() { return externalUid; }
     public void setExternalUid(String externalUid) { this.externalUid = externalUid; }
@@ -58,8 +55,5 @@ public class AppUser {
     public void setRole(Role role) { this.role = role; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

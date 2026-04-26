@@ -1,17 +1,27 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { AdminLayout } from '@/layout/AdminLayout/AdminLayout'
 import { AdminDashboardPage } from '@/pages/AdminDashboardPage/AdminDashboardPage'
-import { CreateParentPage } from '@/features/parents/pages/CreateParentPage/CreateParentPage'
+import { ParentsListPage } from '@/features/parents/pages/ParentsListPage/ParentsListPage'
 import { AddGradePage } from '@/features/grades/pages/AddGradePage/AddGradePage'
+import { LoginPage } from '@/pages/LoginPage'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
 
 export const AppRoutes = () => (
   <Routes>
-    <Route path="/" element={<Navigate to="/admin" replace />} />
-    <Route path="/admin" element={<AdminLayout />}>
+    <Route path="/login" element={<LoginPage />} />
+    <Route
+      path="/admin"
+      element={
+        <ProtectedRoute>
+          <AdminLayout />
+        </ProtectedRoute>
+      }
+    >
       <Route index element={<Navigate to="dashboard" replace />} />
       <Route path="dashboard" element={<AdminDashboardPage />} />
-      <Route path="parents/new" element={<CreateParentPage />} />
+      <Route path="parents" element={<ParentsListPage />} />
       <Route path="grades/new" element={<AddGradePage />} />
     </Route>
+    <Route path="*" element={<Navigate to="/login" replace />} />
   </Routes>
 )
