@@ -33,12 +33,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false);
     });
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    const { data: listener } = supabase.auth.onAuthStateChange(async (event, newSession) => {
       setSession(newSession);
-      if (newSession) {
-        fetchMe(newSession.access_token).then(setUser);
-      } else {
+      if (!newSession) {
         setUser(null);
+        return;
+      }
+      // TOKEN_REFRESHED means same user, new token — no need to re-fetch profile
+      if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
+        const me = await fetchMe(newSession.access_token);
+        setUser(me);
       }
     });
 
