@@ -1,9 +1,12 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createGrade } from '../api/grades.api'
-import type { CreateGradeRequest } from '../types/grade.types'
+import type { CreateGradeRequest, GradeResponse } from '../types/grade.types'
 
-export const useCreateGrade = () => {
-  return useMutation<void, Error, CreateGradeRequest>({
+export const useCreateGrade = (studentId: string) => {
+  const queryClient = useQueryClient()
+
+  return useMutation<GradeResponse, Error, CreateGradeRequest>({
     mutationFn: createGrade,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['grades', studentId] }),
   })
 }

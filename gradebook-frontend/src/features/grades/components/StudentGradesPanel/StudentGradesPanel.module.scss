@@ -84,6 +84,26 @@
   white-space: nowrap;
 }
 
+// Edit row (replaces gradeRow when editing)
+.editRow {
+  border-bottom: 1px solid $color-border;
+  background: rgba(21, 101, 192, 0.03);
+}
+
+// GradePicker cell — spans "Оценка" + "Коментар" columns
+.pickerCell {
+  padding: 8px 12px;
+  vertical-align: middle;
+}
+
+// Flex row: picker buttons left, comment input right
+.pickerRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 // Inline edit row
 .editInput {
   width: 100%;

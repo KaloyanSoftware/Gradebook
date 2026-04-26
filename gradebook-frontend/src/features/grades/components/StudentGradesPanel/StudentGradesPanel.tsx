@@ -8,8 +8,8 @@ import AddIcon from '@mui/icons-material/Add'
 import { useStudentGrades } from '../../hooks/useStudentGrades'
 import { useUpdateGrade } from '../../hooks/useUpdateGrade'
 import { useDeleteGrade } from '../../hooks/useDeleteGrade'
-import { createGrade } from '../../api/grades.api'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useCreateGrade } from '../../hooks/useCreateGrade'
+import { GradePicker } from '../GradePicker/GradePicker'
 import type { UpdateGradeRequest } from '../../types/grade.types'
 import styles from './StudentGradesPanel.module.scss'
 
@@ -28,12 +28,12 @@ const today = () => new Date().toISOString().split('T')[0]
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString('bg-BG', { day: '2-digit', month: '2-digit', year: 'numeric' })
 
-const formatValue = (v: number) => Number(v).toFixed(2)
+const formatValue = (v: number) => Number(v % 1 === 0 ? v : v).toLocaleString('bg-BG', { minimumFractionDigits: 0, maximumFractionDigits: 2 })
 
-interface EditState {
+interface FormState {
   subject: string
   date: string
-  value: string
+  value: number | null
   comment: string
 }
 
@@ -45,22 +45,13 @@ export const StudentGradesPanel = ({ studentId }: Props) => {
   const { data: grades, isLoading } = useStudentGrades(studentId)
   const { mutate: updateGrade, isPending: isUpdating } = useUpdateGrade(studentId)
   const { mutate: deleteGrade, isPending: isDeleting } = useDeleteGrade(studentId)
-
-  const queryClient = useQueryClient()
-  const { mutate: addGrade, isPending: isAdding } = useMutation({
-    mutationFn: createGrade,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['grades', studentId] })
-      setShowAdd(false)
-      setAddForm({ subject: 'BULGARIAN', date: today(), value: '', comment: '' })
-    },
-  })
+  const { mutate: addGrade, isPending: isAdding } = useCreateGrade(studentId)
 
   const [editingId, setEditingId] = useState<string | null>(null)
-  const [editForm, setEditForm] = useState<EditState>({ subject: '', date: '', value: '', comment: '' })
+  const [editForm, setEditForm] = useState<FormState>({ subject: '', date: '', value: null, comment: '' })
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [showAdd, setShowAdd] = useState(false)
-  const [addForm, setAddForm] = useState<EditState>({ subject: 'BULGARIAN', date: today(), value: '', comment: '' })
+  const [addForm, setAddForm] = useState<FormState>({ subject: 'BULGARIAN', date: today(), value: null, comment: '' })
 
   const startEdit = (grade: { id: string; subject: string; date: string; value: number; comment?: string }) => {
     setDeletingId(null)
@@ -68,7 +59,7 @@ export const StudentGradesPanel = ({ studentId }: Props) => {
     setEditForm({
       subject: grade.subject,
       date: grade.date,
-      value: String(grade.value),
+      value: grade.value,
       comment: grade.comment ?? '',
     })
   }
@@ -76,11 +67,11 @@ export const StudentGradesPanel = ({ studentId }: Props) => {
   const cancelEdit = () => setEditingId(null)
 
   const saveEdit = () => {
-    if (!editingId) return
+    if (!editingId || editForm.value === null) return
     const data: UpdateGradeRequest = {
       subject: editForm.subject,
       date: editForm.date,
-      value: parseFloat(editForm.value),
+      value: editForm.value,
       comment: editForm.comment || undefined,
     }
     updateGrade({ gradeId: editingId, data }, { onSuccess: () => setEditingId(null) })
@@ -92,13 +83,22 @@ export const StudentGradesPanel = ({ studentId }: Props) => {
   }
 
   const submitAdd = () => {
-    addGrade({
-      studentId,
-      subject: addForm.subject,
-      date: addForm.date,
-      value: parseFloat(addForm.value),
-      comment: addForm.comment || undefined,
-    })
+    if (addForm.value === null) return
+    addGrade(
+      {
+        studentId,
+        subject: addForm.subject,
+        date: addForm.date,
+        value: addForm.value,
+        comment: addForm.comment || undefined,
+      },
+      {
+        onSuccess: () => {
+          setShowAdd(false)
+          setAddForm({ subject: 'BULGARIAN', date: today(), value: null, comment: '' })
+        },
+      },
+    )
   }
 
   return (
@@ -124,7 +124,7 @@ export const StudentGradesPanel = ({ studentId }: Props) => {
             <th>Дата</th>
             <th>Оценка</th>
             <th>Коментар</th>
-            <th style={{ width: 100 }}></th>
+            <th style={{ width: 90 }}></th>
           </tr>
         </thead>
         <tbody>
@@ -151,7 +151,7 @@ export const StudentGradesPanel = ({ studentId }: Props) => {
                     <div className={styles.deleteActions}>
                       <Button size="small" color="error" variant="contained"
                         disabled={isDeleting} onClick={confirmDelete}>
-                        Да, изтрий
+                        Да
                       </Button>
                       <Button size="small" color="inherit" onClick={() => setDeletingId(null)}>
                         Не
@@ -164,7 +164,7 @@ export const StudentGradesPanel = ({ studentId }: Props) => {
 
             if (editingId === grade.id) {
               return (
-                <tr key={grade.id} className={styles.gradeRow}>
+                <tr key={grade.id} className={styles.editRow}>
                   <td className={styles.gradeCell}>
                     <select className={styles.editSelect}
                       value={editForm.subject}
@@ -177,22 +177,26 @@ export const StudentGradesPanel = ({ studentId }: Props) => {
                       value={editForm.date}
                       onChange={(e) => setEditForm(f => ({ ...f, date: e.target.value }))} />
                   </td>
-                  <td className={styles.gradeCell}>
-                    <input className={styles.editInput} type="number" min="2" max="6" step="0.25"
-                      style={{ width: 70 }}
-                      value={editForm.value}
-                      onChange={(e) => setEditForm(f => ({ ...f, value: e.target.value }))} />
-                  </td>
-                  <td className={styles.gradeCell}>
-                    <input className={styles.editInput} type="text" placeholder="Коментар..."
-                      value={editForm.comment}
-                      onChange={(e) => setEditForm(f => ({ ...f, comment: e.target.value }))} />
+                  <td className={`${styles.gradeCell} ${styles.pickerCell}`} colSpan={2}>
+                    <div className={styles.pickerRow}>
+                      <GradePicker
+                        value={editForm.value}
+                        onChange={(v) => setEditForm(f => ({ ...f, value: v }))}
+                        disabled={isUpdating}
+                      />
+                      <input className={styles.editInput} type="text" placeholder="Коментар..."
+                        style={{ minWidth: 120, flex: 1 }}
+                        value={editForm.comment}
+                        onChange={(e) => setEditForm(f => ({ ...f, comment: e.target.value }))} />
+                    </div>
                   </td>
                   <td className={styles.gradeCell}>
                     <div className={styles.editActions}>
                       <Tooltip title="Запази">
                         <span>
-                          <IconButton size="small" color="primary" disabled={isUpdating} onClick={saveEdit}>
+                          <IconButton size="small" color="primary"
+                            disabled={isUpdating || editForm.value === null}
+                            onClick={saveEdit}>
                             <CheckIcon fontSize="small" />
                           </IconButton>
                         </span>
@@ -249,23 +253,25 @@ export const StudentGradesPanel = ({ studentId }: Props) => {
                   value={addForm.date}
                   onChange={(e) => setAddForm(f => ({ ...f, date: e.target.value }))} />
               </td>
-              <td>
-                <input className={styles.editInput} type="number" min="2" max="6" step="0.25"
-                  style={{ width: 70 }}
-                  value={addForm.value}
-                  onChange={(e) => setAddForm(f => ({ ...f, value: e.target.value }))} />
-              </td>
-              <td>
-                <input className={styles.editInput} type="text" placeholder="Коментар (незадължително)"
-                  value={addForm.comment}
-                  onChange={(e) => setAddForm(f => ({ ...f, comment: e.target.value }))} />
+              <td className={styles.pickerCell} colSpan={2}>
+                <div className={styles.pickerRow}>
+                  <GradePicker
+                    value={addForm.value}
+                    onChange={(v) => setAddForm(f => ({ ...f, value: v }))}
+                    disabled={isAdding}
+                  />
+                  <input className={styles.editInput} type="text" placeholder="Коментар (незадължително)"
+                    style={{ minWidth: 120, flex: 1 }}
+                    value={addForm.comment}
+                    onChange={(e) => setAddForm(f => ({ ...f, comment: e.target.value }))} />
+                </div>
               </td>
               <td>
                 <div className={styles.editActions}>
                   <Tooltip title="Добави">
                     <span>
                       <IconButton size="small" color="primary"
-                        disabled={isAdding || !addForm.value}
+                        disabled={isAdding || addForm.value === null}
                         onClick={submitAdd}>
                         <CheckIcon fontSize="small" />
                       </IconButton>

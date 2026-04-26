@@ -59,14 +59,16 @@ Controller → Service → Repository → Entity
 ## Architecture — Frontend
 
 ```
-Page → Component → Hook → api.ts → Supabase/Backend
+Page → Component → Hook → <feature>/api/<name>.api.ts → Backend (via axiosClient)
 ```
 
-- All API calls go through `src/services/api.ts` — no `fetch`/`axios` anywhere else.
+- All API calls go through feature-scoped `api.ts` files (e.g. `features/grades/api/grades.api.ts`). No raw `fetch` or `axios` calls outside these files.
+- HTTP is made via `src/api/axiosClient.ts` — the single Axios instance that attaches the Supabase JWT. All feature API files import from here.
 - Auth state lives in `AuthContext` only — components consume it, never manage tokens themselves.
 - `ProtectedRoute` wraps every authenticated page.
-- TypeScript interfaces for all API response shapes live in `src/types/`.
+- TypeScript interfaces for all API response shapes live in `src/features/<domain>/types/`.
 - Functional components + hooks only — no class components.
+- Feature folder structure: `features/<domain>/{api, components, hooks, pages, types}`
 
 ---
 
@@ -124,10 +126,21 @@ Page → Component → Hook → api.ts → Supabase/Backend
 
 ## Frontend Conventions
 
-- All data shapes typed as TypeScript interfaces in `src/types/`.
-- API functions in `src/services/api.ts` return typed responses.
-- No inline styles — use CSS modules or Tailwind (decide per PR, stay consistent).
+- All data shapes typed as TypeScript interfaces in `src/features/<domain>/types/`.
+- API functions in feature `api.ts` files return typed responses.
+- No inline styles — use SCSS Modules (project standard). CSS custom properties (`var(--name)`) are allowed for dynamic per-element values (e.g. grade colours).
 - `AuthContext` exposes: `session`, `user`, `role`, `signOut()`.
+- SCSS variables live in `src/styles/_variables.scss` and are injected globally via Vite `additionalData` — import them in any `.module.scss` without an explicit `@use`.
+- All user-facing text must be in **Bulgarian**.
+
+### Grade UX Pattern
+
+Grades are managed **inline** in the student roster — no separate pages or modals.
+
+- Clicking a student row in `StudentsListPage` expands an accordion panel (`StudentGradesPanel`) rendered as a `<tr colSpan={5}>` directly below.
+- `StudentGradesPanel` shows a mini grade table with inline edit/delete/add — no navigation required.
+- Grade value input uses `GradePicker` (`features/grades/components/GradePicker`) — 9 coloured circle buttons for values 2–6 in 0.5 increments. Colour is passed via CSS custom property `--gc` so a single component handles all grades.
+- Subject enum values: `BULGARIAN` → "Български език", `LITERATURE` → "Литература".
 
 ---
 
@@ -205,3 +218,17 @@ Tables live in Supabase PostgreSQL. Migrations are in `supabase/migrations/`.
 | `Notification` | `notifications` | Belongs to parent |
 
 RLS is enabled on all tables. The service role (backend) bypasses RLS. Authenticated users access only their own data via policies.
+
+---
+
+## Known Temporary Workarounds
+
+| Issue | Workaround | Ticket to fix |
+|---|---|---|
+| `grades.created_by` is NOT NULL in DB | Column made nullable via `ALTER TABLE grades ALTER COLUMN created_by DROP NOT NULL` in Supabase. JPA field annotated `nullable = true`. Will be wired up once auth principal is available in the service layer. | #11 / auth integration |
+
+---
+
+## Git Commits
+
+**Never include Claude or any AI attribution in git commits. Remain anonymous at all times. Do not use `Co-Authored-By` tags or any other form of attribution.**
