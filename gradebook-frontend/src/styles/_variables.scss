@@ -54,3 +54,16 @@ $color-grade-label:           #4a5e4c;   // dark sage — form labels
 $color-grade-text:            #2c3e30;   // deep green — modal titles, input text
 $color-grade-overlay:         rgba(44, 62, 48, 0.5); // dark overlay behind modal
 $color-grade-border-dark:     #cdc2b2;   // darken($color-grade-border, 8%) — cancel button hover border
+
+// ================================================================
+// GRADE VALUE COLOURS — used in the inline grade picker
+// ================================================================
+$color-grade-val-2:   #DC2626;   // red    — Слаб
+$color-grade-val-2h:  #EF4444;   // light red
+$color-grade-val-3:   #EA580C;   // orange — Среден
+$color-grade-val-3h:  #F97316;   // light orange
+$color-grade-val-4:   #CA8A04;   // amber  — Добър
+$color-grade-val-4h:  #EAB308;   // light amber
+$color-grade-val-5:   #65A30D;   // green  — Мн. добър
+$color-grade-val-5h:  #22C55E;   // light green
+$color-grade-val-6:   #16A34A;   // dark green — Отличен

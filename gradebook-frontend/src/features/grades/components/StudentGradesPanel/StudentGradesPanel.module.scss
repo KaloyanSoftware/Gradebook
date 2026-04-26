@@ -1,0 +1,168 @@
+.panel {
+  padding: 16px 24px 20px;
+  background: $color-background;
+  border-top: 2px solid $color-primary;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.panelTitle {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $color-primary-dark;
+}
+
+.gradeTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.gradeHead th {
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $color-text-secondary;
+  background: $color-background;
+  border-bottom: 1px solid $color-border;
+}
+
+.gradeRow {
+  border-bottom: 1px solid $color-border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover .actionButtons {
+    opacity: 1;
+  }
+}
+
+.gradeCell {
+  padding: 10px 12px;
+  vertical-align: middle;
+  color: $color-text-primary;
+}
+
+.valueCell {
+  font-weight: 700;
+  font-size: 15px;
+  color: $color-primary-dark;
+  white-space: nowrap;
+}
+
+.subjectCell {
+  white-space: nowrap;
+}
+
+.commentCell {
+  color: $color-text-secondary;
+  font-style: italic;
+  max-width: 260px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 4px;
+  opacity: 0.4;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+
+// Edit row (replaces gradeRow when editing)
+.editRow {
+  border-bottom: 1px solid $color-border;
+  background: rgba(21, 101, 192, 0.03);
+}
+
+// GradePicker cell — spans "Оценка" + "Коментар" columns
+.pickerCell {
+  padding: 8px 12px;
+  vertical-align: middle;
+}
+
+// Flex row: picker buttons left, comment input right
+.pickerRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+// Inline edit row
+.editInput {
+  width: 100%;
+  padding: 5px 8px;
+  font-size: 13px;
+  border: 1px solid $color-primary-light;
+  border-radius: $radius-sm;
+  background: $color-surface;
+  color: $color-text-primary;
+  outline: none;
+
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 2px rgba(21, 101, 192, 0.15);
+  }
+}
+
+.editSelect {
+  @extend .editInput;
+  cursor: pointer;
+}
+
+.editActions {
+  display: flex;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+// Delete confirmation row
+.deleteConfirmCell {
+  padding: 10px 12px;
+  color: $color-error;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.deleteActions {
+  display: flex;
+  gap: 6px;
+  padding: 10px 12px;
+  white-space: nowrap;
+}
+
+// Add form row
+.addFormRow td {
+  padding: 10px 12px;
+  background: rgba(21, 101, 192, 0.04);
+  border-top: 1px dashed $color-border;
+}
+
+.emptyGrades {
+  padding: 20px 12px;
+  text-align: center;
+  color: $color-text-secondary;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.loadingRow td {
+  padding: 16px 12px;
+  text-align: center;
+}
