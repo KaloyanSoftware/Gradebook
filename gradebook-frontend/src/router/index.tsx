@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { AdminLayout } from '@/layout/AdminLayout/AdminLayout'
+import { UserLayout } from '@/layout/UserLayout/UserLayout'
 import { AdminDashboardPage } from '@/pages/AdminDashboardPage/AdminDashboardPage'
 import { ParentsListPage } from '@/features/parents/pages/ParentsListPage/ParentsListPage'
 import { StudentsListPage } from '@/features/students/pages/StudentsListPage/StudentsListPage'
@@ -8,6 +9,8 @@ import { LoginPage } from '@/pages/LoginPage'
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
 import { ResetPasswordPage } from '@/pages/ResetPasswordPage'
 import { SettingsPage } from '@/pages/SettingsPage/SettingsPage'
+import { ParentDashboardPage } from '@/pages/ParentDashboardPage/ParentDashboardPage'
+import { StudentDashboardPage } from '@/pages/StudentDashboardPage/StudentDashboardPage'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 
 export const AppRoutes = () => (
@@ -15,10 +18,11 @@ export const AppRoutes = () => (
     <Route path="/login" element={<LoginPage />} />
     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
     <Route path="/reset-password" element={<ResetPasswordPage />} />
+
     <Route
       path="/admin"
       element={
-        <ProtectedRoute>
+        <ProtectedRoute allowedRoles={['ADMIN']}>
           <AdminLayout />
         </ProtectedRoute>
       }
@@ -30,6 +34,31 @@ export const AppRoutes = () => (
       <Route path="grades/new" element={<AddGradePage />} />
       <Route path="settings" element={<SettingsPage />} />
     </Route>
+
+    <Route
+      path="/parent"
+      element={
+        <ProtectedRoute allowedRoles={['PARENT']}>
+          <UserLayout />
+        </ProtectedRoute>
+      }
+    >
+      <Route index element={<Navigate to="dashboard" replace />} />
+      <Route path="dashboard" element={<ParentDashboardPage />} />
+    </Route>
+
+    <Route
+      path="/student"
+      element={
+        <ProtectedRoute allowedRoles={['STUDENT']}>
+          <UserLayout />
+        </ProtectedRoute>
+      }
+    >
+      <Route index element={<Navigate to="dashboard" replace />} />
+      <Route path="dashboard" element={<StudentDashboardPage />} />
+    </Route>
+
     <Route path="*" element={<Navigate to="/login" replace />} />
   </Routes>
 )

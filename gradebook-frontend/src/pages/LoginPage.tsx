@@ -15,12 +15,19 @@ export function LoginPage() {
     setError(null)
     setLoading(true)
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) {
       setError(error.message)
     } else {
-      navigate('/admin')
+      const token = data.session?.access_token ?? ''
+      const payload = token ? JSON.parse(atob(token.split('.')[1])) : {}
+      const homeByRole: Record<string, string> = {
+        ADMIN: '/admin',
+        PARENT: '/parent',
+        STUDENT: '/student',
+      }
+      navigate(homeByRole[payload.app_role] ?? '/admin')
     }
 
     setLoading(false)

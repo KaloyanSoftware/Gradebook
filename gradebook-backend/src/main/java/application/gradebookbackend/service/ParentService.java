@@ -1,5 +1,6 @@
 package application.gradebookbackend.service;
 
+import application.gradebookbackend.client.SupabaseAdminClient;
 import application.gradebookbackend.domain.AppUser;
 import application.gradebookbackend.domain.Parent;
 import application.gradebookbackend.domain.Role;
@@ -12,17 +13,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ParentService {
 
     private final AppUserRepository appUserRepository;
     private final ParentRepository parentRepository;
+    private final SupabaseAdminClient supabaseAdminClient;
 
-    public ParentService(AppUserRepository appUserRepository, ParentRepository parentRepository) {
+    public ParentService(AppUserRepository appUserRepository, ParentRepository parentRepository, SupabaseAdminClient supabaseAdminClient) {
         this.appUserRepository = appUserRepository;
         this.parentRepository = parentRepository;
+        this.supabaseAdminClient = supabaseAdminClient;
     }
 
     @Transactional
@@ -31,21 +33,26 @@ public class ParentService {
             throw new DuplicateEmailException(request.getEmail());
         }
 
-        // TODO: call Supabase Admin API here to create the auth user with request.getEmail()
-        //   and request.getPassword(). On success, use the returned UID as externalUid below.
-        AppUser user = new AppUser();
-        user.setExternalUid(UUID.randomUUID().toString()); // placeholder until Supabase is integrated
-        user.setEmail(request.getEmail());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setRole(Role.PARENT);
-        AppUser savedUser = appUserRepository.save(user);
+        String authUid = supabaseAdminClient.createAuthUser(request.getEmail(), request.getPassword());
 
-        Parent parent = new Parent();
-        parent.setUser(savedUser);
-        Parent savedParent = parentRepository.save(parent);
+        try {
+            AppUser user = new AppUser();
+            user.setExternalUid(authUid);
+            user.setEmail(request.getEmail());
+            user.setFirstName(request.getFirstName());
+            user.setLastName(request.getLastName());
+            user.setRole(Role.PARENT);
+            AppUser savedUser = appUserRepository.save(user);
 
-        return ParentResponse.from(savedParent);
+            Parent parent = new Parent();
+            parent.setUser(savedUser);
+            Parent savedParent = parentRepository.save(parent);
+
+            return ParentResponse.from(savedParent);
+        } catch (Exception e) {
+            supabaseAdminClient.deleteAuthUser(authUid);
+            throw e;
+        }
     }
 
     public List<ParentResponse> listParents() {
