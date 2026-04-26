@@ -9,6 +9,7 @@ import {
 } from '@mui/material'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import GradeIcon from '@mui/icons-material/Grade'
+import GroupIcon from '@mui/icons-material/Group'
 import SchoolIcon from '@mui/icons-material/School'
 import LinkIcon from '@mui/icons-material/Link'
 import styles from './Sidebar.module.scss'
@@ -18,6 +19,7 @@ const mainNav = [
 ]
 
 const userNav = [
+  { label: 'Ученици', icon: <GroupIcon fontSize="small" />, to: '/admin/students' },
   { label: 'Родители', icon: <SchoolIcon fontSize="small" />, to: '/admin/parents' },
 ]
 
