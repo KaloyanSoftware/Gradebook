@@ -27,4 +27,14 @@ public class Enrollment {
     protected void onCreate() {
         this.linkedAt = LocalDateTime.now();
     }
+
+    public UUID getId() { return id; }
+
+    public Parent getParent() { return parent; }
+    public void setParent(Parent parent) { this.parent = parent; }
+
+    public Student getStudent() { return student; }
+    public void setStudent(Student student) { this.student = student; }
+
+    public LocalDateTime getLinkedAt() { return linkedAt; }
 }

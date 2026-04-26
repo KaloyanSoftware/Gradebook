@@ -1,6 +1,6 @@
 package application.gradebookbackend.dto;
 
-import application.gradebookbackend.domain.AppUser;
+import application.gradebookbackend.domain.Parent;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -21,13 +21,13 @@ public class ParentResponse {
         this.createdAt = createdAt;
     }
 
-    public static ParentResponse from(AppUser user) {
+    public static ParentResponse from(Parent parent) {
         return new ParentResponse(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getCreatedAt()
+                parent.getId(),
+                parent.getUser().getFirstName(),
+                parent.getUser().getLastName(),
+                parent.getUser().getEmail(),
+                parent.getUser().getCreatedAt()
         );
     }
 

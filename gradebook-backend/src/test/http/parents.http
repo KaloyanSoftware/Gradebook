@@ -30,3 +30,12 @@ Content-Type: application/json
   "email": "not-a-valid-email",
   "password": "short"
 }
+
+### List all parents (happy path)
+GET http://localhost:8080/admin/parents
+
+### List students for a parent (happy path — replace with a real parent ID)
+GET http://localhost:8080/admin/parents/7cbc56b0-d7c3-47b8-b529-c4fb36486ec5/students
+
+### List students for a parent — parent not found (expect 404)
+GET http://localhost:8080/admin/parents/ffffffff-ffff-ffff-ffff-ffffffffffff/students

@@ -12,3 +12,19 @@ export interface ParentResponse {
   email: string
   createdAt: string
 }
+
+export interface CreateStudentRequest {
+  parentId: string
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+}
+
+export interface StudentResponse {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  enrolledAt: string
+}
