@@ -185,7 +185,7 @@
   &:hover {
     background: $color-grade-surface;
     color: $color-grade-text;
-    border-color: darken($color-grade-border, 8%);
+    border-color: $color-grade-border-dark;
   }
 }
 
