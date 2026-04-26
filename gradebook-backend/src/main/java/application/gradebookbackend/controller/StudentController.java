@@ -8,6 +8,7 @@ import application.gradebookbackend.service.GradeService;
 import application.gradebookbackend.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,18 +27,22 @@ public class StudentController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public List<StudentRosterResponse> listStudents() {
         return studentService.listStudents();
     }
 
+    // ADMIN can see any student's grades; STUDENT can access this endpoint by role
+    // — ownership check (student can only see their own) is enforced in phase 2
     @GetMapping("/{studentId}/grades")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
     public List<GradeResponse> listGrades(@PathVariable UUID studentId) {
         return gradeService.listGradesForStudent(studentId);
     }
 
-    // TODO: pass authenticated admin user as createdBy once JWT is wired up
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public StudentResponse createStudent(@Valid @RequestBody CreateStudentRequest request) {
         return studentService.createStudent(request);
     }

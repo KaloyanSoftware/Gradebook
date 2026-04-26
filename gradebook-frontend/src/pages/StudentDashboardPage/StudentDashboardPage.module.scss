@@ -1,0 +1,51 @@
+.page {
+  max-width: 640px;
+}
+
+.greeting {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin-bottom: 8px;
+}
+
+.sub {
+  font-size: 1rem;
+  color: $color-text-secondary;
+  margin-bottom: 32px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: 10px;
+  padding: 24px 20px;
+
+  h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: $color-text-primary;
+    margin-bottom: 6px;
+  }
+
+  p {
+    font-size: 0.82rem;
+    color: $color-text-secondary;
+  }
+}
+
+.soon {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: $color-primary;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}

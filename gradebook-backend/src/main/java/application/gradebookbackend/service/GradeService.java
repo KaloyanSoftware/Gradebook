@@ -7,6 +7,7 @@ import application.gradebookbackend.domain.Subject;
 import application.gradebookbackend.dto.GradeResponse;
 import application.gradebookbackend.dto.UpdateGradeRequest;
 import application.gradebookbackend.exception.ResourceNotFoundException;
+import application.gradebookbackend.repository.AppUserRepository;
 import application.gradebookbackend.repository.GradeRepository;
 import application.gradebookbackend.repository.StudentRepository;
 import jakarta.transaction.Transactional;
@@ -24,17 +25,21 @@ public class GradeService {
 
     private final StudentRepository studentRepository;
     private final GradeRepository gradeRepository;
+    private final AppUserRepository appUserRepository;
 
-    public GradeService(StudentRepository studentRepository, GradeRepository gradeRepository) {
+    public GradeService(StudentRepository studentRepository, AppUserRepository appUserRepository, GradeRepository gradeRepository) {
         this.studentRepository = studentRepository;
         this.gradeRepository = gradeRepository;
+        this.appUserRepository = appUserRepository;
     }
 
-    public Grade createGrade(UUID studentId, LocalDate date, Subject subject, BigDecimal value, String comment, AppUser createdBy) {
+    public Grade createGrade(UUID studentId, LocalDate date, Subject subject, BigDecimal value, String comment, String externalUid) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Student", studentId));
 
         Grade grade = new Grade();
+        AppUser createdBy = appUserRepository.findByExternalUid(externalUid)
+                .orElseThrow(() -> new ResourceNotFoundException("AppUser", externalUid));
         grade.setDate(date);
         grade.setSubject(subject);
         grade.setValue(value);

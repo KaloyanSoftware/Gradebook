@@ -1,5 +1,6 @@
 package application.gradebookbackend.service;
 
+import application.gradebookbackend.client.SupabaseAdminClient;
 import application.gradebookbackend.domain.*;
 import application.gradebookbackend.dto.CreateStudentRequest;
 import application.gradebookbackend.dto.StudentResponse;
@@ -25,16 +26,19 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final ParentRepository parentRepository;
     private final EnrollmentRepository enrollmentRepository;
+    private final SupabaseAdminClient supabaseAdminClient;
 
     public StudentService(
             AppUserRepository appUserRepository,
             StudentRepository studentRepository,
             ParentRepository parentRepository,
-            EnrollmentRepository enrollmentRepository) {
+            EnrollmentRepository enrollmentRepository,
+            SupabaseAdminClient supabaseAdminClient) {
         this.appUserRepository = appUserRepository;
         this.studentRepository = studentRepository;
         this.parentRepository = parentRepository;
         this.enrollmentRepository = enrollmentRepository;
+        this.supabaseAdminClient = supabaseAdminClient;
     }
 
     @Transactional
@@ -46,26 +50,31 @@ public class StudentService {
         Parent parent = parentRepository.findById(request.getParentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Parent", request.getParentId()));
 
-        // TODO: call Supabase Admin API here to create the auth user with request.getEmail()
-        //   and request.getPassword(). On success, use the returned UID as externalUid below.
-        AppUser user = new AppUser();
-        user.setExternalUid(UUID.randomUUID().toString()); // placeholder until Supabase is integrated
-        user.setEmail(request.getEmail());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setRole(Role.STUDENT);
-        AppUser savedUser = appUserRepository.save(user);
+        String authUid = supabaseAdminClient.createAuthUser(request.getEmail(), request.getPassword());
 
-        Student student = new Student();
-        student.setUser(savedUser);
-        Student savedStudent = studentRepository.save(student);
+        try {
+            AppUser user = new AppUser();
+            user.setExternalUid(authUid);
+            user.setEmail(request.getEmail());
+            user.setFirstName(request.getFirstName());
+            user.setLastName(request.getLastName());
+            user.setRole(Role.STUDENT);
+            AppUser savedUser = appUserRepository.save(user);
 
-        Enrollment enrollment = new Enrollment();
-        enrollment.setParent(parent);
-        enrollment.setStudent(savedStudent);
-        enrollmentRepository.save(enrollment);
+            Student student = new Student();
+            student.setUser(savedUser);
+            Student savedStudent = studentRepository.save(student);
 
-        return StudentResponse.from(savedStudent);
+            Enrollment enrollment = new Enrollment();
+            enrollment.setParent(parent);
+            enrollment.setStudent(savedStudent);
+            enrollmentRepository.save(enrollment);
+
+            return StudentResponse.from(savedStudent);
+        } catch (Exception e) {
+            supabaseAdminClient.deleteAuthUser(authUid);
+            throw e;
+        }
     }
 
     public List<StudentRosterResponse> listStudents() {

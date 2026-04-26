@@ -19,7 +19,7 @@ Content-Type: {{contentType}}
   "studentId": "{{student1}}",
   "date": "2026-04-25",
   "subject": "BULGARIAN",
-  "value": 1,
+  "value": 5,
   "comment": "Excellent performance in the exam"
 }
 

@@ -8,7 +8,7 @@ export const useCreateStudent = (parentId: string) => {
   return useMutation<StudentResponse, Error, CreateStudentRequest>({
     mutationFn: createStudent,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['students', parentId] })
+      queryClient.invalidateQueries({ queryKey: ['students'] })
     },
   })
 }

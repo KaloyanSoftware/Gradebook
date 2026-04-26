@@ -38,6 +38,11 @@ dependencies {
     testImplementation("org.testcontainers:postgresql:1.19.7")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+    // JWT
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
 }
 
 tasks.withType<Test> {

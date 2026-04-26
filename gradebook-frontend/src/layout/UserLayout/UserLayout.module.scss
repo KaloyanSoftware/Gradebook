@@ -1,0 +1,64 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: $color-background;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 60px;
+  background-color: $color-sidebar-bg;
+  color: $color-sidebar-text;
+  flex-shrink: 0;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.name {
+  font-size: 0.9rem;
+}
+
+.badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: $color-primary;
+  color: #fff;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.signout {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: $color-sidebar-text;
+  border-radius: 6px;
+  padding: 4px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.content {
+  flex: 1;
+  padding: 40px 32px;
+}
