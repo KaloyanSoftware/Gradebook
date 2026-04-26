@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -67,13 +69,20 @@ public class StudentService {
     }
 
     public List<StudentRosterResponse> listStudents() {
-        return studentRepository.findAll().stream()
-                .map(student -> {
-                    List<String> parentNames = enrollmentRepository.findByStudentId(student.getId()).stream()
-                            .map(e -> e.getParent().getUser().getFirstName() + " " + e.getParent().getUser().getLastName())
-                            .toList();
-                    return StudentRosterResponse.from(student, parentNames);
-                })
+        List<Student> students = studentRepository.findAll();
+
+        Map<UUID, List<String>> parentNamesByStudent = enrollmentRepository.findAllWithParentAndUser()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        e -> e.getStudent().getId(),
+                        Collectors.mapping(
+                                e -> e.getParent().getUser().getFirstName() + " " + e.getParent().getUser().getLastName(),
+                                Collectors.toList()
+                        )
+                ));
+
+        return students.stream()
+                .map(s -> StudentRosterResponse.from(s, parentNamesByStudent.getOrDefault(s.getId(), List.of())))
                 .toList();
     }
 
