@@ -14,8 +14,9 @@ public class Grade {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    // TODO: wire up once auth principal is available in service layer
     @ManyToOne
-    @JoinColumn(name = "created_by")
+    @JoinColumn(name = "created_by", nullable = true)
     private AppUser createdBy;
 
     @Column(nullable = false)

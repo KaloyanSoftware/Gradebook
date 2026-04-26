@@ -3,6 +3,7 @@ package application.gradebookbackend.service;
 import application.gradebookbackend.domain.*;
 import application.gradebookbackend.dto.CreateStudentRequest;
 import application.gradebookbackend.dto.StudentResponse;
+import application.gradebookbackend.dto.StudentRosterResponse;
 import application.gradebookbackend.exception.DuplicateEmailException;
 import application.gradebookbackend.exception.ResourceNotFoundException;
 import application.gradebookbackend.repository.AppUserRepository;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -63,6 +66,24 @@ public class StudentService {
         enrollmentRepository.save(enrollment);
 
         return StudentResponse.from(savedStudent);
+    }
+
+    public List<StudentRosterResponse> listStudents() {
+        List<Student> students = studentRepository.findAll();
+
+        Map<UUID, List<String>> parentNamesByStudent = enrollmentRepository.findAllWithParentAndUser()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        e -> e.getStudent().getId(),
+                        Collectors.mapping(
+                                e -> e.getParent().getUser().getFirstName() + " " + e.getParent().getUser().getLastName(),
+                                Collectors.toList()
+                        )
+                ));
+
+        return students.stream()
+                .map(s -> StudentRosterResponse.from(s, parentNamesByStudent.getOrDefault(s.getId(), List.of())))
+                .toList();
     }
 
     public List<StudentResponse> listStudentsByParent(UUID parentId) {
