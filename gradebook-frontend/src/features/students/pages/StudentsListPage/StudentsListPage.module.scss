@@ -71,18 +71,44 @@
   }
 }
 
+.colChevron {
+  width: 40px;
+  text-align: center;
+}
+
 .row {
   border-bottom: 1px solid $color-border;
   transition: background 0.12s;
-  cursor: default;
-
-  &:last-child {
-    border-bottom: none;
-  }
+  cursor: pointer;
 
   &:hover {
     background: $color-background;
   }
+}
+
+.rowExpanded {
+  background: $color-background;
+  border-bottom: none;
+}
+
+.expandedRow {
+  td {
+    padding: 0;
+  }
+}
+
+.expandedCell {
+  padding: 0 !important;
+}
+
+.chevron {
+  display: block;
+  margin: 0 auto;
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
 }
 
 .td {

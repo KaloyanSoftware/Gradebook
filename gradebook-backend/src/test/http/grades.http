@@ -53,3 +53,33 @@ Content-Type: application/json
   "subject": "LITERATURE",
   "value": 5.00
 }
+
+### List grades for a student (replace with a real student ID)
+GET http://localhost:8080/admin/students/00000000-0000-0000-0000-000000000000/grades
+
+### Update a grade (replace with a real grade ID)
+PUT http://localhost:8080/admin/grades/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+{
+  "date": "2026-04-25",
+  "subject": "LITERATURE",
+  "value": 4.50,
+  "comment": "Коригирана оценка."
+}
+
+### Update grade — grade not found (expect 404)
+PUT http://localhost:8080/admin/grades/ffffffff-ffff-ffff-ffff-ffffffffffff
+Content-Type: application/json
+
+{
+  "date": "2026-04-25",
+  "subject": "BULGARIAN",
+  "value": 5.00
+}
+
+### Delete a grade (replace with a real grade ID)
+DELETE http://localhost:8080/admin/grades/00000000-0000-0000-0000-000000000000
+
+### Delete grade — grade not found (expect 404)
+DELETE http://localhost:8080/admin/grades/ffffffff-ffff-ffff-ffff-ffffffffffff

@@ -1,7 +1,9 @@
 import { useState, useMemo } from 'react'
 import { CircularProgress, Pagination, TextField, InputAdornment, Typography } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import { useStudents } from '../../hooks/useStudents'
+import { StudentGradesPanel } from '@/features/grades/components/StudentGradesPanel/StudentGradesPanel'
 import styles from './StudentsListPage.module.scss'
 
 const PAGE_SIZE = 10
@@ -10,6 +12,7 @@ export const StudentsListPage = () => {
   const { data: students, isLoading } = useStudents()
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
   const filtered = useMemo(() => {
     if (!students) return []
@@ -30,7 +33,11 @@ export const StudentsListPage = () => {
   const handleSearch = (value: string) => {
     setSearch(value)
     setPage(1)
+    setExpandedId(null)
   }
+
+  const toggleExpand = (id: string) =>
+    setExpandedId((prev) => (prev === id ? null : id))
 
   const initials = (first: string, last: string) =>
     `${first.charAt(0)}${last.charAt(0)}`.toUpperCase()
@@ -84,47 +91,72 @@ export const StudentsListPage = () => {
           <table className={styles.table}>
             <thead className={styles.thead}>
               <tr>
-                <th className={`${styles.colNum}`}>№</th>
+                <th className={styles.colNum}>№</th>
                 <th>Ученик</th>
                 <th>Родител(и)</th>
                 <th>Записан на</th>
+                <th className={styles.colChevron}></th>
               </tr>
             </thead>
             <tbody>
-              {pageSlice.map((student, idx) => (
-                <tr key={student.id} className={styles.row}>
-                  <td className={`${styles.td} ${styles.colNum}`}>
-                    {startIndex + idx + 1}
-                  </td>
-                  <td className={styles.td}>
-                    <div className={styles.studentCell}>
-                      <div className={styles.avatar}>
-                        {initials(student.firstName, student.lastName)}
-                      </div>
-                      <div>
-                        <div className={styles.studentName}>
-                          {student.firstName} {student.lastName}
+              {pageSlice.map((student, idx) => {
+                const expanded = expandedId === student.id
+                return (
+                  <>
+                    <tr
+                      key={student.id}
+                      className={`${styles.row} ${expanded ? styles.rowExpanded : ''}`}
+                      onClick={() => toggleExpand(student.id)}
+                    >
+                      <td className={`${styles.td} ${styles.colNum}`}>
+                        {startIndex + idx + 1}
+                      </td>
+                      <td className={styles.td}>
+                        <div className={styles.studentCell}>
+                          <div className={styles.avatar}>
+                            {initials(student.firstName, student.lastName)}
+                          </div>
+                          <div>
+                            <div className={styles.studentName}>
+                              {student.firstName} {student.lastName}
+                            </div>
+                            <div className={styles.studentEmail}>{student.email}</div>
+                          </div>
                         </div>
-                        <div className={styles.studentEmail}>{student.email}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className={styles.td}>
-                    {student.parents.length > 0 ? (
-                      <div className={styles.parentChips}>
-                        {student.parents.map((name) => (
-                          <span key={name} className={styles.parentChip}>{name}</span>
-                        ))}
-                      </div>
-                    ) : (
-                      <span className={styles.noParents}>—</span>
+                      </td>
+                      <td className={styles.td}>
+                        {student.parents.length > 0 ? (
+                          <div className={styles.parentChips}>
+                            {student.parents.map((name) => (
+                              <span key={name} className={styles.parentChip}>{name}</span>
+                            ))}
+                          </div>
+                        ) : (
+                          <span className={styles.noParents}>—</span>
+                        )}
+                      </td>
+                      <td className={styles.td}>
+                        <span className={styles.dateText}>{formatDate(student.enrolledAt)}</span>
+                      </td>
+                      <td className={styles.td}>
+                        <KeyboardArrowDownIcon
+                          fontSize="small"
+                          className={`${styles.chevron} ${expanded ? styles.chevronOpen : ''}`}
+                          sx={{ color: 'text.secondary' }}
+                        />
+                      </td>
+                    </tr>
+
+                    {expanded && (
+                      <tr key={`${student.id}-grades`} className={styles.expandedRow}>
+                        <td colSpan={5} className={styles.expandedCell}>
+                          <StudentGradesPanel studentId={student.id} />
+                        </td>
+                      </tr>
                     )}
-                  </td>
-                  <td className={styles.td}>
-                    <span className={styles.dateText}>{formatDate(student.enrolledAt)}</span>
-                  </td>
-                </tr>
-              ))}
+                  </>
+                )
+              })}
             </tbody>
           </table>
 
