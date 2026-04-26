@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import {
   Divider,
   List,
@@ -12,6 +12,9 @@ import GradeIcon from '@mui/icons-material/Grade'
 import GroupIcon from '@mui/icons-material/Group'
 import SchoolIcon from '@mui/icons-material/School'
 import LinkIcon from '@mui/icons-material/Link'
+import LogoutIcon from '@mui/icons-material/Logout'
+import SettingsIcon from '@mui/icons-material/Settings'
+import { useAuth } from '@/context/AuthContext'
 import styles from './Sidebar.module.scss'
 
 const mainNav = [
@@ -32,6 +35,14 @@ const managementNav = [
 ]
 
 export const Sidebar = () => {
+  const { signOut } = useAuth()
+  const navigate = useNavigate()
+
+  async function handleLogout() {
+    await signOut()
+    navigate('/login')
+  }
+
   return (
     <aside className={styles.sidebar}>
       <div className={styles.brand}>
@@ -111,6 +122,25 @@ export const Sidebar = () => {
           ))}
         </List>
       </nav>
+
+      <div className={styles.footer}>
+        <Divider className={styles.divider} />
+        <List dense disablePadding>
+          <NavLink
+            to="/admin/settings"
+            className={({ isActive }) => isActive ? styles.activeLink : styles.link}
+          >
+            <ListItemButton className={styles.navItem}>
+              <ListItemIcon className={styles.icon}><SettingsIcon fontSize="small" /></ListItemIcon>
+              <ListItemText primary="Настройки" />
+            </ListItemButton>
+          </NavLink>
+          <ListItemButton onClick={handleLogout} className={styles.navItem}>
+            <ListItemIcon className={styles.icon}><LogoutIcon fontSize="small" /></ListItemIcon>
+            <ListItemText primary="Изход" />
+          </ListItemButton>
+        </List>
+      </div>
     </aside>
   )
 }

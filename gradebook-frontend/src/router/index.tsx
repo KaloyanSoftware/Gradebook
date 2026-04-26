@@ -5,11 +5,16 @@ import { ParentsListPage } from '@/features/parents/pages/ParentsListPage/Parent
 import { StudentsListPage } from '@/features/students/pages/StudentsListPage/StudentsListPage'
 import { AddGradePage } from '@/features/grades/pages/AddGradePage/AddGradePage'
 import { LoginPage } from '@/pages/LoginPage'
+import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
+import { ResetPasswordPage } from '@/pages/ResetPasswordPage'
+import { SettingsPage } from '@/pages/SettingsPage/SettingsPage'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 
 export const AppRoutes = () => (
   <Routes>
     <Route path="/login" element={<LoginPage />} />
+    <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+    <Route path="/reset-password" element={<ResetPasswordPage />} />
     <Route
       path="/admin"
       element={
@@ -23,6 +28,7 @@ export const AppRoutes = () => (
       <Route path="parents" element={<ParentsListPage />} />
       <Route path="students" element={<StudentsListPage />} />
       <Route path="grades/new" element={<AddGradePage />} />
+      <Route path="settings" element={<SettingsPage />} />
     </Route>
     <Route path="*" element={<Navigate to="/login" replace />} />
   </Routes>
