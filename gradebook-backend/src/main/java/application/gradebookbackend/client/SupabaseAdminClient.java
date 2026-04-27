@@ -36,6 +36,24 @@ public class SupabaseAdminClient {
         return (String) response.get("id");
     }
 
+    public void banUser(String uid) {
+        restClient.put()
+                .uri("/users/" + uid)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("ban_duration", "876600h"))
+                .retrieve()
+                .toBodilessEntity();
+    }
+
+    public void unbanUser(String uid) {
+        restClient.put()
+                .uri("/users/" + uid)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("ban_duration", "none"))
+                .retrieve()
+                .toBodilessEntity();
+    }
+
     public void deleteAuthUser(String uid) {
         restClient.delete()
                 .uri("/users/" + uid)

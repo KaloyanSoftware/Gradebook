@@ -145,6 +145,28 @@
   flex-shrink: 0;
 }
 
+.avatarInactive {
+  background: $color-text-secondary;
+}
+
+.rowInactive {
+  opacity: 0.6;
+}
+
+.inactiveBadge {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(220, 38, 38, 0.1);
+  color: $color-error;
+  vertical-align: middle;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .studentName {
   font-weight: 600;
   color: $color-text-primary;

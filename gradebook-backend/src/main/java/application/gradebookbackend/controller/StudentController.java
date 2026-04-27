@@ -46,4 +46,25 @@ public class StudentController {
     public StudentResponse createStudent(@Valid @RequestBody CreateStudentRequest request) {
         return studentService.createStudent(request);
     }
+
+    @PatchMapping("/{studentId}/deactivate")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deactivateStudent(@PathVariable UUID studentId) {
+        studentService.deactivateStudent(studentId);
+    }
+
+    @PatchMapping("/{studentId}/activate")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
+    public void activateStudent(@PathVariable UUID studentId) {
+        studentService.activateStudent(studentId);
+    }
+
+    @DeleteMapping("/{studentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteStudent(@PathVariable UUID studentId) {
+        studentService.deleteStudent(studentId);
+    }
 }

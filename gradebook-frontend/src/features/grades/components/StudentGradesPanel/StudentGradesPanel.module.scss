@@ -166,3 +166,36 @@
   padding: 16px 12px;
   text-align: center;
 }
+
+// Account management bar
+.accountActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid $color-border;
+}
+
+.accountLabel {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $color-text-secondary;
+  margin-right: 2px;
+}
+
+.deleteConfirm {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  span {
+    font-size: 13px;
+    color: $color-error;
+    font-weight: 500;
+  }
+}

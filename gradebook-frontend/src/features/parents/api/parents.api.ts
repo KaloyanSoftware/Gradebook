@@ -25,3 +25,15 @@ export const createStudent = async (data: CreateStudentRequest): Promise<Student
   const response = await axiosClient.post<StudentResponse>('/admin/students', data)
   return response.data
 }
+
+export const deactivateParent = async (parentId: string): Promise<void> => {
+  await axiosClient.patch(`/admin/parents/${parentId}/deactivate`)
+}
+
+export const activateParent = async (parentId: string): Promise<void> => {
+  await axiosClient.patch(`/admin/parents/${parentId}/activate`)
+}
+
+export const deleteParent = async (parentId: string): Promise<void> => {
+  await axiosClient.delete(`/admin/parents/${parentId}`)
+}

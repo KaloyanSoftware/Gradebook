@@ -11,6 +11,7 @@ export interface ParentResponse {
   lastName: string
   email: string
   createdAt: string
+  active: boolean
 }
 
 export interface CreateStudentRequest {

@@ -5,10 +5,13 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import AddIcon from '@mui/icons-material/Add'
+import BlockIcon from '@mui/icons-material/Block'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useStudentGrades } from '../../hooks/useStudentGrades'
 import { useUpdateGrade } from '../../hooks/useUpdateGrade'
 import { useDeleteGrade } from '../../hooks/useDeleteGrade'
 import { useCreateGrade } from '../../hooks/useCreateGrade'
+import { useDeactivateStudent, useActivateStudent, useDeleteStudent } from '../../../students/hooks/useStudentActions'
 import { GradePicker } from '../GradePicker/GradePicker'
 import type { UpdateGradeRequest } from '../../types/grade.types'
 import styles from './StudentGradesPanel.module.scss'
@@ -39,14 +42,20 @@ interface FormState {
 
 interface Props {
   studentId: string
+  active: boolean
+  onDeleted: () => void
 }
 
-export const StudentGradesPanel = ({ studentId }: Props) => {
+export const StudentGradesPanel = ({ studentId, active, onDeleted }: Props) => {
   const { data: grades, isLoading } = useStudentGrades(studentId)
   const { mutate: updateGrade, isPending: isUpdating } = useUpdateGrade(studentId)
   const { mutate: deleteGrade, isPending: isDeleting } = useDeleteGrade(studentId)
   const { mutate: addGrade, isPending: isAdding } = useCreateGrade(studentId)
+  const { mutate: deactivate, isPending: isDeactivating } = useDeactivateStudent()
+  const { mutate: activate, isPending: isActivating } = useActivateStudent()
+  const { mutate: deleteStudentMutation, isPending: isDeletingAccount } = useDeleteStudent()
 
+  const [showDeleteAccount, setShowDeleteAccount] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editForm, setEditForm] = useState<FormState>({ subject: '', date: '', value: null, comment: '' })
   const [deletingId, setDeletingId] = useState<string | null>(null)
@@ -288,6 +297,57 @@ export const StudentGradesPanel = ({ studentId }: Props) => {
           )}
         </tbody>
       </table>
+
+      <div className={styles.accountActions}>
+        <span className={styles.accountLabel}>Акаунт:</span>
+        {active ? (
+          <Button
+            size="small"
+            variant="outlined"
+            color="warning"
+            startIcon={<BlockIcon fontSize="small" />}
+            disabled={isDeactivating}
+            onClick={() => deactivate(studentId)}
+          >
+            Деактивирай
+          </Button>
+        ) : (
+          <Button
+            size="small"
+            variant="outlined"
+            color="success"
+            startIcon={<CheckCircleIcon fontSize="small" />}
+            disabled={isActivating}
+            onClick={() => activate(studentId)}
+          >
+            Активирай
+          </Button>
+        )}
+
+        {showDeleteAccount ? (
+          <div className={styles.deleteConfirm}>
+            <span>Сигурен ли си? Това ще изтрие акаунта завинаги.</span>
+            <Button size="small" variant="contained" color="error"
+              disabled={isDeletingAccount}
+              onClick={() => deleteStudentMutation(studentId, { onSuccess: onDeleted })}>
+              Да, изтрий
+            </Button>
+            <Button size="small" color="inherit" onClick={() => setShowDeleteAccount(false)}>
+              Не
+            </Button>
+          </div>
+        ) : (
+          <Button
+            size="small"
+            variant="outlined"
+            color="error"
+            startIcon={<DeleteIcon fontSize="small" />}
+            onClick={() => setShowDeleteAccount(true)}
+          >
+            Изтрий акаунт
+          </Button>
+        )}
+      </div>
     </div>
   )
 }

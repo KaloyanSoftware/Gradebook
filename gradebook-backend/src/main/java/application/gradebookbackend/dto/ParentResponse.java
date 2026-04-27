@@ -12,13 +12,15 @@ public class ParentResponse {
     private String lastName;
     private String email;
     private LocalDateTime createdAt;
+    private boolean active;
 
-    private ParentResponse(UUID id, String firstName, String lastName, String email, LocalDateTime createdAt) {
+    private ParentResponse(UUID id, String firstName, String lastName, String email, LocalDateTime createdAt, boolean active) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.createdAt = createdAt;
+        this.active = active;
     }
 
     public static ParentResponse from(Parent parent) {
@@ -27,7 +29,8 @@ public class ParentResponse {
                 parent.getUser().getFirstName(),
                 parent.getUser().getLastName(),
                 parent.getUser().getEmail(),
-                parent.getUser().getCreatedAt()
+                parent.getUser().getCreatedAt(),
+                parent.getUser().isActive()
         );
     }
 
@@ -36,4 +39,5 @@ public class ParentResponse {
     public String getLastName() { return lastName; }
     public String getEmail() { return email; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public boolean isActive() { return active; }
 }

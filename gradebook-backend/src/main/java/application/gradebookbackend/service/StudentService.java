@@ -11,6 +11,8 @@ import application.gradebookbackend.repository.AppUserRepository;
 import application.gradebookbackend.repository.EnrollmentRepository;
 import application.gradebookbackend.repository.ParentRepository;
 import application.gradebookbackend.repository.StudentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
+
+    private static final Logger log = LoggerFactory.getLogger(StudentService.class);
 
     private final AppUserRepository appUserRepository;
     private final StudentRepository studentRepository;
@@ -102,5 +106,65 @@ public class StudentService {
         return enrollmentRepository.findByParentId(parentId).stream()
                 .map(enrollment -> StudentResponse.from(enrollment.getStudent()))
                 .toList();
+    }
+
+    @Transactional
+    public void deactivateStudent(UUID studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", studentId));
+        AppUser user = student.getUser();
+        user.setActive(false);
+        appUserRepository.save(user);
+        tryBanAuthUser(user.getExternalUid());
+    }
+
+    @Transactional
+    public void activateStudent(UUID studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", studentId));
+        AppUser user = student.getUser();
+        user.setActive(true);
+        appUserRepository.save(user);
+        tryUnbanAuthUser(user.getExternalUid());
+    }
+
+    @Transactional
+    public void deleteStudent(UUID studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", studentId));
+        String authUid = student.getUser().getExternalUid();
+        AppUser user = student.getUser();
+
+        enrollmentRepository.deleteAll(enrollmentRepository.findByStudentId(studentId));
+        studentRepository.delete(student);
+        appUserRepository.delete(user);
+        tryDeleteAuthUser(authUid);
+    }
+
+    private void tryBanAuthUser(String uid) {
+        if (uid == null || uid.isBlank()) return;
+        try {
+            supabaseAdminClient.banUser(uid);
+        } catch (Exception e) {
+            log.warn("Could not ban Supabase auth user {}: {}", uid, e.getMessage());
+        }
+    }
+
+    private void tryUnbanAuthUser(String uid) {
+        if (uid == null || uid.isBlank()) return;
+        try {
+            supabaseAdminClient.unbanUser(uid);
+        } catch (Exception e) {
+            log.warn("Could not unban Supabase auth user {}: {}", uid, e.getMessage());
+        }
+    }
+
+    private void tryDeleteAuthUser(String uid) {
+        if (uid == null || uid.isBlank()) return;
+        try {
+            supabaseAdminClient.deleteAuthUser(uid);
+        } catch (Exception e) {
+            log.warn("Could not delete Supabase auth user {}: {}", uid, e.getMessage());
+        }
     }
 }
