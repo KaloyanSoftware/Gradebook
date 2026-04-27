@@ -103,4 +103,37 @@ public class StudentService {
                 .map(enrollment -> StudentResponse.from(enrollment.getStudent()))
                 .toList();
     }
+
+    @Transactional
+    public void deactivateStudent(UUID studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", studentId));
+        AppUser user = student.getUser();
+        user.setActive(false);
+        appUserRepository.save(user);
+        supabaseAdminClient.banUser(user.getExternalUid());
+    }
+
+    @Transactional
+    public void activateStudent(UUID studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", studentId));
+        AppUser user = student.getUser();
+        user.setActive(true);
+        appUserRepository.save(user);
+        supabaseAdminClient.unbanUser(user.getExternalUid());
+    }
+
+    @Transactional
+    public void deleteStudent(UUID studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", studentId));
+        String authUid = student.getUser().getExternalUid();
+        AppUser user = student.getUser();
+
+        enrollmentRepository.deleteAll(enrollmentRepository.findByStudentId(studentId));
+        studentRepository.delete(student);
+        appUserRepository.delete(user);
+        supabaseAdminClient.deleteAuthUser(authUid);
+    }
 }

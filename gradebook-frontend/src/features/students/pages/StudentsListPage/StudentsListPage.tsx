@@ -105,7 +105,7 @@ export const StudentsListPage = () => {
                   <>
                     <tr
                       key={student.id}
-                      className={`${styles.row} ${expanded ? styles.rowExpanded : ''}`}
+                      className={`${styles.row} ${expanded ? styles.rowExpanded : ''} ${!student.active ? styles.rowInactive : ''}`}
                       onClick={() => toggleExpand(student.id)}
                     >
                       <td className={`${styles.td} ${styles.colNum}`}>
@@ -113,12 +113,15 @@ export const StudentsListPage = () => {
                       </td>
                       <td className={styles.td}>
                         <div className={styles.studentCell}>
-                          <div className={styles.avatar}>
+                          <div className={`${styles.avatar} ${!student.active ? styles.avatarInactive : ''}`}>
                             {initials(student.firstName, student.lastName)}
                           </div>
                           <div>
                             <div className={styles.studentName}>
                               {student.firstName} {student.lastName}
+                              {!student.active && (
+                                <span className={styles.inactiveBadge}>Деактивиран</span>
+                              )}
                             </div>
                             <div className={styles.studentEmail}>{student.email}</div>
                           </div>
@@ -150,7 +153,11 @@ export const StudentsListPage = () => {
                     {expanded && (
                       <tr key={`${student.id}-grades`} className={styles.expandedRow}>
                         <td colSpan={5} className={styles.expandedCell}>
-                          <StudentGradesPanel studentId={student.id} />
+                          <StudentGradesPanel
+                            studentId={student.id}
+                            active={student.active}
+                            onDeleted={() => setExpandedId(null)}
+                          />
                         </td>
                       </tr>
                     )}

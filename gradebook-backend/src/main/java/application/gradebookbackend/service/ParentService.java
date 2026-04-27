@@ -7,12 +7,14 @@ import application.gradebookbackend.domain.Role;
 import application.gradebookbackend.dto.CreateParentRequest;
 import application.gradebookbackend.dto.ParentResponse;
 import application.gradebookbackend.exception.DuplicateEmailException;
+import application.gradebookbackend.exception.ResourceNotFoundException;
 import application.gradebookbackend.repository.AppUserRepository;
 import application.gradebookbackend.repository.ParentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ParentService {
@@ -59,5 +61,37 @@ public class ParentService {
         return parentRepository.findAll().stream()
                 .map(ParentResponse::from)
                 .toList();
+    }
+
+    @Transactional
+    public void deactivateParent(UUID parentId) {
+        Parent parent = parentRepository.findById(parentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Parent", parentId));
+        AppUser user = parent.getUser();
+        user.setActive(false);
+        appUserRepository.save(user);
+        supabaseAdminClient.banUser(user.getExternalUid());
+    }
+
+    @Transactional
+    public void activateParent(UUID parentId) {
+        Parent parent = parentRepository.findById(parentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Parent", parentId));
+        AppUser user = parent.getUser();
+        user.setActive(true);
+        appUserRepository.save(user);
+        supabaseAdminClient.unbanUser(user.getExternalUid());
+    }
+
+    @Transactional
+    public void deleteParent(UUID parentId) {
+        Parent parent = parentRepository.findById(parentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Parent", parentId));
+        String authUid = parent.getUser().getExternalUid();
+        AppUser user = parent.getUser();
+
+        parentRepository.delete(parent);   // cascades enrollments + notifications
+        appUserRepository.delete(user);
+        supabaseAdminClient.deleteAuthUser(authUid);
     }
 }

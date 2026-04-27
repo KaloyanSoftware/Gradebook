@@ -45,4 +45,25 @@ public class ParentController {
     public List<StudentResponse> listStudents(@PathVariable UUID parentId) {
         return studentService.listStudentsByParent(parentId);
     }
+
+    @PatchMapping("/{parentId}/deactivate")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deactivateParent(@PathVariable UUID parentId) {
+        parentService.deactivateParent(parentId);
+    }
+
+    @PatchMapping("/{parentId}/activate")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
+    public void activateParent(@PathVariable UUID parentId) {
+        parentService.activateParent(parentId);
+    }
+
+    @DeleteMapping("/{parentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteParent(@PathVariable UUID parentId) {
+        parentService.deleteParent(parentId);
+    }
 }

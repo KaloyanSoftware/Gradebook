@@ -5,4 +5,5 @@ export interface StudentRosterItem {
   email: string
   enrolledAt: string
   parents: string[]
+  active: boolean
 }
