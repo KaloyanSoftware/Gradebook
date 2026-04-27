@@ -6,7 +6,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import AddIcon from '@mui/icons-material/Add'
 import BlockIcon from '@mui/icons-material/Block'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useStudentGrades } from '../../hooks/useStudentGrades'
 import { useUpdateGrade } from '../../hooks/useUpdateGrade'
 import { useDeleteGrade } from '../../hooks/useDeleteGrade'
@@ -55,7 +55,7 @@ export const StudentGradesPanel = ({ studentId, active, onDeleted }: Props) => {
   const { mutate: activate, isPending: isActivating } = useActivateStudent()
   const { mutate: deleteStudentMutation, isPending: isDeletingAccount } = useDeleteStudent()
 
-  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [showDeleteAccount, setShowDeleteAccount] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editForm, setEditForm] = useState<FormState>({ subject: '', date: '', value: null, comment: '' })
   const [deletingId, setDeletingId] = useState<string | null>(null)
@@ -316,7 +316,7 @@ export const StudentGradesPanel = ({ studentId, active, onDeleted }: Props) => {
             size="small"
             variant="outlined"
             color="success"
-            startIcon={<CheckCircleOutlineIcon fontSize="small" />}
+            startIcon={<CheckCircleIcon fontSize="small" />}
             disabled={isActivating}
             onClick={() => activate(studentId)}
           >
@@ -324,7 +324,7 @@ export const StudentGradesPanel = ({ studentId, active, onDeleted }: Props) => {
           </Button>
         )}
 
-        {confirmDelete ? (
+        {showDeleteAccount ? (
           <div className={styles.deleteConfirm}>
             <span>Сигурен ли си? Това ще изтрие акаунта завинаги.</span>
             <Button size="small" variant="contained" color="error"
@@ -332,7 +332,7 @@ export const StudentGradesPanel = ({ studentId, active, onDeleted }: Props) => {
               onClick={() => deleteStudentMutation(studentId, { onSuccess: onDeleted })}>
               Да, изтрий
             </Button>
-            <Button size="small" color="inherit" onClick={() => setConfirmDelete(false)}>
+            <Button size="small" color="inherit" onClick={() => setShowDeleteAccount(false)}>
               Не
             </Button>
           </div>
@@ -342,7 +342,7 @@ export const StudentGradesPanel = ({ studentId, active, onDeleted }: Props) => {
             variant="outlined"
             color="error"
             startIcon={<DeleteIcon fontSize="small" />}
-            onClick={() => setConfirmDelete(true)}
+            onClick={() => setShowDeleteAccount(true)}
           >
             Изтрий акаунт
           </Button>
