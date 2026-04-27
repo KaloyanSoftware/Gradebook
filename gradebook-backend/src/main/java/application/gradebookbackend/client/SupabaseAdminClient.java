@@ -37,7 +37,7 @@ public class SupabaseAdminClient {
     }
 
     public void banUser(String uid) {
-        restClient.patch()
+        restClient.put()
                 .uri("/users/" + uid)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Map.of("ban_duration", "876600h"))
@@ -46,7 +46,7 @@ public class SupabaseAdminClient {
     }
 
     public void unbanUser(String uid) {
-        restClient.patch()
+        restClient.put()
                 .uri("/users/" + uid)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Map.of("ban_duration", "none"))
