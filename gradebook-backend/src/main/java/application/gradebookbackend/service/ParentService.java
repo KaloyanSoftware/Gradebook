@@ -10,6 +10,8 @@ import application.gradebookbackend.exception.DuplicateEmailException;
 import application.gradebookbackend.exception.ResourceNotFoundException;
 import application.gradebookbackend.repository.AppUserRepository;
 import application.gradebookbackend.repository.ParentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,8 @@ import java.util.UUID;
 
 @Service
 public class ParentService {
+
+    private static final Logger log = LoggerFactory.getLogger(ParentService.class);
 
     private final AppUserRepository appUserRepository;
     private final ParentRepository parentRepository;
@@ -70,7 +74,7 @@ public class ParentService {
         AppUser user = parent.getUser();
         user.setActive(false);
         appUserRepository.save(user);
-        supabaseAdminClient.banUser(user.getExternalUid());
+        tryBanAuthUser(user.getExternalUid());
     }
 
     @Transactional
@@ -80,7 +84,7 @@ public class ParentService {
         AppUser user = parent.getUser();
         user.setActive(true);
         appUserRepository.save(user);
-        supabaseAdminClient.unbanUser(user.getExternalUid());
+        tryUnbanAuthUser(user.getExternalUid());
     }
 
     @Transactional
@@ -92,6 +96,33 @@ public class ParentService {
 
         parentRepository.delete(parent);   // cascades enrollments + notifications
         appUserRepository.delete(user);
-        supabaseAdminClient.deleteAuthUser(authUid);
+        tryDeleteAuthUser(authUid);
+    }
+
+    private void tryBanAuthUser(String uid) {
+        if (uid == null || uid.isBlank()) return;
+        try {
+            supabaseAdminClient.banUser(uid);
+        } catch (Exception e) {
+            log.warn("Could not ban Supabase auth user {}: {}", uid, e.getMessage());
+        }
+    }
+
+    private void tryUnbanAuthUser(String uid) {
+        if (uid == null || uid.isBlank()) return;
+        try {
+            supabaseAdminClient.unbanUser(uid);
+        } catch (Exception e) {
+            log.warn("Could not unban Supabase auth user {}: {}", uid, e.getMessage());
+        }
+    }
+
+    private void tryDeleteAuthUser(String uid) {
+        if (uid == null || uid.isBlank()) return;
+        try {
+            supabaseAdminClient.deleteAuthUser(uid);
+        } catch (Exception e) {
+            log.warn("Could not delete Supabase auth user {}: {}", uid, e.getMessage());
+        }
     }
 }
