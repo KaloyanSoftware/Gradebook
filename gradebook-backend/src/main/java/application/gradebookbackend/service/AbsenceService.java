@@ -19,10 +19,13 @@ public class AbsenceService {
 
     private final AbsenceRepository absenceRepository;
     private final StudentRepository studentRepository;
+    private final NotificationService notificationService;
 
-    public AbsenceService(AbsenceRepository absenceRepository, StudentRepository studentRepository) {
+    public AbsenceService(AbsenceRepository absenceRepository, StudentRepository studentRepository,
+                          NotificationService notificationService) {
         this.absenceRepository = absenceRepository;
         this.studentRepository = studentRepository;
+        this.notificationService = notificationService;
     }
 
     public List<AbsenceResponse> listAbsencesForStudent(UUID studentId) {
@@ -44,7 +47,9 @@ public class AbsenceService {
         absence.setDate(request.date());
         absence.setReason(request.reason());
 
-        return AbsenceResponse.from(absenceRepository.save(absence));
+        Absence savedAbsence = absenceRepository.save(absence);
+        notificationService.notifyParentsOfAbsence(student, savedAbsence);
+        return AbsenceResponse.from(savedAbsence);
     }
 
     @Transactional

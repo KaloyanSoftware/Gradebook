@@ -5,10 +5,13 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ParentRepository extends JpaRepository<Parent, UUID> {
 
     @EntityGraph(attributePaths = {"user"})
     List<Parent> findAll();
+
+    Optional<Parent> findByUserId(UUID userId);
 }

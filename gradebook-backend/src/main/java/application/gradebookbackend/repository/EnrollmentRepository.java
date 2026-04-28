@@ -15,6 +15,9 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, UUID> {
 
     List<Enrollment> findByStudentId(UUID studentId);
 
+    @Query("SELECT e FROM Enrollment e JOIN FETCH e.parent p JOIN FETCH p.user WHERE e.student.id = :studentId")
+    List<Enrollment> findByStudentIdWithParent(@Param("studentId") UUID studentId);
+
     @Query("SELECT e FROM Enrollment e JOIN FETCH e.parent p JOIN FETCH p.user JOIN FETCH e.student s JOIN FETCH s.user")
     List<Enrollment> findAllWithParentAndUser();
 }
