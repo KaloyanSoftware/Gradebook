@@ -1,5 +1,6 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { NotificationBell } from '@/features/notifications/components/NotificationBell/NotificationBell';
 import styles from './UserLayout.module.scss';
 
 export const UserLayout = () => {
@@ -10,6 +11,8 @@ export const UserLayout = () => {
     PARENT: 'Родител',
     STUDENT: 'Ученик',
   };
+
+  const isParent = user?.role === 'PARENT';
 
   async function handleSignOut() {
     await signOut();
@@ -29,6 +32,7 @@ export const UserLayout = () => {
           {user && (
             <span className={styles.badge}>{roleLabel[user.role] ?? user.role}</span>
           )}
+          {isParent && <NotificationBell enabled={isParent} />}
           <button className={styles.signout} onClick={handleSignOut}>
             Изход
           </button>

@@ -26,11 +26,14 @@ public class GradeService {
     private final StudentRepository studentRepository;
     private final GradeRepository gradeRepository;
     private final AppUserRepository appUserRepository;
+    private final NotificationService notificationService;
 
-    public GradeService(StudentRepository studentRepository, AppUserRepository appUserRepository, GradeRepository gradeRepository) {
+    public GradeService(StudentRepository studentRepository, AppUserRepository appUserRepository,
+                        GradeRepository gradeRepository, NotificationService notificationService) {
         this.studentRepository = studentRepository;
         this.gradeRepository = gradeRepository;
         this.appUserRepository = appUserRepository;
+        this.notificationService = notificationService;
     }
 
     public Grade createGrade(UUID studentId, LocalDate date, Subject subject, BigDecimal value, String comment, String externalUid) {
@@ -48,6 +51,8 @@ public class GradeService {
 
         student.addGrade(grade);
         studentRepository.save(student);
+
+        notificationService.notifyParentsOfGrade(student, grade);
 
         return grade;
     }
