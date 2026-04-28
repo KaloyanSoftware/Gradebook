@@ -1,0 +1,163 @@
+.panel {
+  padding: 16px 24px 20px;
+  border-top: 1px solid $color-border;
+  background: #fffdf9;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.titleIcon {
+  color: #d97706;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #92400e;
+}
+
+.badge {
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid #fcd34d;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.empty {
+  font-size: 13px;
+  color: $color-text-secondary;
+  font-style: italic;
+}
+
+// Flex-wrap chip list
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+// Normal absence chip
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 6px 5px 12px;
+  background: #fff;
+  border: 1px solid #fcd34d;
+  border-radius: $radius-md;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+
+  &:hover .chipActions {
+    opacity: 1;
+  }
+}
+
+.chipContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.chipDate {
+  font-size: 13px;
+  font-weight: 600;
+  color: #92400e;
+  white-space: nowrap;
+}
+
+.chipReason {
+  font-size: 11px;
+  color: $color-text-secondary;
+  font-style: italic;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chipActions {
+  display: flex;
+  opacity: 0.3;
+  transition: opacity 0.15s;
+  margin-left: 2px;
+}
+
+// Inline edit / add chip
+.editChip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background: #fff;
+  border: 1px dashed #fcd34d;
+  border-radius: $radius-md;
+  flex-wrap: wrap;
+}
+
+.dateInput {
+  padding: 4px 8px;
+  font-size: 13px;
+  border: 1px solid $color-border;
+  border-radius: $radius-sm;
+  background: $color-surface;
+  color: $color-text-primary;
+  outline: none;
+
+  &:focus {
+    border-color: #d97706;
+    box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.15);
+  }
+}
+
+.reasonInput {
+  @extend .dateInput;
+  min-width: 160px;
+  flex: 1;
+}
+
+// Delete confirmation chip
+.deleteChip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: #fff;
+  border: 1px solid $color-error;
+  border-radius: $radius-md;
+
+  span {
+    font-size: 13px;
+    color: $color-error;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+}

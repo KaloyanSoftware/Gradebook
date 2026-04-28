@@ -12,6 +12,7 @@ import { useUpdateGrade } from '../../hooks/useUpdateGrade'
 import { useDeleteGrade } from '../../hooks/useDeleteGrade'
 import { useCreateGrade } from '../../hooks/useCreateGrade'
 import { useDeactivateStudent, useActivateStudent, useDeleteStudent } from '../../../students/hooks/useStudentActions'
+import { AbsencesPanel } from '../../../absences/components/AbsencesPanel/AbsencesPanel'
 import { GradePicker } from '../GradePicker/GradePicker'
 import type { UpdateGradeRequest } from '../../types/grade.types'
 import styles from './StudentGradesPanel.module.scss'
@@ -297,6 +298,8 @@ export const StudentGradesPanel = ({ studentId, active, onDeleted }: Props) => {
           )}
         </tbody>
       </table>
+
+      <AbsencesPanel studentId={studentId} />
 
       <div className={styles.accountActions}>
         <span className={styles.accountLabel}>Акаунт:</span>

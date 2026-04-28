@@ -1,9 +1,11 @@
 package application.gradebookbackend.controller;
 
+import application.gradebookbackend.dto.AbsenceResponse;
 import application.gradebookbackend.dto.CreateStudentRequest;
 import application.gradebookbackend.dto.GradeResponse;
 import application.gradebookbackend.dto.StudentResponse;
 import application.gradebookbackend.dto.StudentRosterResponse;
+import application.gradebookbackend.service.AbsenceService;
 import application.gradebookbackend.service.GradeService;
 import application.gradebookbackend.service.StudentService;
 import jakarta.validation.Valid;
@@ -20,10 +22,12 @@ public class StudentController {
 
     private final StudentService studentService;
     private final GradeService gradeService;
+    private final AbsenceService absenceService;
 
-    public StudentController(StudentService studentService, GradeService gradeService) {
+    public StudentController(StudentService studentService, GradeService gradeService, AbsenceService absenceService) {
         this.studentService = studentService;
         this.gradeService = gradeService;
+        this.absenceService = absenceService;
     }
 
     @GetMapping
@@ -38,6 +42,12 @@ public class StudentController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
     public List<GradeResponse> listGrades(@PathVariable UUID studentId) {
         return gradeService.listGradesForStudent(studentId);
+    }
+
+    @GetMapping("/{studentId}/absences")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    public List<AbsenceResponse> listAbsences(@PathVariable UUID studentId) {
+        return absenceService.listAbsencesForStudent(studentId);
     }
 
     @PostMapping
