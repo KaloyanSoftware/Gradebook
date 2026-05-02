@@ -11,6 +11,7 @@ import { ResetPasswordPage } from '@/pages/ResetPasswordPage'
 import { SettingsPage } from '@/pages/SettingsPage/SettingsPage'
 import { ParentDashboardPage } from '@/pages/ParentDashboardPage/ParentDashboardPage'
 import { StudentDashboardPage } from '@/pages/StudentDashboardPage/StudentDashboardPage'
+import { NotificationsPage } from '@/features/notifications/pages/NotificationsPage/NotificationsPage'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 
 export const AppRoutes = () => (
@@ -45,6 +46,7 @@ export const AppRoutes = () => (
     >
       <Route index element={<Navigate to="dashboard" replace />} />
       <Route path="dashboard" element={<ParentDashboardPage />} />
+      <Route path="notifications" element={<NotificationsPage />} />
     </Route>
 
     <Route
@@ -57,6 +59,7 @@ export const AppRoutes = () => (
     >
       <Route index element={<Navigate to="dashboard" replace />} />
       <Route path="dashboard" element={<StudentDashboardPage />} />
+      <Route path="notifications" element={<NotificationsPage />} />
     </Route>
 
     <Route path="*" element={<Navigate to="/login" replace />} />

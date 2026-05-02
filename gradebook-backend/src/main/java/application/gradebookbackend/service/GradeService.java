@@ -53,6 +53,7 @@ public class GradeService {
         studentRepository.save(student);
 
         notificationService.notifyParentsOfGrade(student, grade);
+        notificationService.notifyStudentOfGrade(student, grade);
 
         return grade;
     }

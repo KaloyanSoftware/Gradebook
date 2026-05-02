@@ -4,26 +4,22 @@ import type { NotificationResponse } from '../../types/notification.types'
 import styles from './NotificationBell.module.scss'
 
 interface Props {
-  enabled: boolean
+  role: 'PARENT' | 'STUDENT'
 }
 
-export const NotificationBell = ({ enabled }: Props) => {
+export const NotificationBell = ({ role }: Props) => {
   const [open, setOpen] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
 
-  const { data: unreadData } = useUnreadCount(enabled)
-  const { data: notifications = [] } = useNotifications(enabled && open)
-  const { mutate: markAll } = useMarkAllRead()
-  const { mutate: markOne } = useMarkRead()
+  const { data: unreadData } = useUnreadCount(role, true)
+  const { data: notifications = [] } = useNotifications(role, open)
+  const { mutate: markAll } = useMarkAllRead(role)
+  const { mutate: markOne } = useMarkRead(role)
 
   const unreadCount = unreadData?.count ?? 0
 
   function toggle() {
     setOpen(prev => !prev)
-  }
-
-  function handleMarkAll() {
-    markAll()
   }
 
   function handleMarkOne(n: NotificationResponse) {
@@ -55,7 +51,7 @@ export const NotificationBell = ({ enabled }: Props) => {
           <div className={styles.header}>
             <span className={styles.title}>Известия</span>
             {unreadCount > 0 && (
-              <button className={styles.markAll} onClick={handleMarkAll}>
+              <button className={styles.markAll} onClick={markAll}>
                 Маркирай всички като прочетени
               </button>
             )}

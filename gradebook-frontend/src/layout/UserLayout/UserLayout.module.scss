@@ -58,6 +58,38 @@
   }
 }
 
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 32px;
+  background-color: $color-surface;
+  border-bottom: 1px solid $color-border;
+  flex-shrink: 0;
+}
+
+.navLink {
+  display: inline-block;
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $color-text-secondary;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: $color-text-primary;
+  }
+}
+
+.navLinkActive {
+  color: $color-primary;
+  border-bottom-color: $color-primary;
+  font-weight: 600;
+}
+
 .content {
   flex: 1;
   padding: 40px 32px;
