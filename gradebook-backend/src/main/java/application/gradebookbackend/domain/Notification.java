@@ -13,8 +13,12 @@ public class Notification {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "parent_id", nullable = false)
+    @JoinColumn(name = "parent_id", nullable = true)
     private Parent parent;
+
+    @ManyToOne
+    @JoinColumn(name = "student_id", nullable = true)
+    private Student student;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -45,6 +49,9 @@ public class Notification {
 
     public Parent getParent() { return parent; }
     public void setParent(Parent parent) { this.parent = parent; }
+
+    public Student getStudent() { return student; }
+    public void setStudent(Student student) { this.student = student; }
 
     public NotificationType getType() { return type; }
     public void setType(NotificationType type) { this.type = type; }

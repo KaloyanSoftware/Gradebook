@@ -18,4 +18,12 @@ public interface NotificationRepository extends JpaRepository<Notification, UUID
     @Modifying
     @Query("UPDATE Notification n SET n.isRead = true WHERE n.parent.id = :parentId AND n.isRead = false")
     void markAllReadByParentId(@Param("parentId") UUID parentId);
+
+    List<Notification> findByStudentIdOrderByCreatedAtDesc(UUID studentId);
+
+    long countByStudentIdAndIsReadFalse(UUID studentId);
+
+    @Modifying
+    @Query("UPDATE Notification n SET n.isRead = true WHERE n.student.id = :studentId AND n.isRead = false")
+    void markAllReadByStudentId(@Param("studentId") UUID studentId);
 }
