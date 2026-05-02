@@ -102,6 +102,44 @@ Page → Component → Hook → <feature>/api/<name>.api.ts → Backend (via axi
 - **Never** store tokens in `localStorage` manually — the Supabase JS client handles token storage and refresh.
 - **`external_uid`** on `AppUser` entity = `auth.uid()` from Supabase — the bridge between auth and app data.
 
+### Controller Security Rules
+
+Every controller method **must** be covered by a `@PreAuthorize` annotation. No exceptions.
+
+**Preferred: class-level annotation** when all methods share the same role:
+```java
+@RestController
+@RequestMapping("/admin/grades")
+@PreAuthorize("hasRole('ADMIN')")          // ← covers every method in the class
+public class GradeController { ... }
+```
+
+**Per-method annotation** only when different methods require different roles:
+```java
+@GetMapping("/{parentId}/students")
+@PreAuthorize("hasRole('ADMIN') or hasRole('PARENT')")
+public List<StudentResponse> listStudents(...) { ... }
+```
+
+**URL prefix → expected role:**
+| Prefix | Required role |
+|---|---|
+| `/admin/**` | `ADMIN` |
+| `/parent/**` | `PARENT` |
+| `/student/**` | `STUDENT` |
+| `/api/auth/**` | Any authenticated user — no role annotation needed; covered by `anyRequest().authenticated()` in `SecurityConfig` |
+
+**Resolving the caller's identity inside a method:**
+```java
+// Always use @AuthenticationPrincipal — never parse the token manually
+public ResponseEntity<?> myEndpoint(@AuthenticationPrincipal Jwt jwt) {
+    String externalUid = jwt.getSubject(); // = auth.uid() from Supabase
+    ...
+}
+```
+
+**Ownership enforcement** (parent can only see their own children, etc.) is the responsibility of the **service layer** — not the controller. The controller extracts `externalUid` from the JWT and passes it to the service, which resolves and validates the relationship.
+
 ---
 
 ## Backend Conventions
@@ -141,6 +179,29 @@ Grades are managed **inline** in the student roster — no separate pages or mod
 - `StudentGradesPanel` shows a mini grade table with inline edit/delete/add — no navigation required.
 - Grade value input uses `GradePicker` (`features/grades/components/GradePicker`) — 9 coloured circle buttons for values 2–6 in 0.5 increments. Colour is passed via CSS custom property `--gc` so a single component handles all grades.
 - Subject enum values: `BULGARIAN` → "Български език", `LITERATURE` → "Литература".
+
+### Parent Gradebook
+
+Parents see a read-only gradebook at `/parent/dashboard` (`ParentDashboardPage` → `ParentGradebookPage`).
+
+- Children are fetched from `GET /parent/me/children` — the backend resolves the parent from the JWT `sub` claim.
+- Grades and absences per child: `GET /parent/me/children/{studentId}/grades` and `.../absences`.
+- If a parent has multiple children, a tab bar switches between them.
+- Each child panel shows: stats bar (grade count, average, absence count), a grades table with coloured value pills, and an absences chip list.
+- Grade colours reuse the same palette as `GradePicker` — see `GRADE_COLORS` in `ParentGradebookPage.tsx`.
+- The backend enforces ownership: a parent can only access grades/absences for their own linked children (returns 403 otherwise).
+
+### Parent-facing API routes (backend)
+
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| `GET` | `/parent/me/children` | PARENT | Children linked to the authenticated parent |
+| `GET` | `/parent/me/children/{studentId}/grades` | PARENT | Grades for a linked child |
+| `GET` | `/parent/me/children/{studentId}/absences` | PARENT | Absences for a linked child |
+| `GET` | `/parent/notifications` | PARENT | All notifications |
+| `GET` | `/parent/notifications/unread-count` | PARENT | Unread notification count |
+| `PATCH` | `/parent/notifications/read-all` | PARENT | Mark all notifications read |
+| `PATCH` | `/parent/notifications/{id}/read` | PARENT | Mark one notification read |
 
 ---
 
