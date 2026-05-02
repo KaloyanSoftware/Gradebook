@@ -142,6 +142,29 @@ Grades are managed **inline** in the student roster — no separate pages or mod
 - Grade value input uses `GradePicker` (`features/grades/components/GradePicker`) — 9 coloured circle buttons for values 2–6 in 0.5 increments. Colour is passed via CSS custom property `--gc` so a single component handles all grades.
 - Subject enum values: `BULGARIAN` → "Български език", `LITERATURE` → "Литература".
 
+### Parent Gradebook
+
+Parents see a read-only gradebook at `/parent/dashboard` (`ParentDashboardPage` → `ParentGradebookPage`).
+
+- Children are fetched from `GET /parent/me/children` — the backend resolves the parent from the JWT `sub` claim.
+- Grades and absences per child: `GET /parent/me/children/{studentId}/grades` and `.../absences`.
+- If a parent has multiple children, a tab bar switches between them.
+- Each child panel shows: stats bar (grade count, average, absence count), a grades table with coloured value pills, and an absences chip list.
+- Grade colours reuse the same palette as `GradePicker` — see `GRADE_COLORS` in `ParentGradebookPage.tsx`.
+- The backend enforces ownership: a parent can only access grades/absences for their own linked children (returns 403 otherwise).
+
+### Parent-facing API routes (backend)
+
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| `GET` | `/parent/me/children` | PARENT | Children linked to the authenticated parent |
+| `GET` | `/parent/me/children/{studentId}/grades` | PARENT | Grades for a linked child |
+| `GET` | `/parent/me/children/{studentId}/absences` | PARENT | Absences for a linked child |
+| `GET` | `/parent/notifications` | PARENT | All notifications |
+| `GET` | `/parent/notifications/unread-count` | PARENT | Unread notification count |
+| `PATCH` | `/parent/notifications/read-all` | PARENT | Mark all notifications read |
+| `PATCH` | `/parent/notifications/{id}/read` | PARENT | Mark one notification read |
+
 ---
 
 ## Naming Conventions
