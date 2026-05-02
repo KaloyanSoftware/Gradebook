@@ -2,5 +2,161 @@
   padding: 32px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 24px;
+  max-width: 900px;
+}
+
+.loadingWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 64px;
+}
+
+// --- Stat cards ---
+
+.statsRow {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.statCard {
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 180px;
+  flex: 1;
+}
+
+.statIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-md;
+  background: rgba(21, 101, 192, 0.1);
+  color: $color-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    font-size: 24px;
+  }
+}
+
+.statValue {
+  font-size: 28px;
+  font-weight: 700;
+  color: $color-text-primary;
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: $color-text-secondary;
+  margin-top: 4px;
+}
+
+// --- Activity cards ---
+
+.activityRow {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.activityCard {
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  padding: 20px 24px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.activityTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: $color-text-primary;
+  margin-bottom: 16px;
+}
+
+.activityList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.activityItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid $color-border;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.activityMain {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.activityStudent {
+  font-size: 14px;
+  font-weight: 600;
+  color: $color-text-primary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activityMeta {
+  font-size: 12px;
+  color: $color-text-secondary;
+}
+
+.activityRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.gradeValue {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-primary;
+}
+
+.activityDate {
+  font-size: 12px;
+  color: $color-text-secondary;
+}
+
+.empty {
+  font-size: 13px;
+  color: $color-text-secondary;
+  padding: 12px 0;
 }
