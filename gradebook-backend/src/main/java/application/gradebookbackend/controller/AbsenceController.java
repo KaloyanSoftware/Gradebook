@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/admin/absences")
+@PreAuthorize("hasRole('ADMIN')")
 public class AbsenceController {
 
     private final AbsenceService absenceService;
@@ -23,13 +24,11 @@ public class AbsenceController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
     public AbsenceResponse createAbsence(@Valid @RequestBody CreateAbsenceRequest request) {
         return absenceService.createAbsence(request);
     }
 
     @PutMapping("/{absenceId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public AbsenceResponse updateAbsence(@PathVariable UUID absenceId,
                                          @Valid @RequestBody UpdateAbsenceRequest request) {
         return absenceService.updateAbsence(absenceId, request);
@@ -37,7 +36,6 @@ public class AbsenceController {
 
     @DeleteMapping("/{absenceId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN')")
     public void deleteAbsence(@PathVariable UUID absenceId) {
         absenceService.deleteAbsence(absenceId);
     }

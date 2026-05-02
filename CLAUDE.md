@@ -102,6 +102,44 @@ Page → Component → Hook → <feature>/api/<name>.api.ts → Backend (via axi
 - **Never** store tokens in `localStorage` manually — the Supabase JS client handles token storage and refresh.
 - **`external_uid`** on `AppUser` entity = `auth.uid()` from Supabase — the bridge between auth and app data.
 
+### Controller Security Rules
+
+Every controller method **must** be covered by a `@PreAuthorize` annotation. No exceptions.
+
+**Preferred: class-level annotation** when all methods share the same role:
+```java
+@RestController
+@RequestMapping("/admin/grades")
+@PreAuthorize("hasRole('ADMIN')")          // ← covers every method in the class
+public class GradeController { ... }
+```
+
+**Per-method annotation** only when different methods require different roles:
+```java
+@GetMapping("/{parentId}/students")
+@PreAuthorize("hasRole('ADMIN') or hasRole('PARENT')")
+public List<StudentResponse> listStudents(...) { ... }
+```
+
+**URL prefix → expected role:**
+| Prefix | Required role |
+|---|---|
+| `/admin/**` | `ADMIN` |
+| `/parent/**` | `PARENT` |
+| `/student/**` | `STUDENT` |
+| `/api/auth/**` | Any authenticated user — no role annotation needed; covered by `anyRequest().authenticated()` in `SecurityConfig` |
+
+**Resolving the caller's identity inside a method:**
+```java
+// Always use @AuthenticationPrincipal — never parse the token manually
+public ResponseEntity<?> myEndpoint(@AuthenticationPrincipal Jwt jwt) {
+    String externalUid = jwt.getSubject(); // = auth.uid() from Supabase
+    ...
+}
+```
+
+**Ownership enforcement** (parent can only see their own children, etc.) is the responsibility of the **service layer** — not the controller. The controller extracts `externalUid` from the JWT and passes it to the service, which resolves and validates the relationship.
+
 ---
 
 ## Backend Conventions
