@@ -18,7 +18,7 @@ export const AddGradePage = () => {
   const [successOpen, setSuccessOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const { mutate, isPending } = useCreateGrade()
+  const { mutate, isPending } = useCreateGrade(studentId)
 
   const handleSubmit = (request: CreateGradeRequest) => {
     mutate(request, {

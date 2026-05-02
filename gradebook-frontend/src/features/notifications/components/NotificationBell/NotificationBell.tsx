@@ -51,7 +51,7 @@ export const NotificationBell = ({ role }: Props) => {
           <div className={styles.header}>
             <span className={styles.title}>Известия</span>
             {unreadCount > 0 && (
-              <button className={styles.markAll} onClick={markAll}>
+              <button className={styles.markAll} onClick={() => markAll()}>
                 Маркирай всички като прочетени
               </button>
             )}
