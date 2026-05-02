@@ -6,45 +6,40 @@ import {
   markRead,
 } from '../api/notifications.api'
 
-const NOTIFICATIONS_KEY = ['notifications']
-const UNREAD_COUNT_KEY = ['notifications', 'unread-count']
-
-export const useNotifications = (enabled: boolean) => {
+export const useNotifications = (role: string, enabled: boolean) => {
   return useQuery({
-    queryKey: NOTIFICATIONS_KEY,
-    queryFn: getNotifications,
+    queryKey: ['notifications', role],
+    queryFn: () => getNotifications(role),
     enabled,
     refetchInterval: enabled ? 30_000 : false,
   })
 }
 
-export const useUnreadCount = (enabled: boolean) => {
+export const useUnreadCount = (role: string, enabled: boolean) => {
   return useQuery({
-    queryKey: UNREAD_COUNT_KEY,
-    queryFn: getUnreadCount,
+    queryKey: ['notifications', role, 'unread-count'],
+    queryFn: () => getUnreadCount(role),
     enabled,
     refetchInterval: enabled ? 30_000 : false,
   })
 }
 
-export const useMarkAllRead = () => {
+export const useMarkAllRead = (role: string) => {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: markAllRead,
+    mutationFn: () => markAllRead(role),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: NOTIFICATIONS_KEY })
-      queryClient.invalidateQueries({ queryKey: UNREAD_COUNT_KEY })
+      queryClient.invalidateQueries({ queryKey: ['notifications', role] })
     },
   })
 }
 
-export const useMarkRead = () => {
+export const useMarkRead = (role: string) => {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (notificationId: string) => markRead(notificationId),
+    mutationFn: (notificationId: string) => markRead(role, notificationId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: NOTIFICATIONS_KEY })
-      queryClient.invalidateQueries({ queryKey: UNREAD_COUNT_KEY })
+      queryClient.invalidateQueries({ queryKey: ['notifications', role] })
     },
   })
 }

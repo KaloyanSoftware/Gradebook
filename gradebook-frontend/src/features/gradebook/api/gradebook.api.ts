@@ -17,3 +17,14 @@ export const getMyChildAbsences = async (studentId: string): Promise<AbsenceResp
   const response = await axiosClient.get<AbsenceResponse[]>(`/parent/me/children/${studentId}/absences`)
   return response.data
 }
+
+// ── Student self-view ──────────────────────────────────────────────────────
+export const getMyGrades = async (): Promise<GradeResponse[]> => {
+  const response = await axiosClient.get<GradeResponse[]>('/student/me/grades')
+  return response.data
+}
+
+export const getMyAbsences = async (): Promise<AbsenceResponse[]> => {
+  const response = await axiosClient.get<AbsenceResponse[]>('/student/me/absences')
+  return response.data
+}

@@ -1,0 +1,158 @@
+import { CircularProgress } from '@mui/material'
+import { useMyGrades } from '../../hooks/useMyGrades'
+import { useMyAbsences } from '../../hooks/useMyAbsences'
+import { useAuth } from '@/context/AuthContext'
+import type { GradeResponse } from '@/features/grades/types/grade.types'
+import styles from './StudentGradebookPage.module.scss'
+
+// ── helpers ────────────────────────────────────────────────────────────────
+const GRADE_COLORS: Record<number, string> = {
+  2: '#DC2626', 2.5: '#EF4444',
+  3: '#EA580C', 3.5: '#F97316',
+  4: '#CA8A04', 4.5: '#EAB308',
+  5: '#65A30D', 5.5: '#22C55E',
+  6: '#16A34A',
+}
+const gradeColor = (v: number) => GRADE_COLORS[v] ?? '#64748B'
+
+const SUBJECT_LABELS: Record<string, string> = {
+  BULGARIAN:  'Български език',
+  LITERATURE: 'Литература',
+}
+const subjectLabel = (s: string) => SUBJECT_LABELS[s] ?? s
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString('bg-BG', {
+    day: '2-digit', month: '2-digit', year: 'numeric',
+  })
+
+function average(grades: GradeResponse[]): string | null {
+  if (grades.length === 0) return null
+  const sum = grades.reduce((acc, g) => acc + Number(g.value), 0)
+  return (sum / grades.length).toFixed(2)
+}
+
+// ── page ───────────────────────────────────────────────────────────────────
+export const StudentGradebookPage = () => {
+  const { user } = useAuth()
+  const { data: grades = [], isLoading: gradesLoading } = useMyGrades()
+  const { data: absences = [], isLoading: absencesLoading } = useMyAbsences()
+
+  const isLoading = gradesLoading || absencesLoading
+
+  const avg = average(grades)
+  const avgNum = avg ? parseFloat(avg) : null
+
+  return (
+    <div className={styles.page}>
+      <h2 className={styles.pageTitle}>Моят дневник</h2>
+
+      {user && (
+        <div className={styles.card}>
+          {/* ── Student identity ── */}
+          <div className={styles.studentHeader}>
+            <div className={styles.avatar}>
+              {user.firstName.charAt(0)}{user.lastName.charAt(0)}
+            </div>
+            <div>
+              <div className={styles.studentName}>{user.firstName} {user.lastName}</div>
+              <div className={styles.studentEmail}>{user.email}</div>
+            </div>
+          </div>
+
+          {isLoading ? (
+            <div className={styles.spinnerRow}><CircularProgress size={28} /></div>
+          ) : (
+            <>
+              {/* ── Stats bar ── */}
+              <div className={styles.statsBar}>
+                <div className={styles.stat}>
+                  <span className={styles.statValue}>{grades.length}</span>
+                  <span className={styles.statLabel}>оценки</span>
+                </div>
+                <div className={styles.statDivider} />
+                <div className={styles.stat}>
+                  {avgNum !== null ? (
+                    <span
+                      className={styles.statValue}
+                      style={{ color: gradeColor(Math.round(avgNum * 2) / 2) }}
+                    >
+                      {avg}
+                    </span>
+                  ) : (
+                    <span className={styles.statValue} style={{ color: '#94a3b8' }}>—</span>
+                  )}
+                  <span className={styles.statLabel}>среден успех</span>
+                </div>
+                <div className={styles.statDivider} />
+                <div className={styles.stat}>
+                  <span className={styles.statValue}>{absences.length}</span>
+                  <span className={styles.statLabel}>отсъствия</span>
+                </div>
+              </div>
+
+              {/* ── Grades ── */}
+              <div className={styles.section}>
+                <h3 className={styles.sectionTitle}>Оценки</h3>
+                {grades.length === 0 ? (
+                  <p className={styles.empty}>Няма въведени оценки.</p>
+                ) : (
+                  <table className={styles.table}>
+                    <thead>
+                      <tr>
+                        <th>Дата</th>
+                        <th>Предмет</th>
+                        <th>Оценка</th>
+                        <th>Коментар</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {grades.map((g) => (
+                        <tr key={g.id}>
+                          <td>{formatDate(g.date)}</td>
+                          <td>{subjectLabel(g.subject)}</td>
+                          <td>
+                            <span
+                              className={styles.gradePill}
+                              style={{ backgroundColor: gradeColor(Number(g.value)) }}
+                            >
+                              {Number(g.value) % 1 === 0
+                                ? Number(g.value).toString()
+                                : Number(g.value).toFixed(1)}
+                            </span>
+                          </td>
+                          <td className={styles.commentCell}>
+                            {g.comment ?? <span className={styles.noComment}>—</span>}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+
+              {/* ── Absences ── */}
+              <div className={styles.section}>
+                <h3 className={styles.sectionTitle}>Отсъствия</h3>
+                {absences.length === 0 ? (
+                  <p className={styles.empty}>Няма записани отсъствия.</p>
+                ) : (
+                  <div className={styles.absenceList}>
+                    {absences.map((a) => (
+                      <div key={a.id} className={styles.absenceChip}>
+                        <span className={styles.absenceDate}>{formatDate(a.date)}</span>
+                        {a.reason && (
+                          <span className={styles.absenceReason}>{a.reason}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}

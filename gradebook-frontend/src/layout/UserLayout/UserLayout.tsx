@@ -12,7 +12,9 @@ export const UserLayout = () => {
     STUDENT: 'Ученик',
   };
 
-  const isParent = user?.role === 'PARENT';
+  const bellRole = user?.role === 'PARENT' || user?.role === 'STUDENT'
+    ? (user.role as 'PARENT' | 'STUDENT')
+    : null;
 
   async function handleSignOut() {
     await signOut();
@@ -32,7 +34,7 @@ export const UserLayout = () => {
           {user && (
             <span className={styles.badge}>{roleLabel[user.role] ?? user.role}</span>
           )}
-          {isParent && <NotificationBell enabled={isParent} />}
+          {bellRole && <NotificationBell role={bellRole} />}
           <button className={styles.signout} onClick={handleSignOut}>
             Изход
           </button>
