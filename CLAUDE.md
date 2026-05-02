@@ -213,6 +213,18 @@ The `NotificationBell` component (`features/notifications/components/Notificatio
 - When an absence is recorded, linked parents receive a notification (students do not — add if required).
 - `NotificationService` handles all notification creation. `GradeService` and `AbsenceService` call it after saving.
 
+### Notifications History Page
+
+Both PARENT and STUDENT roles have a full notifications list at `/<role>/notifications` (`NotificationsPage` — `features/notifications/pages/NotificationsPage`).
+
+- The page is reachable from the `UserLayout` tab bar ("Известия") rendered in `<nav>` beneath the topbar. `NavLink` applies `.navLinkActive` (primary-coloured bottom border) to the active tab.
+- The role is read from `useAuth()` — no prop needed. The existing role-parameterised hooks (`useNotifications`, `useMarkAllRead`, `useMarkRead`) are reused directly.
+- Notifications are grouped by date: **"Днес"**, **"Вчера"**, or a formatted Bulgarian date (`dd MMMM yyyy`).
+- Each row shows a blue dot for unread items; clicking a row marks it read (`PATCH .../notifications/{id}/read`).
+- A "Маркирай всички като прочетени" button appears only when `unreadCount > 0`.
+- Empty state shows a bell icon and "Няма известия все още."
+- Routes are nested inside `ProtectedRoute` wrappers (PARENT / STUDENT respectively) in `router/index.tsx`, so a valid JWT is always required.
+
 ### Role-facing API routes (backend)
 
 **Parent (`/parent/**` — role: PARENT)**
