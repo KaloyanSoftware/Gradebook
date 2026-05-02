@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { NotificationBell } from '@/features/notifications/components/NotificationBell/NotificationBell';
 import styles from './UserLayout.module.scss';
@@ -15,6 +15,12 @@ export const UserLayout = () => {
   const bellRole = user?.role === 'PARENT' || user?.role === 'STUDENT'
     ? (user.role as 'PARENT' | 'STUDENT')
     : null;
+
+  const base = user?.role === 'PARENT' ? '/parent' : '/student';
+  const navLinks = [
+    { to: `${base}/dashboard`,      label: 'Дневник' },
+    { to: `${base}/notifications`,  label: 'Известия' },
+  ];
 
   async function handleSignOut() {
     await signOut();
@@ -40,6 +46,20 @@ export const UserLayout = () => {
           </button>
         </div>
       </header>
+      <nav className={styles.nav}>
+        {navLinks.map(({ to, label }) => (
+          <NavLink
+            key={to}
+            to={to}
+            className={({ isActive }) =>
+              `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
+            }
+          >
+            {label}
+          </NavLink>
+        ))}
+      </nav>
+
       <main className={styles.content}>
         <Outlet />
       </main>
