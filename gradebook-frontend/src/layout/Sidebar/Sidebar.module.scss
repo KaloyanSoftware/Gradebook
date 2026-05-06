@@ -6,6 +6,23 @@
   flex-direction: column;
   flex-shrink: 0;
   box-shadow: $shadow-sidebar;
+  transition: transform 0.3s ease;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(-100%);
+    min-height: unset;
+  }
+}
+
+.sidebarOpen {
+  @media (max-width: 768px) {
+    transform: translateX(0);
+  }
 }
 
 .brand {

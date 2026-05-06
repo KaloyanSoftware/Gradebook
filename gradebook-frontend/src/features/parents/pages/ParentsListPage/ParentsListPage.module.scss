@@ -1,6 +1,10 @@
 .page {
   padding: 32px;
   max-width: 900px;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
 }
 
 .header {

@@ -29,7 +29,12 @@ const managementNav = [
   { label: 'Връзки родител–ученик', icon: <LinkIcon fontSize="small" />, to: null },
 ]
 
-export const Sidebar = () => {
+interface Props {
+  isOpen?: boolean
+  onClose?: () => void
+}
+
+export const Sidebar = ({ isOpen, onClose }: Props) => {
   const { signOut } = useAuth()
   const navigate = useNavigate()
 
@@ -39,7 +44,7 @@ export const Sidebar = () => {
   }
 
   return (
-    <aside className={styles.sidebar}>
+    <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
       <div className={styles.brand}>
         <Typography variant="h6" sx={{ fontWeight: 700 }} className={styles.brandText}>
           Дневник
@@ -53,6 +58,7 @@ export const Sidebar = () => {
               key={item.to}
               to={item.to}
               className={({ isActive }) => isActive ? styles.activeLink : styles.link}
+              onClick={onClose}
             >
               <ListItemButton className={styles.navItem}>
                 <ListItemIcon className={styles.icon}>{item.icon}</ListItemIcon>
@@ -72,6 +78,7 @@ export const Sidebar = () => {
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) => isActive ? styles.activeLink : styles.link}
+                onClick={onClose}
               >
                 <ListItemButton className={styles.navItem}>
                   <ListItemIcon className={styles.icon}>{item.icon}</ListItemIcon>
@@ -106,6 +113,7 @@ export const Sidebar = () => {
           <NavLink
             to="/admin/settings"
             className={({ isActive }) => isActive ? styles.activeLink : styles.link}
+            onClick={onClose}
           >
             <ListItemButton className={styles.navItem}>
               <ListItemIcon className={styles.icon}><SettingsIcon fontSize="small" /></ListItemIcon>

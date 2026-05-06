@@ -1,6 +1,10 @@
 .page {
   padding: 32px;
   max-width: 1000px;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
 }
 
 .header {
@@ -9,6 +13,11 @@
   justify-content: space-between;
   margin-bottom: 24px;
   gap: 16px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .titleRow {
@@ -36,6 +45,10 @@
 .searchWrapper {
   flex-shrink: 0;
   width: 260px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .card {
@@ -44,6 +57,7 @@
   border-radius: $radius-lg;
   box-shadow: $shadow-card;
   overflow: hidden;
+  overflow-x: auto;
 }
 
 .table {
