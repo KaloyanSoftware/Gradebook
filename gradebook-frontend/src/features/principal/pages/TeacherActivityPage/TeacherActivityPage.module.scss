@@ -1,0 +1,78 @@
+.page {
+  padding: 32px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: $color-text-primary;
+}
+
+.loading {
+  padding: 32px 0;
+}
+
+.section {
+  margin-bottom: 36px;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin-bottom: 12px !important;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid $color-border;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+
+  th {
+    text-align: left;
+    padding: 10px 16px;
+    background: $color-surface;
+    color: $color-text-secondary;
+    font-weight: 600;
+    border-bottom: 1px solid $color-border;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 10px 16px;
+    color: $color-text-primary;
+    border-bottom: 1px solid $color-border;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:nth-child(even) {
+    background: rgba(0, 0, 0, 0.02);
+  }
+}
+
+.gradeValue {
+  font-weight: 700;
+  color: $color-primary;
+}
+
+.empty {
+  color: $color-text-secondary;
+  font-size: 0.9rem;
+  padding: 16px 0;
+}

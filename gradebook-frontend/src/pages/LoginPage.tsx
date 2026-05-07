@@ -26,6 +26,7 @@ export function LoginPage() {
         ADMIN: '/admin',
         PARENT: '/parent',
         STUDENT: '/student',
+        PRINCIPAL: '/principal',
       }
       navigate(homeByRole[payload.app_role] ?? '/admin')
     }

@@ -6,6 +6,7 @@ const homeByRole: Record<Role, string> = {
   ADMIN: '/admin/dashboard',
   PARENT: '/parent/dashboard',
   STUDENT: '/student/dashboard',
+  PRINCIPAL: '/principal/dashboard',
 };
 
 interface Props {

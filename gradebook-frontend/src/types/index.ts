@@ -1,4 +1,4 @@
-export type Role = 'ADMIN' | 'PARENT' | 'STUDENT';
+export type Role = 'ADMIN' | 'PARENT' | 'STUDENT' | 'PRINCIPAL';
 
 export interface AppUser {
   id: string;

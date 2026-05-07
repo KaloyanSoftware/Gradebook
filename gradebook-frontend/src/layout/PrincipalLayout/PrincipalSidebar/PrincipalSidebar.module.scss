@@ -1,0 +1,92 @@
+.sidebar {
+  width: $sidebar-width;
+  min-height: 100vh;
+  background-color: $color-sidebar-bg;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  box-shadow: $shadow-sidebar;
+  transition: transform 0.3s ease;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(-100%);
+    min-height: unset;
+  }
+}
+
+.sidebarOpen {
+  @media (max-width: 768px) {
+    transform: translateX(0);
+  }
+}
+
+.brand {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brandText {
+  color: $color-sidebar-text-active !important;
+  letter-spacing: 0.5px;
+}
+
+.nav {
+  padding: 12px 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.link {
+  display: block;
+  color: $color-sidebar-text;
+}
+
+.activeLink {
+  display: block;
+  color: $color-sidebar-text-active;
+
+  .navItem {
+    background-color: $color-sidebar-active !important;
+    border-left: 3px solid $color-primary-light;
+  }
+}
+
+.navItem {
+  padding: 10px 20px !important;
+  color: inherit !important;
+  border-left: 3px solid transparent;
+
+  &:hover {
+    background-color: $color-sidebar-active !important;
+  }
+}
+
+.icon {
+  min-width: 36px !important;
+  color: inherit !important;
+}
+
+.divider {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  margin: 8px 0 !important;
+}
+
+.sectionLabel {
+  display: block;
+  color: $color-sidebar-section !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.2px !important;
+  padding: 10px 24px 4px !important;
+  text-transform: uppercase;
+}
+
+.footer {
+  color: $color-sidebar-text;
+  padding-bottom: 24px;
+}
