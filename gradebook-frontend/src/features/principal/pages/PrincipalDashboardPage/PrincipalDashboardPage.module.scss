@@ -1,0 +1,211 @@
+.page {
+  padding: 32px;
+}
+
+.greeting {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin-bottom: 6px;
+}
+
+.sub {
+  font-size: 0.95rem;
+  color: $color-text-secondary;
+  margin-bottom: 32px;
+}
+
+.loading {
+  padding: 40px 0;
+}
+
+// ── Top stats row ──────────────────────────────────────────
+.topGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.statCard {
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: 12px;
+  padding: 28px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  transition: box-shadow 0.15s, transform 0.15s;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+}
+
+.statIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    font-size: 1.3rem;
+  }
+}
+
+.statValue {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: $color-text-primary;
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: $color-text-secondary;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+// ── Middle big stats ────────────────────────────────────────
+.midGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bigStatCard {
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.bigStatLabel {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: $color-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+.bigStatValue {
+  font-size: 3rem;
+  font-weight: 800;
+  color: $color-text-primary;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.bigStatSub {
+  font-size: 0.8rem;
+  color: $color-text-secondary;
+}
+
+// ── Teacher spotlight cards ─────────────────────────────────
+.teacherGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.teacherCard {
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: 12px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.15s;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+}
+
+.teacherCardTop {
+  border-top: 3px solid #16a34a;
+}
+
+.teacherCardLow {
+  border-top: 3px solid #d97706;
+}
+
+.teacherCardBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $color-text-secondary;
+
+  .teacherCardTop & {
+    color: #16a34a;
+  }
+
+  .teacherCardLow & {
+    color: #d97706;
+  }
+}
+
+.teacherAvatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: $color-primary;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.teacherName {
+  font-weight: 700;
+  font-size: 1rem;
+  color: $color-text-primary;
+}
+
+.teacherMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: $color-text-secondary;
+}
+
+.dot {
+  opacity: 0.4;
+}

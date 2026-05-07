@@ -14,6 +14,10 @@ public class Grade {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @ManyToOne
+    @JoinColumn(name = "student_id", insertable = false, updatable = false)
+    private Student student;
+
     // TODO: wire up once auth principal is available in service layer
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = true)
@@ -56,6 +60,8 @@ public class Grade {
     public void setId(UUID id) {
         this.id = id;
     }
+
+    public Student getStudent() { return student; }
 
     public AppUser getCreatedBy() {
         return createdBy;
