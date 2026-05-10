@@ -13,7 +13,7 @@ export const PrincipalLayout = () => {
         <button className={styles.hamburger} onClick={() => setSidebarOpen(true)} aria-label="Отвори меню">
           <MenuIcon />
         </button>
-        <span className={styles.mobileBrand}>Дневник</span>
+        <span className={styles.mobileBrand}>Princeps</span>
       </div>
 
       {sidebarOpen && (

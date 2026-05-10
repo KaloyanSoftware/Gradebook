@@ -46,9 +46,10 @@ export const Sidebar = ({ isOpen, onClose }: Props) => {
   return (
     <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
       <div className={styles.brand}>
-        <Typography variant="h6" sx={{ fontWeight: 700 }} className={styles.brandText}>
-          Дневник
+        <Typography className={styles.brandText}>
+          Princeps
         </Typography>
+        <span className={styles.brandSub}>дневник</span>
       </div>
 
       <nav className={styles.nav}>

@@ -1,9 +1,34 @@
 .page {
-  padding: 32px;
+  padding: 32px 36px 40px;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  max-width: 900px;
+  max-width: 960px;
+
+  @media (max-width: 768px) {
+    padding: 20px 16px;
+  }
+}
+
+.pageHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.pageTitle {
+  font-family: $font-family-serif;
+  font-size: 36px;
+  font-weight: 500;
+  color: $color-text-primary;
+  letter-spacing: 0.01em;
+  margin: 0 0 4px;
+}
+
+.pageSub {
+  font-size: 13px;
+  color: $color-text-secondary;
 }
 
 .loadingWrapper {
@@ -12,80 +37,86 @@
   padding: 64px;
 }
 
-// --- Stat cards ---
+// --- Stat tiles ---
 
 .statsRow {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 16px;
-  flex-wrap: wrap;
 }
 
 .statCard {
   background: $color-surface;
   border: 1px solid $color-border;
-  border-radius: $radius-lg;
-  box-shadow: $shadow-card;
-  padding: 20px 24px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  min-width: 180px;
-  flex: 1;
-}
-
-.statIcon {
-  width: 48px;
-  height: 48px;
   border-radius: $radius-md;
-  background: rgba(21, 101, 192, 0.1);
-  color: $color-primary;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-
-  svg {
-    font-size: 24px;
-  }
-}
-
-.statValue {
-  font-size: 28px;
-  font-weight: 700;
-  color: $color-text-primary;
-  line-height: 1;
+  box-shadow: $shadow-card;
+  padding: 22px 22px 20px;
+  position: relative;
+  overflow: hidden;
 }
 
 .statLabel {
-  font-size: 13px;
-  color: $color-text-secondary;
-  margin-top: 4px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: $color-text-muted;
+  font-weight: 700;
+}
+
+.statValue {
+  font-family: $font-family-serif;
+  font-size: 44px;
+  font-weight: 500;
+  color: $color-text-primary;
+  line-height: 1;
+  margin-top: 12px;
+}
+
+.statIcon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  color: $color-border-strong;
+  opacity: 0.6;
+
+  svg {
+    font-size: 20px;
+  }
 }
 
 // --- Activity cards ---
 
 .activityRow {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 16px;
-  flex-wrap: wrap;
   align-items: flex-start;
 }
 
 .activityCard {
   background: $color-surface;
   border: 1px solid $color-border;
-  border-radius: $radius-lg;
+  border-radius: $radius-md;
   box-shadow: $shadow-card;
-  padding: 20px 24px;
-  flex: 1;
-  min-width: 260px;
+  overflow: hidden;
+}
+
+.activityHeader {
+  padding: 14px 20px;
+  border-bottom: 1px solid $color-border;
+  background: $color-elevated;
 }
 
 .activityTitle {
-  font-size: 15px;
-  font-weight: 600;
-  color: $color-text-primary;
-  margin-bottom: 16px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: $color-text-muted;
+}
+
+.activityBody {
+  padding: 0 20px;
 }
 
 .activityList {
@@ -94,7 +125,6 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
 .activityItem {
@@ -102,16 +132,11 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid $color-border;
+  padding: 12px 0;
+  border-bottom: 1px solid $color-border-soft;
 
   &:last-child {
     border-bottom: none;
-    padding-bottom: 0;
-  }
-
-  &:first-child {
-    padding-top: 0;
   }
 }
 
@@ -123,7 +148,7 @@
 }
 
 .activityStudent {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: $color-text-primary;
   white-space: nowrap;
@@ -132,8 +157,8 @@
 }
 
 .activityMeta {
-  font-size: 12px;
-  color: $color-text-secondary;
+  font-size: 11px;
+  color: $color-text-muted;
 }
 
 .activityRight {
@@ -145,18 +170,22 @@
 }
 
 .gradeValue {
-  font-size: 16px;
-  font-weight: 700;
-  color: $color-primary;
+  font-family: $font-family-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: $color-text-primary;
 }
 
 .activityDate {
-  font-size: 12px;
-  color: $color-text-secondary;
+  font-size: 11px;
+  color: $color-text-muted;
+  font-family: $font-family-mono;
+  letter-spacing: 0.04em;
 }
 
 .empty {
   font-size: 13px;
-  color: $color-text-secondary;
-  padding: 12px 0;
+  color: $color-text-muted;
+  padding: 20px 0;
+  font-style: italic;
 }

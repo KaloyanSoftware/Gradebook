@@ -30,7 +30,7 @@ export const UserLayout = () => {
   return (
     <div className={styles.shell}>
       <header className={styles.topbar}>
-        <span className={styles.brand}>Дневник</span>
+        <span className={styles.brand}>Princeps</span>
         <div className={styles.right}>
           {user && (
             <span className={styles.name}>

@@ -25,7 +25,8 @@
     gap: 12px;
     padding: 0 16px;
     height: 56px;
-    background-color: $color-sidebar-bg;
+    background-color: $color-cream;
+    border-bottom: 1px solid $color-border;
     flex-shrink: 0;
     z-index: 100;
   }
@@ -34,7 +35,7 @@
 .hamburger {
   background: none;
   border: none;
-  color: $color-sidebar-text-active;
+  color: $color-text-primary;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -42,15 +43,16 @@
   border-radius: $radius-sm;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(42, 37, 32, 0.08);
   }
 }
 
 .mobileBrand {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: $color-sidebar-text-active;
-  letter-spacing: 0.5px;
+  font-family: $font-family-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: $color-text-primary;
+  letter-spacing: 0.04em;
 }
 
 // --- Overlay backdrop ---
@@ -62,7 +64,7 @@
     display: block;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(42, 37, 32, 0.5);
     z-index: 999;
   }
 }
