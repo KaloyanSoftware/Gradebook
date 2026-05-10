@@ -7,11 +7,11 @@
 }
 
 // ── Size variants ─────────────────────────────────────────────
-.sm  { --logo-w: 100px; }
-.md  { --logo-w: 140px; }
-.lg  { --logo-w: 200px; }
+.sm  { --logo-w: 100px; --text-size: 17px; --crown-h: 18px; }
+.md  { --logo-w: 140px; --text-size: 23px; --crown-h: 24px; }
+.lg  { --logo-w: 200px; --text-size: 34px; --crown-h: 36px; }
 
-// ── Image ─────────────────────────────────────────────────────
+// ── Image version (light backgrounds) ─────────────────────────
 .img {
   width: var(--logo-w, 140px);
   height: auto;
@@ -19,11 +19,28 @@
   object-fit: contain;
 }
 
-// ── Light variant (on dark background) ───────────────────────
-// The logo has its own cream background — show it as a stamp/card.
-.light .img {
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+// ── Text + SVG crown version (dark backgrounds) ───────────────
+.textWordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.textCrown {
+  height: var(--crown-h, 24px);
+  width: auto;
+  display: block;
+}
+
+.textLetters {
+  font-family: $font-family-serif;
+  font-size: var(--text-size, 23px);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: #F8F2EA;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 // ── Subtitle ──────────────────────────────────────────────────
@@ -37,6 +54,6 @@
   line-height: 1;
 }
 
-.light .subtitle {
+.subtitleLight {
   color: #B5A89A;
 }
