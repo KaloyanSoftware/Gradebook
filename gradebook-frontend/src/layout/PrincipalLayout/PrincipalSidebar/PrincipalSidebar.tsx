@@ -7,6 +7,7 @@ import PeopleIcon from '@mui/icons-material/People'
 import LogoutIcon from '@mui/icons-material/Logout'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { useAuth } from '@/context/AuthContext'
+import { PrincepsLogo } from '@/components/PrincepsLogo/PrincepsLogo'
 import styles from './PrincipalSidebar.module.scss'
 
 interface Props {
@@ -26,9 +27,7 @@ export const PrincipalSidebar = ({ isOpen, onClose }: Props) => {
   return (
     <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
       <div className={styles.brand}>
-        <Typography variant="h6" sx={{ fontWeight: 700 }} className={styles.brandText}>
-          Дневник
-        </Typography>
+        <PrincepsLogo size="md" />
       </div>
 
       <nav className={styles.nav}>

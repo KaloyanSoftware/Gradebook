@@ -1,69 +1,89 @@
 // ================================================================
-// THEME VARIABLES — change these to retheme the entire application
+// PRINCEPS THEME VARIABLES
 // Keep muiTheme.ts in sync when changing colors
 // ================================================================
 
-// --- Colors ---
-$color-primary:             #1565C0;
-$color-primary-light:       #1976D2;
-$color-primary-dark:        #0D47A1;
+// --- Surfaces ---
+$color-background:          #F1E7DA;   // --bg-page  — app background
+$color-cream:               #F8F2EA;   // --bg-cream — sidebar / softer surface
+$color-surface:             #FFFFFF;   // --bg-paper — cards, modals
+$color-elevated:            #FBF6EF;   // --bg-elev  — table headers, sub-surfaces
+
+// --- Ink (text) ---
+$color-text-primary:        #2A2520;   // --ink
+$color-text-secondary:      #5C5046;   // --ink-soft
+$color-text-muted:          #8A7C6E;   // --ink-mute
+$color-text-faint:          #B5A89A;   // --ink-faint
+
+// --- Strokes ---
+$color-border:              #E2D3C0;   // --line
+$color-border-soft:         #ECDFCF;   // --line-soft
+$color-border-strong:       #C7B49C;   // --line-strong
+
+// --- Brand accents ---
+$color-primary:             #C9A24E;   // --gold
+$color-primary-dark:        #A8842F;   // --gold-deep
+$color-primary-light:       #E8D29A;   // --gold-soft
+$color-primary-tint:        #F4E7C4;   // --gold-tint
 $color-primary-contrast:    #FFFFFF;
 
-$color-sidebar-bg:          #1E293B;
-$color-sidebar-active:      #334155;
-$color-sidebar-text:        #CBD5E1;
-$color-sidebar-text-active: #FFFFFF;
-$color-sidebar-section:     rgba(203, 213, 225, 0.45);
+$color-beige:               #DCC5AC;
+$color-beige-deep:          #C9AE91;
+$color-taupe:               #B89B7B;
 
-$color-background:          #F1F5F9;
-$color-surface:             #FFFFFF;
-$color-border:              #E2E8F0;
+// --- Sidebar ---
+$color-sidebar-bg:          #F8F2EA;   // cream (light editorial sidebar)
+$color-sidebar-active:      #2A2520;   // ink — active item background
+$color-sidebar-text:        #5C5046;   // ink-soft
+$color-sidebar-text-active: #F8F2EA;   // cream text on dark active bg
+$color-sidebar-section:     #8A7C6E;   // ink-mute
 
-$color-text-primary:        #1E293B;
-$color-text-secondary:      #64748B;
-
-$color-success:             #16A34A;
-$color-error:               #DC2626;
+// --- Status ---
+$color-success:             #7A8E3F;   // grade-5 green
+$color-error:               #B23A2A;   // grade-2 red
 
 // --- Typography ---
-$font-family:               'Roboto', 'Helvetica', sans-serif;
+$font-family-serif:         'Cormorant Garamond', Georgia, serif;
+$font-family-sans:          'Manrope', 'Helvetica Neue', system-ui, sans-serif;
+$font-family-mono:          'JetBrains Mono', ui-monospace, monospace;
+$font-family:               $font-family-sans;
 
 // --- Layout ---
-$sidebar-width:             260px;
+$sidebar-width:             248px;
 
 // --- Spacing ---
-$radius-sm:                 4px;
-$radius-md:                 8px;
-$radius-lg:                 12px;
+$radius-sm:                 6px;
+$radius-md:                 10px;
+$radius-lg:                 16px;
 
 // --- Shadows ---
-$shadow-card:               0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.12);
-$shadow-sidebar:            2px 0 8px rgba(0, 0, 0, 0.15);
+$shadow-card:               0 1px 2px rgba(60,40,20,.04), 0 8px 28px -12px rgba(60,40,20,.10);
+$shadow-pop:                0 16px 40px -12px rgba(60,40,20,.22);
+$shadow-sidebar:            1px 0 0 #E2D3C0;
 
 // ================================================================
-// GRADE FORM ACCENT PALETTE — warm/nature tones for the grade modal
-// Change these independently of the main admin palette
+// GRADE FORM ACCENT PALETTE
 // ================================================================
-$color-grade-accent:          #7a9e7e;   // sage green — focus rings, submit button
-$color-grade-accent-dark:     #6a8e6e;   // darker sage — submit hover
-$color-grade-accent-disabled: #b8d4ba;   // muted sage — submit disabled
-$color-grade-warm:            #c17b5c;   // terracotta — modal top border, error states
-$color-grade-surface:         #faf8f4;   // warm white — modal background
-$color-grade-border:          #ddd6cb;   // warm gray — input borders, cancel button
-$color-grade-label:           #4a5e4c;   // dark sage — form labels
-$color-grade-text:            #2c3e30;   // deep green — modal titles, input text
-$color-grade-overlay:         rgba(44, 62, 48, 0.5); // dark overlay behind modal
-$color-grade-border-dark:     #cdc2b2;   // darken($color-grade-border, 8%) — cancel button hover border
+$color-grade-accent:          #C9A24E;   // gold — focus rings, submit button
+$color-grade-accent-dark:     #A8842F;   // gold-deep — hover
+$color-grade-accent-disabled: #E8D29A;   // gold-soft — disabled
+$color-grade-warm:            #B23A2A;   // grade-2 red — error states
+$color-grade-surface:         #FFFFFF;   // bg-paper
+$color-grade-border:          #E2D3C0;   // line
+$color-grade-label:           #5C5046;   // ink-soft
+$color-grade-text:            #2A2520;   // ink
+$color-grade-overlay:         rgba(42, 37, 32, 0.55);
+$color-grade-border-dark:     #C7B49C;   // line-strong
 
 // ================================================================
-// GRADE VALUE COLOURS — used in the inline grade picker
+// GRADE VALUE COLOURS
 // ================================================================
-$color-grade-val-2:   #DC2626;   // red    — Слаб
-$color-grade-val-2h:  #EF4444;   // light red
-$color-grade-val-3:   #EA580C;   // orange — Среден
-$color-grade-val-3h:  #F97316;   // light orange
-$color-grade-val-4:   #CA8A04;   // amber  — Добър
-$color-grade-val-4h:  #EAB308;   // light amber
-$color-grade-val-5:   #65A30D;   // green  — Мн. добър
-$color-grade-val-5h:  #22C55E;   // light green
-$color-grade-val-6:   #16A34A;   // dark green — Отличен
+$color-grade-val-2:   #B23A2A;
+$color-grade-val-2h:  #D04535;
+$color-grade-val-3:   #C76A2E;
+$color-grade-val-3h:  #E0803A;
+$color-grade-val-4:   #C99431;
+$color-grade-val-4h:  #E0AE40;
+$color-grade-val-5:   #7A8E3F;
+$color-grade-val-5h:  #95AB4E;
+$color-grade-val-6:   #4E6B3A;

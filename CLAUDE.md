@@ -6,7 +6,7 @@ This file is committed to git and applies to **all contributors and all Claude w
 
 ## Project Overview
 
-A digital gradebook system for a Bulgarian Language and Literature private mentorship program. Three roles: **Admin** (teacher/mentor), **Parent**, and **Student**.
+A digital gradebook system for the **Princeps** Bulgarian Language and Literature private mentorship programme, run by Димитър Кацаров. Three roles: **Admin** (teacher/mentor), **Parent**, and **Student**.
 
 MVP features: grade management, absence tracking, notifications, role-based access control.
 
@@ -127,6 +127,7 @@ public List<StudentResponse> listStudents(...) { ... }
 | `/admin/**` | `ADMIN` |
 | `/parent/**` | `PARENT` |
 | `/student/**` | `STUDENT` |
+| `/principal/**` | `PRINCIPAL` |
 | `/api/auth/**` | Any authenticated user — no role annotation needed; covered by `anyRequest().authenticated()` in `SecurityConfig` |
 
 **Resolving the caller's identity inside a method:**
@@ -249,6 +250,140 @@ Both PARENT and STUDENT roles have a full notifications list at `/<role>/notific
 | `GET` | `/student/me/notifications/unread-count` | Unread count |
 | `PATCH` | `/student/me/notifications/read-all` | Mark all read |
 | `PATCH` | `/student/me/notifications/{id}/read` | Mark one read |
+
+---
+
+## Princeps Design System
+
+The frontend uses the **Princeps** warm editorial brand identity. All visual decisions must align with these tokens. The source of truth is `gradebook-frontend/src/styles/_variables.scss` and `gradebook-frontend/src/theme/muiTheme.ts`.
+
+### Typography
+
+Three font families are loaded via Google Fonts in `index.html`:
+
+| SCSS variable | Family | Use |
+|---|---|---|
+| `$font-family-serif` | Cormorant Garamond | Page titles, stat values, brand wordmark, modal headings |
+| `$font-family-sans` | Manrope | All body text, labels, buttons, inputs — the global default (`$font-family`) |
+| `$font-family-mono` | JetBrains Mono | Dates, timestamps, monospaced metadata |
+
+Rules:
+- Page/section titles: `$font-family-serif`, ~32–36px, `font-weight: 500`.
+- Section labels (sidebar, card headers): `$font-family-sans`, 9–10px, `font-weight: 700`, `letter-spacing: 0.14–0.18em`, `text-transform: uppercase`.
+- Buttons: `text-transform: uppercase`, `letter-spacing: 0.12em`, `font-size: 11px`, `font-weight: 700`.
+
+### Colour Palette
+
+#### Surfaces
+| SCSS token | Hex | Use |
+|---|---|---|
+| `$color-background` | `#F1E7DA` | App page background |
+| `$color-cream` | `#F8F2EA` | Sidebar, topbars, softer surfaces |
+| `$color-surface` | `#FFFFFF` | Cards, modals, table rows |
+| `$color-elevated` | `#FBF6EF` | Table headers, card sub-headers |
+
+#### Ink (text)
+| SCSS token | Hex | Use |
+|---|---|---|
+| `$color-text-primary` | `#2A2520` | Primary text; also sidebar active item background |
+| `$color-text-secondary` | `#5C5046` | Secondary text, sidebar nav items |
+| `$color-text-muted` | `#8A7C6E` | Tertiary text, section labels, captions |
+| `$color-text-faint` | `#B5A89A` | Disabled states, placeholder text |
+
+#### Strokes
+| SCSS token | Hex | Use |
+|---|---|---|
+| `$color-border` | `#E2D3C0` | Default borders |
+| `$color-border-soft` | `#ECDFCF` | Dividers, subtle separators |
+| `$color-border-strong` | `#C7B49C` | Emphasized borders, hover states |
+
+#### Brand accents (gold)
+| SCSS token | Hex | Use |
+|---|---|---|
+| `$color-primary` | `#C9A24E` | Gold — primary accent, active nav indicator |
+| `$color-primary-dark` | `#A8842F` | Gold hover state |
+| `$color-primary-light` | `#E8D29A` | Gold soft tints |
+| `$color-primary-tint` | `#F4E7C4` | Gold background tints, unread notification bg |
+
+#### Beige accents
+| SCSS token | Hex | Use |
+|---|---|---|
+| `$color-beige` | `#DCC5AC` | Decorative corner, avatar backgrounds |
+| `$color-beige-deep` | `#C9AE91` | Deeper beige tones |
+| `$color-taupe` | `#B89B7B` | Taupe accents |
+
+#### Sidebar tokens
+| SCSS token | Value | Notes |
+|---|---|---|
+| `$color-sidebar-bg` | `#F8F2EA` | Same as `$color-cream` |
+| `$color-sidebar-active` | `#2A2520` | Dark ink — active nav item fill |
+| `$color-sidebar-text` | `#5C5046` | Inactive nav item text |
+| `$color-sidebar-text-active` | `#F8F2EA` | Cream text on dark active item |
+| `$color-sidebar-section` | `#8A7C6E` | Section label colour |
+
+#### Grade value colours
+| Grade | SCSS token | Hex |
+|---|---|---|
+| 2 — Слаб | `$color-grade-val-2` | `#B23A2A` |
+| 2.5 | `$color-grade-val-2h` | `#D04535` |
+| 3 — Среден | `$color-grade-val-3` | `#C76A2E` |
+| 3.5 | `$color-grade-val-3h` | `#E0803A` |
+| 4 — Добър | `$color-grade-val-4` | `#C99431` |
+| 4.5 | `$color-grade-val-4h` | `#E0AE40` |
+| 5 — Мн. добър | `$color-grade-val-5` | `#7A8E3F` |
+| 5.5 | `$color-grade-val-5h` | `#95AB4E` |
+| 6 — Отличен | `$color-grade-val-6` | `#4E6B3A` |
+
+### Spacing & Shape
+
+| SCSS token | Value | Use |
+|---|---|---|
+| `$radius-sm` | `6px` | Buttons, inputs, chips |
+| `$radius-md` | `10px` | Cards, panels |
+| `$radius-lg` | `16px` | Large modals |
+| `$sidebar-width` | `248px` | Fixed sidebar width |
+| `$shadow-card` | warm brown shadow | All card surfaces |
+| `$shadow-pop` | warm brown shadow | Modals, dropdowns |
+
+### Sidebar Design Rules
+
+- Background: `$color-cream` with `border-right: 1px solid $color-border`.
+- Decorative diagonal corner via `::before` (`$color-beige`, `clip-path: polygon(0 0, 100% 0, 0 100%)`).
+- Active nav item: `$color-sidebar-active` background + 3px `$color-primary` left accent bar via `::before`.
+- Nav items: `border-radius: $radius-sm`, hover `rgba(42, 37, 32, 0.06)`.
+- Section labels: `$font-family-sans`, 9px, `letter-spacing: 0.18em`, uppercase.
+
+### PrincepsLogo Component
+
+Located at `src/components/PrincepsLogo/PrincepsLogo.tsx`. Always use this component for the brand wordmark — never write "Princeps" or "Дневник" as plain text in headers.
+
+| `variant` prop | Renders | Where to use |
+|---|---|---|
+| `text-dark` (default) | SVG crown + Cormorant Garamond, dark ink | Sidebar, mobile topbars (light backgrounds) |
+| `text-light` | SVG crown + Cormorant Garamond, cream | Any dark background |
+| `image` | Real PNG brand photo (`/princeps-logo.png`) | Login page brand panel **only** |
+
+Sizes: `sm` (100px), `md` (140px), `lg` (200px). Optional `subtitle` prop adds italic *"дневник"* beneath.
+
+**Important:** Do not use `variant="image"` inside the authenticated app. The JPG has a cream background that produces a visible box on any surface. Use `text-dark` or `text-light` instead.
+
+### Login Page Layout
+
+Split two-column layout (hidden on mobile, stacks vertically):
+
+- **Left panel** — dark ink (`$color-text-primary`) with decorative corner accents. Contains `<PrincepsLogo size="lg" variant="image" />`, tagline, and description.
+- **Right panel** — `$color-background` warm page colour. Contains the sign-in form with uppercase field labels, ink submit button, and forgot-password link.
+
+### MUI Theme Overrides
+
+Defined in `src/theme/muiTheme.ts`. Key values:
+
+- `palette.primary.main`: `#C9A24E` (gold)
+- `palette.background.default`: `#F1E7DA`
+- `typography.fontFamily`: Manrope
+- `typography.h1–h6.fontFamily`: Cormorant Garamond
+- Contained primary `MuiButton`: dark ink background (`#2A2520`), not gold
+- `MuiOutlinedInput`: warm border colours, gold `box-shadow` focus ring
 
 ---
 

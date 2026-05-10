@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Sidebar } from '../Sidebar/Sidebar'
+import { PrincepsLogo } from '@/components/PrincepsLogo/PrincepsLogo'
 import styles from './AdminLayout.module.scss'
 
 export const AdminLayout = () => {
@@ -13,7 +14,7 @@ export const AdminLayout = () => {
         <button className={styles.hamburger} onClick={() => setSidebarOpen(true)} aria-label="Отвори меню">
           <MenuIcon />
         </button>
-        <span className={styles.mobileBrand}>Дневник</span>
+        <PrincepsLogo size="sm" />
       </div>
 
       {sidebarOpen && (
