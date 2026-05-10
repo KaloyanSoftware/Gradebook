@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+
 import { Alert, Button, TextField } from '@mui/material'
 import { supabase } from '../lib/supabaseClient'
 import { PrincepsLogo } from '@/components/PrincepsLogo/PrincepsLogo'
@@ -57,6 +58,9 @@ export function LoginPage() {
       {/* Right — form panel */}
       <div className={styles.formPanel}>
         <div className={styles.formCard}>
+          <Link to="/" className={styles.backLink}>
+            ← Обратно към сайта
+          </Link>
           <h1 className={styles.formTitle}>Добре дошли</h1>
           <p className={styles.formSub}>Влезте в своя дневник</p>
 

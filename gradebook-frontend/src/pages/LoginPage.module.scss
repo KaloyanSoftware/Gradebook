@@ -161,6 +161,22 @@
   }
 }
 
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: $color-text-faint;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  margin-bottom: 32px;
+  transition: color 0.15s;
+
+  &:hover {
+    color: $color-text-secondary;
+  }
+}
+
 .forgotLink {
   text-align: center;
   font-size: 12px;
