@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { AuthCallbackPage } from '@/pages/AuthCallbackPage/AuthCallbackPage'
 import { AdminLayout } from '@/layout/AdminLayout/AdminLayout'
 import { UserLayout } from '@/layout/UserLayout/UserLayout'
 import { PrincipalLayout } from '@/layout/PrincipalLayout/PrincipalLayout'
@@ -25,6 +26,7 @@ export const AppRoutes = () => (
     <Route path="/login" element={<LoginPage />} />
     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
     <Route path="/reset-password" element={<ResetPasswordPage />} />
+    <Route path="/auth/callback" element={<AuthCallbackPage />} />
 
     <Route
       path="/admin"
@@ -53,6 +55,7 @@ export const AppRoutes = () => (
       <Route index element={<Navigate to="dashboard" replace />} />
       <Route path="dashboard" element={<ParentDashboardPage />} />
       <Route path="notifications" element={<NotificationsPage />} />
+      <Route path="settings" element={<SettingsPage />} />
     </Route>
 
     <Route
@@ -66,6 +69,7 @@ export const AppRoutes = () => (
       <Route index element={<Navigate to="dashboard" replace />} />
       <Route path="dashboard" element={<StudentDashboardPage />} />
       <Route path="notifications" element={<NotificationsPage />} />
+      <Route path="settings" element={<SettingsPage />} />
     </Route>
 
     <Route
@@ -82,6 +86,7 @@ export const AppRoutes = () => (
       <Route path="teachers/:teacherId/activity" element={<TeacherActivityPage />} />
       <Route path="students" element={<PrincipalStudentsPage />} />
       <Route path="parents" element={<PrincipalParentsPage />} />
+      <Route path="settings" element={<SettingsPage />} />
     </Route>
 
     <Route path="*" element={<Navigate to="/login" replace />} />
