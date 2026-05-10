@@ -7,62 +7,23 @@
 }
 
 // ── Size variants ─────────────────────────────────────────────
-.sm  { --logo-size: 18px; --crown-h: 14px; }
-.md  { --logo-size: 24px; --crown-h: 18px; }
-.lg  { --logo-size: 34px; --crown-h: 26px; }
+.sm  { --logo-w: 100px; }
+.md  { --logo-w: 140px; }
+.lg  { --logo-w: 200px; }
 
-// ── Wordmark row ──────────────────────────────────────────────
-.wordmark {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-}
-
-// ── Crown ─────────────────────────────────────────────────────
-.crownWrapper {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1px;
-}
-
-.crown {
-  height: var(--crown-h, 18px);
-  width: auto;
+// ── Image ─────────────────────────────────────────────────────
+.img {
+  width: var(--logo-w, 140px);
+  height: auto;
   display: block;
+  object-fit: contain;
 }
 
-// ── Text ──────────────────────────────────────────────────────
-.text {
-  font-family: $font-family-serif;
-  font-size: var(--logo-size, 24px);
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  color: $color-text-primary;
-  line-height: 1;
-  text-transform: uppercase;
-  display: flex;
-  align-items: baseline;
-}
-
-.part {
-  // identical styling — just grouping for alignment clarity
-}
-
-.letterI {
-  // The "I" the crown sits above — no special styling needed,
-  // the crown is centred via the crownWrapper flex column
-}
-
-// ── Light variant (cream text on dark background) ─────────────
-.light {
-  .text {
-    color: #F8F2EA;
-  }
-
-  .subtitle {
-    color: #B5A89A;
-  }
+// ── Light variant (on dark background) ───────────────────────
+// The logo has its own cream background — show it as a stamp/card.
+.light .img {
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
 // ── Subtitle ──────────────────────────────────────────────────
@@ -74,5 +35,8 @@
   color: $color-text-muted;
   text-transform: lowercase;
   line-height: 1;
-  margin-top: 2px;
+}
+
+.light .subtitle {
+  color: #B5A89A;
 }
