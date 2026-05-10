@@ -102,6 +102,45 @@ Page → Component → Hook → <feature>/api/<name>.api.ts → Backend (via axi
 - **Never** store tokens in `localStorage` manually — the Supabase JS client handles token storage and refresh.
 - **`external_uid`** on `AppUser` entity = `auth.uid()` from Supabase — the bridge between auth and app data.
 
+### Controller Security Rules
+
+Every controller method **must** be covered by a `@PreAuthorize` annotation. No exceptions.
+
+**Preferred: class-level annotation** when all methods share the same role:
+```java
+@RestController
+@RequestMapping("/admin/grades")
+@PreAuthorize("hasRole('ADMIN')")          // ← covers every method in the class
+public class GradeController { ... }
+```
+
+**Per-method annotation** only when different methods require different roles:
+```java
+@GetMapping("/{parentId}/students")
+@PreAuthorize("hasRole('ADMIN') or hasRole('PARENT')")
+public List<StudentResponse> listStudents(...) { ... }
+```
+
+**URL prefix → expected role:**
+| Prefix | Required role |
+|---|---|
+| `/admin/**` | `ADMIN` |
+| `/parent/**` | `PARENT` |
+| `/student/**` | `STUDENT` |
+| `/principal/**` | `PRINCIPAL` |
+| `/api/auth/**` | Any authenticated user — no role annotation needed; covered by `anyRequest().authenticated()` in `SecurityConfig` |
+
+**Resolving the caller's identity inside a method:**
+```java
+// Always use @AuthenticationPrincipal — never parse the token manually
+public ResponseEntity<?> myEndpoint(@AuthenticationPrincipal Jwt jwt) {
+    String externalUid = jwt.getSubject(); // = auth.uid() from Supabase
+    ...
+}
+```
+
+**Ownership enforcement** (parent can only see their own children, etc.) is the responsibility of the **service layer** — not the controller. The controller extracts `externalUid` from the JWT and passes it to the service, which resolves and validates the relationship.
+
 ---
 
 ## Backend Conventions
@@ -141,6 +180,76 @@ Grades are managed **inline** in the student roster — no separate pages or mod
 - `StudentGradesPanel` shows a mini grade table with inline edit/delete/add — no navigation required.
 - Grade value input uses `GradePicker` (`features/grades/components/GradePicker`) — 9 coloured circle buttons for values 2–6 in 0.5 increments. Colour is passed via CSS custom property `--gc` so a single component handles all grades.
 - Subject enum values: `BULGARIAN` → "Български език", `LITERATURE` → "Литература".
+
+### Parent Gradebook
+
+Parents see a read-only gradebook at `/parent/dashboard` (`ParentDashboardPage` → `ParentGradebookPage`).
+
+- Children are fetched from `GET /parent/me/children` — the backend resolves the parent from the JWT `sub` claim.
+- Grades and absences per child: `GET /parent/me/children/{studentId}/grades` and `.../absences`.
+- If a parent has multiple children, a tab bar switches between them.
+- Each child panel shows: stats bar (grade count, average, absence count), a grades table with coloured value pills, and an absences chip list.
+- Grade colours reuse the same palette as `GradePicker` — see `GRADE_COLORS` in `ParentGradebookPage.tsx`.
+- The backend enforces ownership: a parent can only access grades/absences for their own linked children (returns 403 otherwise).
+
+### Student Gradebook
+
+Students see their own read-only gradebook at `/student/dashboard` (`StudentDashboardPage` → `StudentGradebookPage`).
+
+- Grades fetched from `GET /student/me/grades`, absences from `GET /student/me/absences` — both resolved from the JWT `sub` claim.
+- Same layout as the parent child panel: stats bar (grade count, average, absence count), grades table with coloured pills, absences chips.
+- No child-switching — students always see only their own data.
+
+### Notification Bell
+
+The `NotificationBell` component (`features/notifications/components/NotificationBell`) is shared by both PARENT and STUDENT roles. It lives in the `UserLayout` topbar.
+
+- It accepts a `role: 'PARENT' | 'STUDENT'` prop which determines the API base path:
+  - `PARENT` → `/parent/notifications`
+  - `STUDENT` → `/student/me/notifications`
+- Polls unread count every 30 seconds; fetches the full notification list only when the dropdown is open.
+- When a grade is recorded, **both** the linked parents and the student receive a notification:
+  - Parent message: `"Нова оценка по [subject] за [studentName]: [value]"`
+  - Student message: `"Получихте нова оценка по [subject]: [value]"`
+- When an absence is recorded, linked parents receive a notification (students do not — add if required).
+- `NotificationService` handles all notification creation. `GradeService` and `AbsenceService` call it after saving.
+
+### Notifications History Page
+
+Both PARENT and STUDENT roles have a full notifications list at `/<role>/notifications` (`NotificationsPage` — `features/notifications/pages/NotificationsPage`).
+
+- The page is reachable from the `UserLayout` tab bar ("Известия") rendered in `<nav>` beneath the topbar. `NavLink` applies `.navLinkActive` (primary-coloured bottom border) to the active tab.
+- The role is read from `useAuth()` — no prop needed. The existing role-parameterised hooks (`useNotifications`, `useMarkAllRead`, `useMarkRead`) are reused directly.
+- Notifications are grouped by date: **"Днес"**, **"Вчера"**, or a formatted Bulgarian date (`dd MMMM yyyy`).
+- Each row shows a blue dot for unread items; clicking a row marks it read (`PATCH .../notifications/{id}/read`).
+- A "Маркирай всички като прочетени" button appears only when `unreadCount > 0`.
+- Empty state shows a bell icon and "Няма известия все още."
+- Routes are nested inside `ProtectedRoute` wrappers (PARENT / STUDENT respectively) in `router/index.tsx`, so a valid JWT is always required.
+
+### Role-facing API routes (backend)
+
+**Parent (`/parent/**` — role: PARENT)**
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/parent/me/children` | Children linked to the authenticated parent |
+| `GET` | `/parent/me/children/{studentId}/grades` | Grades for a linked child (ownership enforced) |
+| `GET` | `/parent/me/children/{studentId}/absences` | Absences for a linked child (ownership enforced) |
+| `GET` | `/parent/notifications` | All notifications |
+| `GET` | `/parent/notifications/unread-count` | Unread count |
+| `PATCH` | `/parent/notifications/read-all` | Mark all read |
+| `PATCH` | `/parent/notifications/{id}/read` | Mark one read |
+
+**Student (`/student/**` — role: STUDENT)**
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/student/me/grades` | Own grades |
+| `GET` | `/student/me/absences` | Own absences |
+| `GET` | `/student/me/notifications` | All notifications |
+| `GET` | `/student/me/notifications/unread-count` | Unread count |
+| `PATCH` | `/student/me/notifications/read-all` | Mark all read |
+| `PATCH` | `/student/me/notifications/{id}/read` | Mark one read |
 
 ---
 
@@ -349,7 +458,7 @@ Tables live in Supabase PostgreSQL. Migrations are in `supabase/migrations/`.
 | `Enrollment` | `enrollments` | Links parents to students |
 | `Grade` | `grades` | Belongs to student, created by admin |
 | `Absence` | `absences` | Belongs to student, created by admin |
-| `Notification` | `notifications` | Belongs to parent |
+| `Notification` | `notifications` | Belongs to a parent **or** a student (`parent_id` / `student_id` — exactly one is set) |
 
 RLS is enabled on all tables. The service role (backend) bypasses RLS. Authenticated users access only their own data via policies.
 
@@ -359,7 +468,61 @@ RLS is enabled on all tables. The service role (backend) bypasses RLS. Authentic
 
 | Issue | Workaround | Ticket to fix |
 |---|---|---|
-| `grades.created_by` is NOT NULL in DB | Column made nullable via `ALTER TABLE grades ALTER COLUMN created_by DROP NOT NULL` in Supabase. JPA field annotated `nullable = true`. Will be wired up once auth principal is available in the service layer. | #11 / auth integration |
+| `grades.created_by` is NOT NULL in DB | Column made nullable — see Supabase SQL changelog below. JPA field annotated `nullable = true`. Will be wired up once auth principal is available in the service layer. | #11 / auth integration |
+| `absences.created_by` is NOT NULL in DB | Same workaround as grades — column made nullable. | #11 / auth integration |
+
+---
+
+## Supabase SQL Changelog
+
+`ddl-auto=none` is set on the Supabase (production) profile, so Hibernate **never** touches the schema there. Every structural change must be applied manually in the Supabase SQL Editor. Record every statement here so the history is never lost.
+
+> Run statements in the order they appear. Each entry notes which feature branch introduced it.
+
+---
+
+### #11 — auth integration workarounds
+
+```sql
+-- grades.created_by was initially NOT NULL; made nullable until auth principal
+-- is wired into GradeService
+ALTER TABLE grades ALTER COLUMN created_by DROP NOT NULL;
+
+-- same for absences
+ALTER TABLE absences ALTER COLUMN created_by DROP NOT NULL;
+```
+
+---
+
+### #36 — deactivate / delete accounts
+
+```sql
+-- active flag on app_users (if not already present in initial migration)
+ALTER TABLE app_users ADD COLUMN IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT TRUE;
+```
+
+---
+
+### #20 — in-app notifications (grade & absence)
+
+```sql
+-- source_id is a future deep-link reference; made nullable because the grade ID
+-- is not reliably available at notification-creation time (cascade-merge issue)
+ALTER TABLE notifications ALTER COLUMN source_id DROP NOT NULL;
+```
+
+---
+
+### #13 — student notifications
+
+```sql
+-- Notifications now support both parents and students as recipients.
+-- parent_id is no longer mandatory (one of parent_id / student_id will be set).
+ALTER TABLE notifications ALTER COLUMN parent_id DROP NOT NULL;
+
+ALTER TABLE notifications
+  ADD COLUMN student_id UUID REFERENCES students(id) ON DELETE CASCADE;
+```
 
 ---
 
