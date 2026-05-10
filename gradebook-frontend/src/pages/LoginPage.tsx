@@ -48,9 +48,6 @@ export function LoginPage() {
             Български език и литература
           </p>
           <div className={styles.brandOrnament} />
-          <p className={styles.brandDescription}>
-            Частна менторска програма за напреднали ученици
-          </p>
         </div>
       </div>
 

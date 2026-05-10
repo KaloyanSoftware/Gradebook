@@ -7,41 +7,44 @@
 }
 
 // ── Size variants ─────────────────────────────────────────────
-.sm  { --logo-w: 100px; --text-size: 17px; --crown-h: 18px; }
-.md  { --logo-w: 140px; --text-size: 23px; --crown-h: 24px; }
-.lg  { --logo-w: 200px; --text-size: 34px; --crown-h: 36px; }
+.sm  { --text-size: 16px; --crown-h: 16px; --logo-w: 100px; }
+.md  { --text-size: 22px; --crown-h: 22px; --logo-w: 140px; }
+.lg  { --text-size: 32px; --crown-h: 32px; --logo-w: 200px; }
 
-// ── Image version (light backgrounds) ─────────────────────────
+// ── SVG text version (default — dark ink on light backgrounds) ─
+.wordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.crown {
+  height: var(--crown-h, 22px);
+  width: auto;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.letters {
+  font-family: $font-family-serif;
+  font-size: var(--text-size, 22px);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: $color-text-primary;   // dark ink — sidebar, topbars
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.lettersLight {
+  color: #F8F2EA;               // cream — login panel dark background
+}
+
+// ── Image version ─────────────────────────────────────────────
 .img {
   width: var(--logo-w, 140px);
   height: auto;
   display: block;
   object-fit: contain;
-  mix-blend-mode: multiply;
-}
-
-// ── Text + SVG crown version (dark backgrounds) ───────────────
-.textWordmark {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-
-.textCrown {
-  height: var(--crown-h, 24px);
-  width: auto;
-  display: block;
-}
-
-.textLetters {
-  font-family: $font-family-serif;
-  font-size: var(--text-size, 23px);
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  color: #F8F2EA;
-  line-height: 1;
-  text-transform: uppercase;
 }
 
 // ── Subtitle ──────────────────────────────────────────────────
