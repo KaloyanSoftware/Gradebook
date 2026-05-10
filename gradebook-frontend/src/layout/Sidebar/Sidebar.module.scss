@@ -1,12 +1,29 @@
 .sidebar {
   width: $sidebar-width;
   min-height: 100vh;
-  background-color: $color-sidebar-bg;
+  background-color: $color-cream;
+  border-right: 1px solid $color-border;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  box-shadow: $shadow-sidebar;
+  position: relative;
+  overflow: hidden;
   transition: transform 0.3s ease;
+
+  // Decorative diagonal corner echoing the brand card
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 130px;
+    height: 130px;
+    background: $color-beige;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+  }
 
   @media (max-width: 768px) {
     position: fixed;
@@ -26,67 +43,95 @@
 }
 
 .brand {
-  padding: 20px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.brandText {
-  color: $color-sidebar-text-active !important;
-  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 1;
+  padding: 28px 18px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid $color-border-soft;
 }
 
 .nav {
   padding: 12px 0;
   flex: 1;
   overflow-y: auto;
+  position: relative;
+  z-index: 1;
 }
 
 .link {
   display: block;
   color: $color-sidebar-text;
+  text-decoration: none;
 }
 
 .activeLink {
   display: block;
   color: $color-sidebar-text-active;
+  text-decoration: none;
 
   .navItem {
     background-color: $color-sidebar-active !important;
-    border-left: 3px solid $color-primary-light;
+    border-radius: $radius-sm;
+    color: $color-sidebar-text-active !important;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -18px;
+      top: 8px;
+      bottom: 8px;
+      width: 3px;
+      background: $color-primary;
+      border-radius: 2px;
+    }
   }
 }
 
 .navItem {
-  padding: 10px 20px !important;
+  padding: 10px 14px !important;
   color: inherit !important;
-  border-left: 3px solid transparent;
+  border-radius: $radius-sm !important;
+  margin: 0 4px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
 
   &:hover {
-    background-color: $color-sidebar-active !important;
+    background-color: rgba(42, 37, 32, 0.06) !important;
   }
 }
 
 .icon {
   min-width: 36px !important;
   color: inherit !important;
+
+  svg {
+    font-size: 18px !important;
+  }
 }
 
 .divider {
-  border-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: $color-border-soft !important;
   margin: 8px 0 !important;
 }
 
 .sectionLabel {
   display: block;
-  color: $color-sidebar-section !important;
-  font-size: 10px !important;
+  color: $color-text-muted !important;
+  font-size: 9px !important;
   font-weight: 700 !important;
-  letter-spacing: 1.2px !important;
-  padding: 10px 24px 4px !important;
+  letter-spacing: 0.18em !important;
+  padding: 18px 28px 8px !important;
   text-transform: uppercase;
 }
 
 .footer {
   color: $color-sidebar-text;
-  padding-bottom: 24px;
+  padding-bottom: 16px;
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid $color-border-soft;
+  padding-top: 4px;
 }

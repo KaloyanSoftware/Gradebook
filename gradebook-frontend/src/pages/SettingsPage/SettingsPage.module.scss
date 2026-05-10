@@ -93,9 +93,9 @@
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
-  color: $color-primary;
-  background-color: rgba(21, 101, 192, 0.1);
-  border: 1px solid rgba(21, 101, 192, 0.25);
+  color: $color-text-secondary;
+  background-color: $color-primary-tint;
+  border: 1px solid $color-border;
   width: fit-content;
 }
 

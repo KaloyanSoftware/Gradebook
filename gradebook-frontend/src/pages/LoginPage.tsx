@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Alert, Box, Button, Paper, TextField, Typography } from '@mui/material'
+import { Alert, Button, TextField } from '@mui/material'
 import { supabase } from '../lib/supabaseClient'
+import { PrincepsLogo } from '@/components/PrincepsLogo/PrincepsLogo'
+import styles from './LoginPage.module.scss'
 
 export function LoginPage() {
   const navigate = useNavigate()
@@ -35,39 +37,78 @@ export function LoginPage() {
   }
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-      <Paper elevation={3} sx={{ p: 4, width: 360 }}>
-        <Typography variant="h5" sx={{ fontWeight: 600, mb: 3 }}>
-          Sign in
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <TextField
-            label="Email"
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
-            fullWidth
-            size="small"
-          />
-          <TextField
-            label="Password"
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-            fullWidth
-            size="small"
-          />
-          {error && <Alert severity="error">{error}</Alert>}
-          <Button type="submit" variant="contained" disabled={loading} fullWidth>
-            {loading ? 'Влизане…' : 'Вход'}
-          </Button>
-          <Button component={Link} to="/forgot-password" variant="text" fullWidth size="small">
-            Забравена парола?
-          </Button>
-        </Box>
-      </Paper>
-    </Box>
+    <div className={styles.page}>
+      {/* Left — brand panel */}
+      <div className={styles.brand}>
+        <div className={styles.brandInner}>
+          <div className={styles.logo}>
+            <PrincepsLogo size="lg" subtitle variant="light" />
+          </div>
+          <p className={styles.brandTagline}>
+            Български език и литература
+          </p>
+          <div className={styles.brandOrnament} />
+          <p className={styles.brandDescription}>
+            Частна менторска програма за напреднали ученици
+          </p>
+        </div>
+      </div>
+
+      {/* Right — form panel */}
+      <div className={styles.formPanel}>
+        <div className={styles.formCard}>
+          <h1 className={styles.formTitle}>Добре дошли</h1>
+          <p className={styles.formSub}>Влезте в своя дневник</p>
+
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>Имейл</label>
+              <TextField
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+                fullWidth
+                size="small"
+                placeholder="вашият@имейл.com"
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>Парола</label>
+              <TextField
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+                fullWidth
+                size="small"
+                placeholder="••••••••"
+              />
+            </div>
+
+            {error && (
+              <Alert severity="error" sx={{ borderRadius: '6px', fontSize: '13px' }}>
+                {error}
+              </Alert>
+            )}
+
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={loading}
+              fullWidth
+              className={styles.submitBtn}
+            >
+              {loading ? 'Влизане…' : 'Вход'}
+            </Button>
+
+            <Link to="/forgot-password" className={styles.forgotLink}>
+              Забравена парола?
+            </Link>
+          </form>
+        </div>
+      </div>
+    </div>
   )
 }
