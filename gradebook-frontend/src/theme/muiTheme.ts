@@ -50,15 +50,19 @@ const muiTheme = createTheme({
           fontSize: '11px',
           fontFamily: "'Manrope', 'Helvetica Neue', system-ui, sans-serif",
         },
-        containedPrimary: {
-          background: '#2A2520',
-          color: '#F8F2EA',
-          borderColor: '#2A2520',
-          '&:hover': {
-            background: '#3d3530',
+      },
+      variants: [
+        {
+          props: { variant: 'contained', color: 'primary' },
+          style: {
+            background: '#2A2520',
+            color: '#F8F2EA',
+            '&:hover': {
+              background: '#3d3530',
+            },
           },
         },
-      },
+      ],
     },
     MuiTextField: {
       defaultProps: {
