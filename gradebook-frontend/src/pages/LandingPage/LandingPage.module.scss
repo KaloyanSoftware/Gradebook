@@ -1,0 +1,1008 @@
+// ================================================================
+// LandingPage — Princeps brand, mobile-first
+// Breakpoints: sm 640, md 768, lg 1024, xl 1280
+// ================================================================
+
+// ── Page shell ────────────────────────────────────────────────────────────────
+.page {
+  min-height: 100vh;
+  background: $color-background;
+  font-family: $font-family-sans;
+  color: $color-text-primary;
+  scroll-behavior: smooth;
+}
+
+// ── Shared section utilities ──────────────────────────────────────────────────
+.sectionInner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+
+  @media (min-width: 768px) { padding: 0 40px; }
+  @media (min-width: 1024px) { padding: 0 64px; }
+}
+
+.sectionEyebrow {
+  display: inline-block;
+  font-family: $font-family-sans;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $color-primary;
+  margin-bottom: 12px;
+}
+
+.sectionTitle {
+  font-family: $font-family-serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 500;
+  color: $color-text-primary;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.sectionSub {
+  font-size: 16px;
+  line-height: 1.7;
+  color: $color-text-secondary;
+  max-width: 600px;
+  margin-bottom: 48px;
+}
+
+// ── Sticky navbar ─────────────────────────────────────────────────────────────
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(248, 242, 234, 0.92); // $color-cream with slight transparency
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid $color-border;
+}
+
+.navbarInner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  @media (min-width: 768px) { padding: 0 40px; }
+  @media (min-width: 1024px) { padding: 0 64px; }
+}
+
+.navbarLogo {
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.navLinks {
+  display: none;
+  align-items: center;
+  gap: 32px;
+
+  @media (min-width: 768px) { display: flex; }
+}
+
+.navLink {
+  font-size: 13px;
+  font-weight: 500;
+  color: $color-text-secondary;
+  text-decoration: none;
+  transition: color 0.15s;
+
+  &:hover { color: $color-text-primary; }
+}
+
+.navCta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  background: $color-text-primary;
+  color: $color-cream;
+  border-radius: $radius-sm;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.15s;
+  flex-shrink: 0;
+
+  svg { width: 14px; height: 14px; }
+
+  &:hover { background: #3d3630; }
+}
+
+// ── Hero ──────────────────────────────────────────────────────────────────────
+.hero {
+  position: relative;
+  background: $color-text-primary; // deep ink #2A2520
+  color: $color-cream;
+  overflow: hidden;
+  padding: 100px 24px 80px;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    padding: 120px 40px 100px;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 140px 64px 120px;
+  }
+}
+
+// Decorative diagonal corner accents
+.heroDecorLeft {
+  position: absolute;
+  top: 0; left: 0;
+  width: 320px; height: 320px;
+  background: $color-primary;
+  opacity: 0.06;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  pointer-events: none;
+}
+
+.heroDecorRight {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 240px; height: 240px;
+  background: $color-primary;
+  opacity: 0.06;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  pointer-events: none;
+}
+
+.heroInner {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.heroEyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $color-primary;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.heroTitle {
+  font-family: $font-family-serif;
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 500;
+  line-height: 1.1;
+  color: $color-cream;
+  margin-bottom: 24px;
+
+  em {
+    font-style: italic;
+    color: $color-primary;
+  }
+}
+
+.heroBr {
+  // visible on small screens to control line breaks
+  display: none;
+  @media (min-width: 480px) { display: inline; }
+}
+
+.heroSub {
+  font-size: clamp(15px, 2vw, 18px);
+  line-height: 1.7;
+  color: rgba(248, 242, 234, 0.75);
+  max-width: 580px;
+  margin: 0 auto 40px;
+}
+
+.heroActions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  @media (min-width: 480px) {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.heroCtaPrimary {
+  display: inline-block;
+  padding: 14px 32px;
+  background: $color-primary;
+  color: $color-text-primary;
+  border-radius: $radius-sm;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.1s;
+  white-space: nowrap;
+
+  &:hover {
+    background: $color-primary-dark;
+    transform: translateY(-1px);
+  }
+}
+
+.heroCtaSecondary {
+  display: inline-block;
+  padding: 14px 24px;
+  color: rgba(248, 242, 234, 0.7);
+  border: 1px solid rgba(248, 242, 234, 0.2);
+  border-radius: $radius-sm;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+
+  &:hover {
+    color: $color-cream;
+    border-color: rgba(248, 242, 234, 0.45);
+  }
+}
+
+.heroMicro {
+  margin-top: 16px;
+  font-size: 12px;
+  color: rgba(248, 242, 234, 0.4);
+  letter-spacing: 0.03em;
+}
+
+// ── Trust bar ─────────────────────────────────────────────────────────────────
+.trust {
+  background: $color-surface;
+  border-bottom: 1px solid $color-border;
+}
+
+.trustInner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+
+  @media (min-width: 640px) { grid-template-columns: repeat(4, 1fr); }
+  @media (min-width: 768px) { padding: 0 40px; }
+  @media (min-width: 1024px) { padding: 0 64px; }
+}
+
+.trustItem {
+  padding: 28px 20px;
+  text-align: center;
+  border-right: 1px solid $color-border;
+  border-bottom: 1px solid $color-border;
+
+  &:nth-child(even) { border-right: none; }
+
+  @media (min-width: 640px) {
+    border-bottom: none;
+    &:nth-child(even) { border-right: 1px solid $color-border; }
+    &:last-child { border-right: none; }
+  }
+}
+
+.trustValue {
+  display: block;
+  font-family: $font-family-mono;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 700;
+  color: $color-text-primary;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.trustLabel {
+  font-size: 12px;
+  color: $color-text-muted;
+  letter-spacing: 0.03em;
+}
+
+// ── Pain section ──────────────────────────────────────────────────────────────
+.pain {
+  padding: 96px 24px;
+
+  @media (min-width: 768px) { padding: 112px 40px; }
+  @media (min-width: 1024px) { padding: 120px 64px; }
+
+  .sectionInner {
+    padding: 0; // override — parent already has padding
+  }
+}
+
+.painContent {
+  // handled within sectionInner two-column layout
+}
+
+.sectionInner.painTwoCol {
+  display: grid;
+  gap: 64px;
+  align-items: center;
+
+  @media (min-width: 1024px) { grid-template-columns: 1fr 1fr; }
+}
+
+// Pain uses a two-column layout
+.pain .sectionInner {
+  display: grid;
+  gap: 64px;
+  align-items: center;
+  max-width: 1120px;
+  margin: 0 auto;
+
+  @media (min-width: 1024px) { grid-template-columns: 1fr 1fr; }
+}
+
+.painList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.painItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: $color-text-secondary;
+}
+
+.painIcon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: $color-error;
+  margin-top: 2px;
+
+  svg { width: 100%; height: 100%; }
+}
+
+.painAnswer {
+  font-size: 15px;
+  line-height: 1.7;
+  color: $color-text-muted;
+  font-style: italic;
+  padding-left: 16px;
+  border-left: 3px solid $color-primary;
+}
+
+// Mock phone notification UI
+.painVisual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mockPhone {
+  width: 260px;
+  background: $color-text-primary;
+  border-radius: 24px;
+  padding: 16px;
+  box-shadow: $shadow-pop;
+}
+
+.mockPhoneScreen {
+  background: $color-background;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mockNotif {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 14px;
+  background: $color-primary-tint;
+  transition: background 0.1s;
+}
+
+.mockNotifRead {
+  background: $color-surface;
+}
+
+.mockNotifDot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $color-primary;
+  margin-top: 5px;
+}
+
+.mockNotifTitle {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $color-text-muted;
+  margin-bottom: 3px;
+}
+
+.mockNotifMsg {
+  font-size: 12px;
+  color: $color-text-primary;
+  line-height: 1.45;
+
+  strong { color: $color-primary; font-weight: 700; }
+}
+
+.mockNotifTime {
+  font-family: $font-family-mono;
+  font-size: 10px;
+  color: $color-text-faint;
+  margin-top: 4px;
+}
+
+// ── Mentor ────────────────────────────────────────────────────────────────────
+.mentor {
+  background: $color-surface;
+  border-top: 1px solid $color-border;
+  border-bottom: 1px solid $color-border;
+  padding: 96px 24px;
+
+  @media (min-width: 768px) { padding: 112px 40px; }
+  @media (min-width: 1024px) { padding: 120px 64px; }
+
+  .sectionInner {
+    padding: 0;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+}
+
+.mentorCard {
+  display: grid;
+  gap: 48px;
+  align-items: start;
+
+  @media (min-width: 768px) { grid-template-columns: 200px 1fr; }
+  @media (min-width: 1024px) { grid-template-columns: 240px 1fr; }
+}
+
+.mentorPhoto {
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 3 / 4;
+  background: $color-elevated;
+  border-radius: $radius-md;
+  border: 1px solid $color-border;
+  position: relative;
+  overflow: hidden;
+
+  // Placeholder sketch-style pattern
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 8px,
+        rgba(201, 162, 78, 0.07) 8px,
+        rgba(201, 162, 78, 0.07) 9px
+      );
+  }
+
+  @media (min-width: 768px) { max-width: 100%; }
+}
+
+.mentorBody {
+  padding-top: 8px;
+}
+
+.mentorName {
+  font-family: $font-family-serif;
+  font-size: clamp(28px, 3.5vw, 38px);
+  font-weight: 500;
+  color: $color-text-primary;
+  margin-bottom: 6px;
+}
+
+.mentorTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: $color-primary;
+  letter-spacing: 0.04em;
+  margin-bottom: 28px;
+}
+
+.mentorCredentials {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.mentorCred {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: $color-text-secondary;
+}
+
+.mentorCredIcon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  color: $color-success;
+  margin-top: 1px;
+
+  svg { width: 100%; height: 100%; }
+}
+
+.mentorBio {
+  font-size: 15px;
+  line-height: 1.75;
+  color: $color-text-muted;
+  font-style: italic;
+  padding: 20px 24px;
+  border-left: 3px solid $color-primary-light;
+  background: $color-primary-tint;
+  border-radius: 0 $radius-sm $radius-sm 0;
+}
+
+// ── How it works ──────────────────────────────────────────────────────────────
+.how {
+  padding: 96px 24px;
+
+  @media (min-width: 768px) { padding: 112px 40px; }
+  @media (min-width: 1024px) { padding: 120px 64px; }
+
+  .sectionInner {
+    padding: 0;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+}
+
+.howSteps {
+  display: grid;
+  gap: 2px;
+
+  @media (min-width: 768px) { grid-template-columns: repeat(3, 1fr); }
+}
+
+.howStep {
+  padding: 36px 32px;
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  transition: box-shadow 0.2s;
+
+  &:hover { box-shadow: $shadow-card; }
+
+  @media (min-width: 768px) {
+    border-radius: 0;
+
+    &:first-child { border-radius: $radius-md 0 0 $radius-md; }
+    &:last-child  { border-radius: 0 $radius-md $radius-md 0; border-left: none; }
+    &:not(:first-child):not(:last-child) { border-left: none; }
+  }
+}
+
+.howNum {
+  display: block;
+  font-family: $font-family-mono;
+  font-size: 11px;
+  font-weight: 700;
+  color: $color-primary;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.howTitle {
+  font-family: $font-family-serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: $color-text-primary;
+  margin-bottom: 12px;
+}
+
+.howDesc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: $color-text-secondary;
+}
+
+// ── Features ──────────────────────────────────────────────────────────────────
+.features {
+  background: $color-text-primary;
+  padding: 96px 24px;
+
+  @media (min-width: 768px) { padding: 112px 40px; }
+  @media (min-width: 1024px) { padding: 120px 64px; }
+
+  .sectionInner {
+    padding: 0;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  .sectionEyebrow { color: $color-primary; }
+  .sectionTitle   { color: $color-cream; }
+  .sectionSub     { color: rgba(248, 242, 234, 0.6); }
+}
+
+.featureGrid {
+  display: grid;
+  gap: 24px;
+
+  @media (min-width: 640px) { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 1024px) { grid-template-columns: repeat(3, 1fr); }
+}
+
+.featureCard {
+  background: rgba(248, 242, 234, 0.05);
+  border: 1px solid rgba(248, 242, 234, 0.1);
+  border-radius: $radius-md;
+  padding: 32px 28px;
+  transition: background 0.2s, border-color 0.2s;
+
+  &:hover {
+    background: rgba(248, 242, 234, 0.08);
+    border-color: rgba(201, 162, 78, 0.3);
+  }
+}
+
+.featureIcon {
+  width: 40px;
+  height: 40px;
+  color: $color-primary;
+  margin-bottom: 20px;
+
+  svg { width: 100%; height: 100%; }
+}
+
+.featureTitle {
+  font-family: $font-family-serif;
+  font-size: 21px;
+  font-weight: 500;
+  color: $color-cream;
+  margin-bottom: 12px;
+}
+
+.featureBenefit {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(248, 242, 234, 0.6);
+}
+
+// ── Testimonials ──────────────────────────────────────────────────────────────
+.testimonials {
+  background: $color-elevated;
+  border-top: 1px solid $color-border;
+  padding: 96px 24px;
+
+  @media (min-width: 768px) { padding: 112px 40px; }
+  @media (min-width: 1024px) { padding: 120px 64px; }
+
+  .sectionInner {
+    padding: 0;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+}
+
+.testimonialGrid {
+  display: grid;
+  gap: 24px;
+
+  @media (min-width: 768px) { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 1024px) { grid-template-columns: repeat(3, 1fr); }
+}
+
+.testimonialCard {
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  padding: 32px 28px;
+  box-shadow: $shadow-card;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.testimonialQuote {
+  font-family: $font-family-serif;
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.7;
+  color: $color-text-secondary;
+  flex: 1;
+}
+
+.testimonialFooter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.testimonialAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: $color-primary-tint;
+  border: 1px solid $color-primary-light;
+  color: $color-primary-dark;
+  font-weight: 700;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.testimonialName {
+  font-size: 13px;
+  font-weight: 700;
+  color: $color-text-primary;
+}
+
+.testimonialRole {
+  font-size: 12px;
+  color: $color-text-muted;
+  margin-top: 2px;
+}
+
+// ── Final CTA ─────────────────────────────────────────────────────────────────
+.ctaSection {
+  position: relative;
+  background: $color-text-primary;
+  overflow: hidden;
+  text-align: center;
+  padding: 100px 24px 120px;
+
+  @media (min-width: 768px) { padding: 120px 40px 140px; }
+}
+
+.ctaDecor {
+  position: absolute;
+  top: -80px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(201, 162, 78, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.ctaInner {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.ctaTitle {
+  font-family: $font-family-serif;
+  font-size: clamp(30px, 5vw, 52px);
+  font-weight: 500;
+  color: $color-cream;
+  line-height: 1.12;
+  margin-bottom: 20px;
+
+  em {
+    font-style: italic;
+    color: $color-primary;
+  }
+}
+
+.ctaSub {
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(248, 242, 234, 0.55);
+  max-width: 480px;
+  margin: 0 auto 40px;
+}
+
+.ctaButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+
+  @media (min-width: 480px) {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.ctaBtnPrimary {
+  display: inline-block;
+  padding: 14px 32px;
+  background: $color-primary;
+  color: $color-text-primary;
+  border-radius: $radius-sm;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.1s;
+
+  &:hover {
+    background: $color-primary-dark;
+    transform: translateY(-1px);
+  }
+}
+
+.ctaBtnSecondary {
+  display: inline-block;
+  padding: 14px 28px;
+  border: 1px solid rgba(248, 242, 234, 0.25);
+  color: rgba(248, 242, 234, 0.75);
+  border-radius: $radius-sm;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: $color-cream;
+    border-color: rgba(248, 242, 234, 0.5);
+  }
+}
+
+.ctaMicro {
+  margin-top: 20px;
+  font-size: 13px;
+  color: rgba(248, 242, 234, 0.35);
+}
+
+.ctaEmail {
+  color: rgba(248, 242, 234, 0.55);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s;
+
+  &:hover { color: $color-primary; }
+}
+
+.ctaDivider {
+  width: 1px;
+  height: 48px;
+  background: rgba(248, 242, 234, 0.12);
+  margin: 40px auto;
+}
+
+.ctaExisting {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(248, 242, 234, 0.3);
+  margin-bottom: 16px;
+}
+
+.ctaRoleButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  @media (min-width: 480px) {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.ctaRoleBtn {
+  display: inline-block;
+  padding: 10px 24px;
+  border: 1px solid rgba(248, 242, 234, 0.15);
+  color: rgba(248, 242, 234, 0.5);
+  border-radius: $radius-sm;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: $color-cream;
+    border-color: rgba(248, 242, 234, 0.35);
+  }
+}
+
+// ── Footer ────────────────────────────────────────────────────────────────────
+.footer {
+  background: $color-cream;
+  border-top: 1px solid $color-border;
+}
+
+.footerInner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 64px 24px 48px;
+  display: grid;
+  gap: 48px;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 640px) { grid-template-columns: 1fr 1fr; }
+  @media (min-width: 1024px) {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    padding: 64px 64px 48px;
+  }
+}
+
+.footerBrand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footerTagline {
+  font-size: 13px;
+  line-height: 1.65;
+  color: $color-text-muted;
+}
+
+.footerLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footerContact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footerGroupTitle {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: $color-text-muted;
+  margin-bottom: 6px;
+}
+
+.footerLink {
+  font-size: 13px;
+  color: $color-text-secondary;
+  text-decoration: none;
+  transition: color 0.15s;
+
+  &:hover { color: $color-text-primary; }
+}
+
+.footerBottom {
+  border-top: 1px solid $color-border;
+  padding: 20px 24px;
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: $color-text-faint;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 64px;
+  }
+}

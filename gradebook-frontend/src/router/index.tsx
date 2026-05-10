@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { LandingPage } from '@/pages/LandingPage/LandingPage'
 import { AuthCallbackPage } from '@/pages/AuthCallbackPage/AuthCallbackPage'
 import { AdminLayout } from '@/layout/AdminLayout/AdminLayout'
 import { UserLayout } from '@/layout/UserLayout/UserLayout'
@@ -23,6 +24,7 @@ import { PrincipalParentsPage } from '@/features/principal/pages/PrincipalParent
 
 export const AppRoutes = () => (
   <Routes>
+    <Route path="/" element={<LandingPage />} />
     <Route path="/login" element={<LoginPage />} />
     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
     <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -89,6 +91,6 @@ export const AppRoutes = () => (
       <Route path="settings" element={<SettingsPage />} />
     </Route>
 
-    <Route path="*" element={<Navigate to="/login" replace />} />
+    <Route path="*" element={<Navigate to="/" replace />} />
   </Routes>
 )
