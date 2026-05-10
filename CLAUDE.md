@@ -391,6 +391,44 @@ ALTER TABLE notifications
 
 ---
 
+### #63 — email change sync
+
+```sql
+-- Whenever a user's email changes in auth.users (after Supabase confirms the
+-- email-change link), mirror the new value into app_users so the two stay in sync.
+CREATE OR REPLACE FUNCTION public.sync_email_to_app_users()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  IF NEW.email IS DISTINCT FROM OLD.email THEN
+    UPDATE app_users
+       SET email = NEW.email
+     WHERE external_uid = NEW.id::text;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS on_auth_email_updated ON auth.users;
+CREATE TRIGGER on_auth_email_updated
+  AFTER UPDATE OF email ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.sync_email_to_app_users();
+```
+
+**Manual Supabase setup that goes with this migration:**
+1. Authentication → Settings → "Email OTP Expiration" → `900` seconds (15 min).
+2. Authentication → Settings → "Secure email change" → ON (confirms via both old + new email).
+3. Optional: Authentication → Email Templates → "Change Email Address" — translate to Bulgarian.
+4. Authentication → URL Configuration → Redirect URLs → add:
+   - `http://localhost:5173/auth/callback` (local dev)
+   - `https://gradebook-wine.vercel.app/auth/callback` (current Vercel deployment)
+   - **When switching to a real domain**, replace the Vercel entry with `https://<real-domain>/auth/callback` and update the Site URL field from `http://localhost:3000` to the real domain as well.
+
+---
+
 ## Git Commits
 
 **Never include Claude or any AI attribution in git commits. Remain anonymous at all times. Do not use `Co-Authored-By` tags or any other form of attribution.**

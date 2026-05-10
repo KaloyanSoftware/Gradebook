@@ -8,7 +8,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -28,6 +31,14 @@ public class AuthController {
                 .map(this::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/email-available")
+    public Map<String, Boolean> isEmailAvailable(
+            @RequestParam String email,
+            @AuthenticationPrincipal Jwt jwt) {
+        boolean taken = appUserService.isEmailTakenByOtherUser(email, jwt.getSubject());
+        return Map.of("available", !taken);
     }
 
     private AppUserDto toDto(AppUser user) {

@@ -18,4 +18,10 @@ public class AppUserService {
     public Optional<AppUser> findByExternalUid(String externalUid) {
         return appUserRepository.findByExternalUid(externalUid);
     }
+
+    public boolean isEmailTakenByOtherUser(String email, String currentExternalUid) {
+        return appUserRepository.findByEmail(email)
+                .filter(u -> !u.getExternalUid().equals(currentExternalUid))
+                .isPresent();
+    }
 }
