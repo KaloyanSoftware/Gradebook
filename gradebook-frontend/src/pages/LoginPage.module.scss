@@ -59,29 +59,7 @@
 }
 
 .logo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
   margin-bottom: 32px;
-}
-
-.logoText {
-  font-family: $font-family-serif;
-  font-size: 52px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: $color-cream;
-  line-height: 1;
-}
-
-.logoSub {
-  font-family: $font-family-serif;
-  font-style: italic;
-  font-size: 14px;
-  letter-spacing: 0.22em;
-  color: $color-text-muted;
-  text-transform: lowercase;
 }
 
 .brandTagline {

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Alert, Button, TextField } from '@mui/material'
 import { supabase } from '../lib/supabaseClient'
+import { PrincepsLogo } from '@/components/PrincepsLogo/PrincepsLogo'
 import styles from './LoginPage.module.scss'
 
 export function LoginPage() {
@@ -41,8 +42,7 @@ export function LoginPage() {
       <div className={styles.brand}>
         <div className={styles.brandInner}>
           <div className={styles.logo}>
-            <span className={styles.logoText}>Princeps</span>
-            <span className={styles.logoSub}>дневник</span>
+            <PrincepsLogo size="lg" subtitle variant="light" />
           </div>
           <p className={styles.brandTagline}>
             Български език и литература

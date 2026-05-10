@@ -1,0 +1,78 @@
+.root {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  user-select: none;
+}
+
+// ── Size variants ─────────────────────────────────────────────
+.sm  { --logo-size: 18px; --crown-h: 14px; }
+.md  { --logo-size: 24px; --crown-h: 18px; }
+.lg  { --logo-size: 34px; --crown-h: 26px; }
+
+// ── Wordmark row ──────────────────────────────────────────────
+.wordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+// ── Crown ─────────────────────────────────────────────────────
+.crownWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1px;
+}
+
+.crown {
+  height: var(--crown-h, 18px);
+  width: auto;
+  display: block;
+}
+
+// ── Text ──────────────────────────────────────────────────────
+.text {
+  font-family: $font-family-serif;
+  font-size: var(--logo-size, 24px);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: $color-text-primary;
+  line-height: 1;
+  text-transform: uppercase;
+  display: flex;
+  align-items: baseline;
+}
+
+.part {
+  // identical styling — just grouping for alignment clarity
+}
+
+.letterI {
+  // The "I" the crown sits above — no special styling needed,
+  // the crown is centred via the crownWrapper flex column
+}
+
+// ── Light variant (cream text on dark background) ─────────────
+.light {
+  .text {
+    color: #F8F2EA;
+  }
+
+  .subtitle {
+    color: #B5A89A;
+  }
+}
+
+// ── Subtitle ──────────────────────────────────────────────────
+.subtitle {
+  font-family: $font-family-serif;
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: $color-text-muted;
+  text-transform: lowercase;
+  line-height: 1;
+  margin-top: 2px;
+}

@@ -52,27 +52,6 @@
   border-bottom: 1px solid $color-border-soft;
 }
 
-.brandText {
-  font-family: $font-family-serif !important;
-  font-weight: 600 !important;
-  font-size: 26px !important;
-  letter-spacing: 0.04em !important;
-  color: $color-text-primary !important;
-  line-height: 1 !important;
-  position: relative;
-  padding-top: 10px;
-}
-
-.brandSub {
-  font-family: $font-family-serif;
-  font-style: italic;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: $color-text-secondary;
-  margin-top: 6px;
-  text-transform: lowercase;
-}
-
 .nav {
   padding: 12px 0;
   flex: 1;
