@@ -20,6 +20,7 @@ export const UserLayout = () => {
   const navLinks = [
     { to: `${base}/dashboard`,      label: 'Дневник' },
     { to: `${base}/notifications`,  label: 'Известия' },
+    { to: `${base}/settings`,       label: 'Настройки' },
   ];
 
   async function handleSignOut() {

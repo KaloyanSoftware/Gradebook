@@ -5,6 +5,7 @@ import GroupIcon from '@mui/icons-material/Group'
 import SchoolIcon from '@mui/icons-material/School'
 import PeopleIcon from '@mui/icons-material/People'
 import LogoutIcon from '@mui/icons-material/Logout'
+import SettingsIcon from '@mui/icons-material/Settings'
 import { useAuth } from '@/context/AuthContext'
 import styles from './PrincipalSidebar.module.scss'
 
@@ -90,6 +91,16 @@ export const PrincipalSidebar = ({ isOpen, onClose }: Props) => {
       <div className={styles.footer}>
         <Divider className={styles.divider} />
         <List dense disablePadding>
+          <NavLink
+            to="/principal/settings"
+            className={({ isActive }) => isActive ? styles.activeLink : styles.link}
+            onClick={onClose}
+          >
+            <ListItemButton className={styles.navItem}>
+              <ListItemIcon className={styles.icon}><SettingsIcon fontSize="small" /></ListItemIcon>
+              <ListItemText primary="Настройки" />
+            </ListItemButton>
+          </NavLink>
           <ListItemButton onClick={handleLogout} className={styles.navItem}>
             <ListItemIcon className={styles.icon}><LogoutIcon fontSize="small" /></ListItemIcon>
             <ListItemText primary="Изход" />
