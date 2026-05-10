@@ -164,16 +164,24 @@
 .backLink {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   font-size: 12px;
-  color: $color-text-faint;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-text-secondary;
   text-decoration: none;
-  letter-spacing: 0.02em;
   margin-bottom: 32px;
-  transition: color 0.15s;
+  padding: 8px 14px;
+  border: 1px solid $color-border;
+  border-radius: $radius-sm;
+  background: $color-surface;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
 
   &:hover {
-    color: $color-text-secondary;
+    color: $color-text-primary;
+    border-color: $color-border-strong;
+    background: $color-elevated;
   }
 }
 
