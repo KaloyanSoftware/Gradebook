@@ -14,6 +14,8 @@ public interface AppUserRepository extends JpaRepository<AppUser, UUID> {
 
     Optional<AppUser> findByExternalUid(String externalUid);
 
+    Optional<AppUser> findByEmail(String email);
+
     boolean existsByEmail(String email);
 
     List<AppUser> findByRole(Role role);
