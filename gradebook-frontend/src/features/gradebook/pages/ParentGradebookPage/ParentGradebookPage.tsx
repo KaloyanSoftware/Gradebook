@@ -3,6 +3,8 @@ import { CircularProgress } from '@mui/material'
 import { useMyChildren } from '../../hooks/useMyChildren'
 import { useChildGrades } from '../../hooks/useChildGrades'
 import { useChildAbsences } from '../../hooks/useChildAbsences'
+import { useChildRemarks } from '../../hooks/useChildRemarks'
+import { useChildPraises } from '../../hooks/useChildPraises'
 import type { GradeResponse } from '@/features/grades/types/grade.types'
 import styles from './ParentGradebookPage.module.scss'
 
@@ -39,8 +41,10 @@ interface ChildPanelProps { studentId: string }
 const ChildPanel = ({ studentId }: ChildPanelProps) => {
   const { data: grades = [], isLoading: gradesLoading } = useChildGrades(studentId)
   const { data: absences = [], isLoading: absencesLoading } = useChildAbsences(studentId)
+  const { data: remarks = [], isLoading: remarksLoading } = useChildRemarks(studentId)
+  const { data: praises = [], isLoading: praisesLoading } = useChildPraises(studentId)
 
-  const isLoading = gradesLoading || absencesLoading
+  const isLoading = gradesLoading || absencesLoading || remarksLoading || praisesLoading
 
   if (isLoading) {
     return (
@@ -80,6 +84,16 @@ const ChildPanel = ({ studentId }: ChildPanelProps) => {
         <div className={styles.stat}>
           <span className={styles.statValue}>{absences.length}</span>
           <span className={styles.statLabel}>отсъствия</span>
+        </div>
+        <div className={styles.statDivider} />
+        <div className={styles.stat}>
+          <span className={styles.statValue}>{remarks.length}</span>
+          <span className={styles.statLabel}>забележки</span>
+        </div>
+        <div className={styles.statDivider} />
+        <div className={styles.stat}>
+          <span className={styles.statValue}>{praises.length}</span>
+          <span className={styles.statLabel}>похвали</span>
         </div>
       </div>
 
@@ -136,6 +150,40 @@ const ChildPanel = ({ studentId }: ChildPanelProps) => {
                 {a.reason && (
                   <span className={styles.absenceReason}>{a.reason}</span>
                 )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* ── Remarks ── */}
+      <div className={styles.section}>
+        <h3 className={styles.sectionTitle}>Забележки</h3>
+        {remarks.length === 0 ? (
+          <p className={styles.empty}>Няма записани забележки.</p>
+        ) : (
+          <div className={styles.remarkList}>
+            {remarks.map((r) => (
+              <div key={r.id} className={styles.remarkChip}>
+                <span className={styles.remarkDate}>{formatDate(r.date)}</span>
+                <span className={styles.remarkContent}>{r.content}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* ── Praises ── */}
+      <div className={styles.section}>
+        <h3 className={styles.sectionTitle}>Похвали</h3>
+        {praises.length === 0 ? (
+          <p className={styles.empty}>Няма записани похвали.</p>
+        ) : (
+          <div className={styles.praiseList}>
+            {praises.map((p) => (
+              <div key={p.id} className={styles.praiseChip}>
+                <span className={styles.praiseDate}>{formatDate(p.date)}</span>
+                <span className={styles.praiseContent}>{p.content}</span>
               </div>
             ))}
           </div>

@@ -4,6 +4,8 @@ import application.gradebookbackend.domain.Enrollment;
 import application.gradebookbackend.domain.Parent;
 import application.gradebookbackend.dto.AbsenceResponse;
 import application.gradebookbackend.dto.GradeResponse;
+import application.gradebookbackend.dto.PraiseResponse;
+import application.gradebookbackend.dto.RemarkResponse;
 import application.gradebookbackend.dto.StudentResponse;
 import application.gradebookbackend.exception.ResourceNotFoundException;
 import application.gradebookbackend.repository.AppUserRepository;
@@ -24,17 +26,23 @@ public class ParentViewService {
     private final EnrollmentRepository enrollmentRepository;
     private final GradeService gradeService;
     private final AbsenceService absenceService;
+    private final RemarkService remarkService;
+    private final PraiseService praiseService;
 
     public ParentViewService(AppUserRepository appUserRepository,
                              ParentRepository parentRepository,
                              EnrollmentRepository enrollmentRepository,
                              GradeService gradeService,
-                             AbsenceService absenceService) {
+                             AbsenceService absenceService,
+                             RemarkService remarkService,
+                             PraiseService praiseService) {
         this.appUserRepository = appUserRepository;
         this.parentRepository = parentRepository;
         this.enrollmentRepository = enrollmentRepository;
         this.gradeService = gradeService;
         this.absenceService = absenceService;
+        this.remarkService = remarkService;
+        this.praiseService = praiseService;
     }
 
     public List<StudentResponse> getMyChildren(String externalUid) {
@@ -53,6 +61,16 @@ public class ParentViewService {
     public List<AbsenceResponse> getMyChildAbsences(String externalUid, UUID studentId) {
         ensureParentOwnsStudent(externalUid, studentId);
         return absenceService.listAbsencesForStudent(studentId);
+    }
+
+    public List<RemarkResponse> getMyChildRemarks(String externalUid, UUID studentId) {
+        ensureParentOwnsStudent(externalUid, studentId);
+        return remarkService.listRemarksForStudent(studentId);
+    }
+
+    public List<PraiseResponse> getMyChildPraises(String externalUid, UUID studentId) {
+        ensureParentOwnsStudent(externalUid, studentId);
+        return praiseService.listPraisesForStudent(studentId);
     }
 
     private void ensureParentOwnsStudent(String externalUid, UUID studentId) {

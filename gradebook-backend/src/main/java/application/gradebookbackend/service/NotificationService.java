@@ -58,6 +58,44 @@ public class NotificationService {
     }
 
     @Transactional
+    public void notifyParentsOfRemark(Student student, Remark remark) {
+        List<Enrollment> enrollments = enrollmentRepository.findByStudentIdWithParent(student.getId());
+
+        String studentName = student.getUser().getFirstName() + " " + student.getUser().getLastName();
+        String dateStr = remark.getDate().toString();
+        String message = "Нова забележка за " + studentName + " на " + dateStr + ": " + remark.getContent();
+
+        for (Enrollment enrollment : enrollments) {
+            Notification notification = new Notification();
+            notification.setParent(enrollment.getParent());
+            notification.setType(NotificationType.NEW_REMARK);
+            notification.setMessage(message);
+            notification.setSourceId(remark.getId());
+            notification.setSourceType(SourceType.REMARK);
+            notificationRepository.save(notification);
+        }
+    }
+
+    @Transactional
+    public void notifyParentsOfPraise(Student student, Praise praise) {
+        List<Enrollment> enrollments = enrollmentRepository.findByStudentIdWithParent(student.getId());
+
+        String studentName = student.getUser().getFirstName() + " " + student.getUser().getLastName();
+        String dateStr = praise.getDate().toString();
+        String message = "Нова похвала за " + studentName + " на " + dateStr + ": " + praise.getContent();
+
+        for (Enrollment enrollment : enrollments) {
+            Notification notification = new Notification();
+            notification.setParent(enrollment.getParent());
+            notification.setType(NotificationType.NEW_PRAISE);
+            notification.setMessage(message);
+            notification.setSourceId(praise.getId());
+            notification.setSourceType(SourceType.PRAISE);
+            notificationRepository.save(notification);
+        }
+    }
+
+    @Transactional
     public void notifyParentsOfGrade(Student student, Grade grade) {
         List<Enrollment> enrollments = enrollmentRepository.findByStudentIdWithParent(student.getId());
 

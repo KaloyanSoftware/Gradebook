@@ -3,10 +3,14 @@ package application.gradebookbackend.controller;
 import application.gradebookbackend.dto.AbsenceResponse;
 import application.gradebookbackend.dto.CreateStudentRequest;
 import application.gradebookbackend.dto.GradeResponse;
+import application.gradebookbackend.dto.PraiseResponse;
+import application.gradebookbackend.dto.RemarkResponse;
 import application.gradebookbackend.dto.StudentResponse;
 import application.gradebookbackend.dto.StudentRosterResponse;
 import application.gradebookbackend.service.AbsenceService;
 import application.gradebookbackend.service.GradeService;
+import application.gradebookbackend.service.PraiseService;
+import application.gradebookbackend.service.RemarkService;
 import application.gradebookbackend.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -23,11 +27,17 @@ public class StudentController {
     private final StudentService studentService;
     private final GradeService gradeService;
     private final AbsenceService absenceService;
+    private final RemarkService remarkService;
+    private final PraiseService praiseService;
 
-    public StudentController(StudentService studentService, GradeService gradeService, AbsenceService absenceService) {
+    public StudentController(StudentService studentService, GradeService gradeService,
+                             AbsenceService absenceService, RemarkService remarkService,
+                             PraiseService praiseService) {
         this.studentService = studentService;
         this.gradeService = gradeService;
         this.absenceService = absenceService;
+        this.remarkService = remarkService;
+        this.praiseService = praiseService;
     }
 
     @GetMapping
@@ -48,6 +58,18 @@ public class StudentController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
     public List<AbsenceResponse> listAbsences(@PathVariable UUID studentId) {
         return absenceService.listAbsencesForStudent(studentId);
+    }
+
+    @GetMapping("/{studentId}/remarks")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    public List<RemarkResponse> listRemarks(@PathVariable UUID studentId) {
+        return remarkService.listRemarksForStudent(studentId);
+    }
+
+    @GetMapping("/{studentId}/praises")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    public List<PraiseResponse> listPraises(@PathVariable UUID studentId) {
+        return praiseService.listPraisesForStudent(studentId);
     }
 
     @PostMapping
