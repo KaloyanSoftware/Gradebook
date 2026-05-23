@@ -2,6 +2,7 @@ package application.gradebookbackend.controller;
 
 import application.gradebookbackend.dto.AbsenceResponse;
 import application.gradebookbackend.dto.GradeResponse;
+import application.gradebookbackend.dto.RemarkResponse;
 import application.gradebookbackend.dto.StudentResponse;
 import application.gradebookbackend.service.ParentViewService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,5 +39,11 @@ public class ParentViewController {
     public List<AbsenceResponse> getMyChildAbsences(@PathVariable UUID studentId,
                                                     @AuthenticationPrincipal Jwt jwt) {
         return parentViewService.getMyChildAbsences(jwt.getSubject(), studentId);
+    }
+
+    @GetMapping("/children/{studentId}/remarks")
+    public List<RemarkResponse> getMyChildRemarks(@PathVariable UUID studentId,
+                                                  @AuthenticationPrincipal Jwt jwt) {
+        return parentViewService.getMyChildRemarks(jwt.getSubject(), studentId);
     }
 }
