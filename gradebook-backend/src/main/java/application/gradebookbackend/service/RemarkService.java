@@ -19,10 +19,13 @@ public class RemarkService {
 
     private final RemarkRepository remarkRepository;
     private final StudentRepository studentRepository;
+    private final NotificationService notificationService;
 
-    public RemarkService(RemarkRepository remarkRepository, StudentRepository studentRepository) {
+    public RemarkService(RemarkRepository remarkRepository, StudentRepository studentRepository,
+                         NotificationService notificationService) {
         this.remarkRepository = remarkRepository;
         this.studentRepository = studentRepository;
+        this.notificationService = notificationService;
     }
 
     public List<RemarkResponse> listRemarksForStudent(UUID studentId) {
@@ -44,7 +47,9 @@ public class RemarkService {
         remark.setDate(request.date());
         remark.setContent(request.content());
 
-        return RemarkResponse.from(remarkRepository.save(remark));
+        Remark saved = remarkRepository.save(remark);
+        notificationService.notifyParentsOfRemark(student, saved);
+        return RemarkResponse.from(saved);
     }
 
     @Transactional

@@ -19,10 +19,13 @@ public class PraiseService {
 
     private final PraiseRepository praiseRepository;
     private final StudentRepository studentRepository;
+    private final NotificationService notificationService;
 
-    public PraiseService(PraiseRepository praiseRepository, StudentRepository studentRepository) {
+    public PraiseService(PraiseRepository praiseRepository, StudentRepository studentRepository,
+                         NotificationService notificationService) {
         this.praiseRepository = praiseRepository;
         this.studentRepository = studentRepository;
+        this.notificationService = notificationService;
     }
 
     public List<PraiseResponse> listPraisesForStudent(UUID studentId) {
@@ -44,7 +47,9 @@ public class PraiseService {
         praise.setDate(request.date());
         praise.setContent(request.content());
 
-        return PraiseResponse.from(praiseRepository.save(praise));
+        Praise saved = praiseRepository.save(praise);
+        notificationService.notifyParentsOfPraise(student, saved);
+        return PraiseResponse.from(saved);
     }
 
     @Transactional
