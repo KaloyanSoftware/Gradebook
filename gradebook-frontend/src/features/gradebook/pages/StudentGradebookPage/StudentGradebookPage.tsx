@@ -1,6 +1,7 @@
 import { CircularProgress } from '@mui/material'
 import { useMyGrades } from '../../hooks/useMyGrades'
 import { useMyAbsences } from '../../hooks/useMyAbsences'
+import { useMyRemarks } from '../../hooks/useMyRemarks'
 import { useAuth } from '@/context/AuthContext'
 import type { GradeResponse } from '@/features/grades/types/grade.types'
 import styles from './StudentGradebookPage.module.scss'
@@ -37,8 +38,9 @@ export const StudentGradebookPage = () => {
   const { user } = useAuth()
   const { data: grades = [], isLoading: gradesLoading } = useMyGrades()
   const { data: absences = [], isLoading: absencesLoading } = useMyAbsences()
+  const { data: remarks = [], isLoading: remarksLoading } = useMyRemarks()
 
-  const isLoading = gradesLoading || absencesLoading
+  const isLoading = gradesLoading || absencesLoading || remarksLoading
 
   const avg = average(grades)
   const avgNum = avg ? parseFloat(avg) : null
@@ -88,6 +90,11 @@ export const StudentGradebookPage = () => {
                 <div className={styles.stat}>
                   <span className={styles.statValue}>{absences.length}</span>
                   <span className={styles.statLabel}>отсъствия</span>
+                </div>
+                <div className={styles.statDivider} />
+                <div className={styles.stat}>
+                  <span className={styles.statValue}>{remarks.length}</span>
+                  <span className={styles.statLabel}>забележки</span>
                 </div>
               </div>
 
@@ -144,6 +151,23 @@ export const StudentGradebookPage = () => {
                         {a.reason && (
                           <span className={styles.absenceReason}>{a.reason}</span>
                         )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* ── Remarks ── */}
+              <div className={styles.section}>
+                <h3 className={styles.sectionTitle}>Забележки</h3>
+                {remarks.length === 0 ? (
+                  <p className={styles.empty}>Няма записани забележки.</p>
+                ) : (
+                  <div className={styles.remarkList}>
+                    {remarks.map((r) => (
+                      <div key={r.id} className={styles.remarkChip}>
+                        <span className={styles.remarkDate}>{formatDate(r.date)}</span>
+                        <span className={styles.remarkContent}>{r.content}</span>
                       </div>
                     ))}
                   </div>

@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -21,11 +20,6 @@ public class RemarkController {
 
     public RemarkController(RemarkService remarkService) {
         this.remarkService = remarkService;
-    }
-
-    @GetMapping("/student/{studentId}")
-    public List<RemarkResponse> listRemarksForStudent(@PathVariable UUID studentId) {
-        return remarkService.listRemarksForStudent(studentId);
     }
 
     @PostMapping

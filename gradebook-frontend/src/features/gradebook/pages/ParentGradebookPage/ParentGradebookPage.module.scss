@@ -235,6 +235,39 @@
   color: #b45309;
 }
 
+// ── Remarks ───────────────────────────────────────────────────────────────
+.remarkList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.remarkChip {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: $radius-md;
+  border: 1px solid #fca5a5;
+  background: #fff5f5;
+  font-size: 0.875rem;
+}
+
+.remarkDate {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #991b1b;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.remarkContent {
+  color: $color-text-primary;
+  line-height: 1.5;
+}
+
 // ── Misc ──────────────────────────────────────────────────────────────────
 .spinnerRow {
   display: flex;
