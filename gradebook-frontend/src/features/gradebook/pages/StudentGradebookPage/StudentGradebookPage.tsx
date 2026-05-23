@@ -2,6 +2,7 @@ import { CircularProgress } from '@mui/material'
 import { useMyGrades } from '../../hooks/useMyGrades'
 import { useMyAbsences } from '../../hooks/useMyAbsences'
 import { useMyRemarks } from '../../hooks/useMyRemarks'
+import { useMyPraises } from '../../hooks/useMyPraises'
 import { useAuth } from '@/context/AuthContext'
 import type { GradeResponse } from '@/features/grades/types/grade.types'
 import styles from './StudentGradebookPage.module.scss'
@@ -39,8 +40,9 @@ export const StudentGradebookPage = () => {
   const { data: grades = [], isLoading: gradesLoading } = useMyGrades()
   const { data: absences = [], isLoading: absencesLoading } = useMyAbsences()
   const { data: remarks = [], isLoading: remarksLoading } = useMyRemarks()
+  const { data: praises = [], isLoading: praisesLoading } = useMyPraises()
 
-  const isLoading = gradesLoading || absencesLoading || remarksLoading
+  const isLoading = gradesLoading || absencesLoading || remarksLoading || praisesLoading
 
   const avg = average(grades)
   const avgNum = avg ? parseFloat(avg) : null
@@ -95,6 +97,11 @@ export const StudentGradebookPage = () => {
                 <div className={styles.stat}>
                   <span className={styles.statValue}>{remarks.length}</span>
                   <span className={styles.statLabel}>забележки</span>
+                </div>
+                <div className={styles.statDivider} />
+                <div className={styles.stat}>
+                  <span className={styles.statValue}>{praises.length}</span>
+                  <span className={styles.statLabel}>похвали</span>
                 </div>
               </div>
 
@@ -168,6 +175,23 @@ export const StudentGradebookPage = () => {
                       <div key={r.id} className={styles.remarkChip}>
                         <span className={styles.remarkDate}>{formatDate(r.date)}</span>
                         <span className={styles.remarkContent}>{r.content}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* ── Praises ── */}
+              <div className={styles.section}>
+                <h3 className={styles.sectionTitle}>Похвали</h3>
+                {praises.length === 0 ? (
+                  <p className={styles.empty}>Няма записани похвали.</p>
+                ) : (
+                  <div className={styles.praiseList}>
+                    {praises.map((p) => (
+                      <div key={p.id} className={styles.praiseChip}>
+                        <span className={styles.praiseDate}>{formatDate(p.date)}</span>
+                        <span className={styles.praiseContent}>{p.content}</span>
                       </div>
                     ))}
                   </div>

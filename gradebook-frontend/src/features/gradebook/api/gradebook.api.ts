@@ -3,6 +3,7 @@ import type { ChildResponse } from '../types/gradebook.types'
 import type { GradeResponse } from '@/features/grades/types/grade.types'
 import type { AbsenceResponse } from '@/features/absences/types/absence.types'
 import type { RemarkResponse } from '@/features/remarks/types/remark.types'
+import type { PraiseResponse } from '@/features/praises/types/praise.types'
 
 export const getMyChildren = async (): Promise<ChildResponse[]> => {
   const response = await axiosClient.get<ChildResponse[]>('/parent/me/children')
@@ -37,5 +38,15 @@ export const getMyAbsences = async (): Promise<AbsenceResponse[]> => {
 
 export const getMyRemarks = async (): Promise<RemarkResponse[]> => {
   const response = await axiosClient.get<RemarkResponse[]>('/student/me/remarks')
+  return response.data
+}
+
+export const getMyPraises = async (): Promise<PraiseResponse[]> => {
+  const response = await axiosClient.get<PraiseResponse[]>('/student/me/praises')
+  return response.data
+}
+
+export const getMyChildPraises = async (studentId: string): Promise<PraiseResponse[]> => {
+  const response = await axiosClient.get<PraiseResponse[]>(`/parent/me/children/${studentId}/praises`)
   return response.data
 }

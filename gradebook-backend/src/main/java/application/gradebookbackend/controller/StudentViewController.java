@@ -3,6 +3,7 @@ package application.gradebookbackend.controller;
 import application.gradebookbackend.dto.AbsenceResponse;
 import application.gradebookbackend.dto.GradeResponse;
 import application.gradebookbackend.dto.NotificationResponse;
+import application.gradebookbackend.dto.PraiseResponse;
 import application.gradebookbackend.dto.RemarkResponse;
 import application.gradebookbackend.service.NotificationService;
 import application.gradebookbackend.service.StudentViewService;
@@ -43,6 +44,11 @@ public class StudentViewController {
     @GetMapping("/remarks")
     public List<RemarkResponse> getMyRemarks(@AuthenticationPrincipal Jwt jwt) {
         return studentViewService.getMyRemarks(jwt.getSubject());
+    }
+
+    @GetMapping("/praises")
+    public List<PraiseResponse> getMyPraises(@AuthenticationPrincipal Jwt jwt) {
+        return studentViewService.getMyPraises(jwt.getSubject());
     }
 
     @GetMapping("/notifications")

@@ -17,11 +17,15 @@ Issue: #70 — CRUD remarks (забележки) and praises (похвали) fo
 
 ## Praises (похвали)
 
-- [ ] SQL migration — `praises` table with RLS policies
-- [ ] `Praise` entity
-- [ ] `PraiseResponse`, `CreatePraiseRequest`, `UpdatePraiseRequest` DTOs
-- [ ] `PraiseRepository`
-- [ ] `PraiseService`
-- [ ] `PraiseController` — CRUD under `/admin/praises`
-- [ ] `StudentViewService.getMyPraises()` + `GET /student/me/praises` endpoint
-- [ ] `ParentViewService.getMyChildPraises()` + `GET /parent/me/children/{studentId}/praises` endpoint
+- [x] SQL migration — `praises` table with RLS policies (student sees own, parent sees linked children)
+- [x] `Praise` entity — `student`, `date`, `content`, `createdAt`
+- [x] `PraiseResponse`, `CreatePraiseRequest`, `UpdatePraiseRequest` DTOs
+- [x] `PraiseRepository` — `findByStudentIdOrderByDateDesc`
+- [x] `PraiseService` — `listPraisesForStudent`, `createPraise`, `updatePraise`, `deletePraise`
+- [x] `PraiseController` — CRUD under `/admin/praises`; GET served via `StudentController`
+- [x] `StudentViewService.getMyPraises()` + `GET /student/me/praises` endpoint
+- [x] `ParentViewService.getMyChildPraises()` + `GET /parent/me/children/{studentId}/praises` endpoint
+- [x] Frontend `features/praises/` — types, api, hooks, PraisesPanel (green palette, inline CRUD)
+- [x] `StudentGradesPanel` — PraisesPanel wired in after RemarksPanel
+- [x] Student gradebook page — похвали section + stats bar count
+- [x] Parent gradebook page — похвали section + stats bar count
